@@ -49,7 +49,7 @@
       margin-top: 60px;
     }
     .counter {
-      font-size: 2rem;
+      font-size: 1.5rem;
       margin-bottom: 20px;
     }
     img {
@@ -113,7 +113,7 @@
   <!-- Main content -->
   <div class="container" id="mainContent" style="display:none;">
     <h1>Our Journey Together ❤️</h1>
-    <div class="counter" id="daysCounter"></div>
+    <div class="counter" id="timer"></div>
     <img src="us.jpg" alt="Us together" />
     <div class="heart" onclick="revealMessage()"></div>
     <div class="secret" id="secretMessage">
@@ -131,16 +131,34 @@
       document.getElementById("mainContent").style.display = "block";
     }
 
-    // Counter
-    const startDate = new Date("2024-01-06");
-    function updateCounter() {
-      const today = new Date();
-      const diffTime = today - startDate;
-      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      document.getElementById("daysCounter").textContent =
-        `It’s been ${diffDays} days since we started our journey 💕`;
+    // Timer function
+    const startDate = new Date("2024-01-06T00:00:00");
+
+    function updateTimer() {
+      const now = new Date();
+      let diff = Math.floor((now - startDate) / 1000); // total seconds
+
+      const years = Math.floor(diff / (365*24*60*60));
+      diff -= years * 365*24*60*60;
+
+      const months = Math.floor(diff / (30*24*60*60));
+      diff -= months * 30*24*60*60;
+
+      const days = Math.floor(diff / (24*60*60));
+      diff -= days * 24*60*60;
+
+      const hours = Math.floor(diff / 3600);
+      diff -= hours * 3600;
+
+      const minutes = Math.floor(diff / 60);
+      const seconds = diff % 60;
+
+      document.getElementById("timer").textContent =
+        `${years} years, ${months} months, ${days} days, ${hours}h ${minutes}m ${seconds}s together 💕`;
     }
-    updateCounter();
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
 
     // Reveal secret message
     function revealMessage() {
