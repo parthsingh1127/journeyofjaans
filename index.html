@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Our Love Counter ❤️</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      text-align: center;
+      padding: 50px;
+      color: #333;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    .counter {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .count {
+      font-size: 1.5em;
+      margin: 10px 0;
+      color: #e91e63;
+    }
+    .heart {
+      font-size: 50px;
+      color: #e91e63;
+      animation: heartbeat 1.5s infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Parth ❤️ Ishita</h1>
+  <div class="counter">
+    <div class="heart">❤️</div>
+    <div id="days" class="count"></div>
+    <div id="weeks" class="count"></div>
+    <div id="months" class="count"></div>
+  </div>
+
+  <script>
+    function updateCounter() {
+      // Start date: 6 Jan 2024
+      const startDate = new Date("2024-01-06");
+      const today = new Date();
+
+      // Days difference
+      const diffTime = today - startDate;
+      const days = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      // Weeks + days
+      const weeks = Math.floor(days / 7);
+      const extraDays = days % 7;
+
+      // Years, months, days
+      let years = today.getFullYear() - startDate.getFullYear();
+      let months = today.getMonth() - startDate.getMonth();
+      let dayDiff = today.getDate() - startDate.getDate();
+
+      if (dayDiff < 0) {
+        months -= 1;
+        // Get days in previous month
+        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        dayDiff += prevMonth.getDate();
+      }
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+
+      // Update HTML
+      document.getElementById("days").innerText = `Together for ${days} days 💕`;
+      document.getElementById("weeks").innerText = `${weeks} weeks and ${extraDays} days`;
+      document.getElementById("months").innerText = `${years} years, ${months} months, ${dayDiff} days`;
+    }
+
+    updateCounter();
+  </script>
+</body>
+</html>
