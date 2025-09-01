@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Journey of Jaans 💕</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Journey of Jaans</title>
   <style>
     body {
       margin: 0;
@@ -11,7 +11,6 @@
       background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       color: #fff;
       text-align: center;
-      overflow: hidden;
     }
 
     /* Popup overlay */
@@ -26,137 +25,126 @@
       flex-direction: column;
       z-index: 10;
     }
-    #popup h2 {
+    #popup h1 {
       font-size: 2rem;
       margin-bottom: 20px;
     }
     #popup button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      background: #ff4b5c;
-      color: white;
+      padding: 12px 25px;
+      font-size: 1.2rem;
+      background: #ff4d6d;
       border: none;
-      border-radius: 20px;
+      border-radius: 12px;
+      color: white;
       cursor: pointer;
-      transition: 0.3s;
+      transition: transform 0.2s;
     }
     #popup button:hover {
-      background: #ff6f91;
+      transform: scale(1.1);
     }
 
-    /* Hidden main content */
-    #main {
-      display: none;
+    /* Main content */
+    .container {
       padding: 20px;
+      margin-top: 60px;
     }
-
-    h1 {
-      margin-top: 20px;
-      font-size: 2.5rem;
-    }
-
     .counter {
       font-size: 2rem;
-      margin: 20px 0;
+      margin-bottom: 20px;
     }
-
     img {
-      max-width: 300px;
+      width: 280px;
+      max-width: 90%;
       border-radius: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      margin-top: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      margin-bottom: 20px;
     }
 
-    /* Beating heart */
+    /* Heart animation */
     .heart {
-      width: 100px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       background-color: red;
-      position: relative;
-      margin: 30px auto;
+      margin: 20px auto;
       transform: rotate(-45deg);
-      cursor: pointer;
+      position: relative;
       animation: beat 1s infinite;
+      cursor: pointer;
     }
-    .heart::before,
-    .heart::after {
+    .heart:before,
+    .heart:after {
       content: "";
-      width: 100px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       background-color: red;
       border-radius: 50%;
       position: absolute;
     }
-    .heart::before {
-      top: -50px;
+    .heart:before {
+      top: -40px;
       left: 0;
     }
-    .heart::after {
-      left: 50px;
+    .heart:after {
+      left: 40px;
       top: 0;
     }
     @keyframes beat {
-      0%, 20%, 40%, 60%, 80%, 100% {
-        transform: scale(1) rotate(-45deg);
-      }
-      10%, 30%, 50%, 70%, 90% {
-        transform: scale(1.2) rotate(-45deg);
-      }
+      0%, 100% { transform: scale(1) rotate(-45deg); }
+      50% { transform: scale(1.2) rotate(-45deg); }
     }
 
-    /* Secret message with fade-in */
-    #message {
-      opacity: 0;
+    /* Secret message */
+    .secret {
+      display: none;
+      margin-top: 30px;
       font-size: 1.3rem;
-      margin-top: 20px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      color: #fff8dc;
-      transition: opacity 2s ease-in-out;
-    }
-    #message.show {
-      opacity: 1;
+      line-height: 1.8;
+      padding: 15px;
     }
   </style>
 </head>
 <body>
   <!-- Popup -->
   <div id="popup">
-    <h2>Hi Ishu 🫶<br>Ready to see something special?</h2>
+    <h1>Hi Ishu ❤️<br/>Ready to see something special?</h1>
     <button onclick="startJourney()">Click here to get started</button>
   </div>
 
   <!-- Main content -->
-  <div id="main">
-    <h1>Our Journey 💖</h1>
-    <div class="counter" id="counter"></div>
-    <img src="us.jpg" alt="Us 💕">
-    <div class="heart" onclick="showMessage()"></div>
-    <p id="message">
+  <div class="container" id="mainContent" style="display:none;">
+    <h1>Our Journey Together ❤️</h1>
+    <div class="counter" id="daysCounter"></div>
+    <img src="us.jpg" alt="Us together" />
+    <div class="heart" onclick="revealMessage()"></div>
+    <div class="secret" id="secretMessage">
       Every passing moment with you feels magical meri jaan,  
-      I fall deeper in love everyday.  
-      I love you so much Ishu ❤️ You are everything ❤️
-    </p>
+      I fall deeper in love everyday. ❤️  
+      I love you so much Ishu ❤️  
+      You are everything ❤️
+    </div>
   </div>
 
   <script>
+    // Handle popup
     function startJourney() {
       document.getElementById("popup").style.display = "none";
-      document.getElementById("main").style.display = "block";
-      updateCounter();
+      document.getElementById("mainContent").style.display = "block";
     }
 
+    // Counter
+    const startDate = new Date("2024-01-06");
     function updateCounter() {
-      const startDate = new Date("2024-01-06");
       const today = new Date();
       const diffTime = today - startDate;
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-      document.getElementById("counter").innerText = `It’s been ${diffDays} days since 6th Jan 2024 💕`;
+      document.getElementById("daysCounter").textContent =
+        `It’s been ${diffDays} days since we started our journey 💕`;
     }
+    updateCounter();
 
-    function showMessage() {
-      document.getElementById("message").classList.add("show");
+    // Reveal secret message
+    function revealMessage() {
+      document.getElementById("secretMessage").style.display = "block";
     }
   </script>
 </body>
