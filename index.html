@@ -2,249 +2,223 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Journey of Jaans ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Journey ❤️</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .popup {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .popup-content {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       text-align: center;
-      box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
-      animation: fadeIn 1s ease;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
     }
 
-    .heart {
-      font-size: 60px;
-      color: red;
+    .container {
+      padding: 30px;
+    }
+
+    /* Intro screen */
+    #intro {
+      font-size: 1.5rem;
+      margin-top: 100px;
+      line-height: 2;
+    }
+
+    #heart {
+      display: inline-block;
+      font-size: 2.5rem;
       cursor: pointer;
-      animation: beat 1s infinite;
-      margin-top: 15px;
+      transition: transform 0.3s ease;
+      animation: heartbeat 1.2s infinite;
     }
 
-    @keyframes beat {
+    #heart:hover {
+      transform: scale(1.2);
+    }
+
+    @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.3); }
     }
 
-    .hidden {
+    /* Hidden content */
+    #main-content {
       display: none;
+      margin-top: 40px;
     }
 
-    .container {
-      text-align: center;
-      color: white;
-      display: none;
-      flex-direction: column;
-      align-items: center;
+    /* Secret message */
+    #secret-message {
+      font-size: 1.4rem;
+      margin: 20px auto;
+      max-width: 600px;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      animation: fadeInDown 1s ease;
-    }
-
+    /* Timer */
     .timer {
       display: flex;
+      justify-content: center;
       gap: 15px;
-      margin-bottom: 25px;
+      margin: 30px auto;
+      flex-wrap: wrap;
     }
 
-    .box {
-      background: rgba(255,255,255,0.2);
-      padding: 20px;
+    .time-box {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px 20px;
       border-radius: 12px;
-      min-width: 80px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.3s;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+      font-size: 1.2rem;
+      min-width: 90px;
     }
 
-    .box:hover {
-      transform: scale(1.1);
-    }
-
-    .box span {
-      display: block;
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-
-    .box label {
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-
-    .slideshow {
-      width: 300px;
-      height: 300px;
-      border-radius: 20px;
-      overflow: hidden;
+    /* Slideshow */
+    #slideshow {
       margin-top: 20px;
-      box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
-      animation: fadeIn 2s ease;
-    }
-
-    .slideshow img {
-      width: 100%;
-      height: 100%;
+      width: 280px;
+      height: 320px;
+      border-radius: 15px;
       object-fit: cover;
+      box-shadow: 0px 6px 15px rgba(0,0,0,0.3);
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
     }
 
-    .controls {
-      margin-top: 20px;
+    /* Music button */
+    #music-controls {
+      margin-top: 25px;
     }
 
-    .music-btn {
-      background: white;
-      border: none;
+    button {
       padding: 10px 20px;
-      border-radius: 20px;
+      border: none;
+      border-radius: 8px;
+      background: #ff4e50;
+      color: #fff;
+      font-size: 1rem;
       cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
+      transition: background 0.3s;
     }
 
-    .music-btn:hover {
-      background: #ffe5ec;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeInDown {
-      from { transform: translateY(-30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    button:hover {
+      background: #e43a3c;
     }
   </style>
 </head>
 <body>
-  <!-- Popup -->
-  <div class="popup" id="popup">
-    <div class="popup-content">
-      <h2>Hi Ishu ❤️</h2>
-      <p>Click the heart to begin our journey!</p>
-      <div class="heart" onclick="startExperience()">❤️</div>
-    </div>
-  </div>
-
-  <!-- Main Container -->
-  <div class="container" id="mainContainer">
-    <h1>Every Moment With You ❤️</h1>
-    <div class="timer" id="timer">
-      <div class="box"><span id="years">0</span><label>Years</label></div>
-      <div class="box"><span id="months">0</span><label>Months</label></div>
-      <div class="box"><span id="days">0</span><label>Days</label></div>
-      <div class="box"><span id="hours">0</span><label>Hours</label></div>
-      <div class="box"><span id="minutes">0</span><label>Minutes</label></div>
-      <div class="box"><span id="seconds">0</span><label>Seconds</label></div>
+  <div class="container">
+    
+    <!-- Intro text -->
+    <div id="intro">
+      Hi baby, I hope you liked your surprise.  
+      I love you so so much <span id="heart">❤️</span>
     </div>
 
-    <div class="slideshow">
-      <img id="slideshowImage" src="us.jpg" alt="Us">
-    </div>
+    <!-- Main hidden content -->
+    <div id="main-content">
+      <div id="secret-message">
+        Every passing moment with you feels magical meri jaan,<br>
+        I fall deeper in love everyday. ❤️<br>
+        I love you so much Ishu ❤️ You are everything ❤️
+      </div>
 
-    <div class="controls">
-      <button class="music-btn" onclick="toggleMusic()">Pause Music ⏸</button>
+      <div class="timer" id="timer"></div>
+
+      <img id="slideshow" src="us.jpg" alt="Us">
+
+      <div id="music-controls">
+        <button id="toggle-music">Pause Music</button>
+      </div>
     </div>
   </div>
 
   <!-- Music -->
-  <audio id="bgMusic" src="Sahiba(KoshalWorld.Com).mp3" loop></audio>
+  <audio id="bg-music" src="Sahiba(KoshalWorld.Com).mp3" loop></audio>
 
   <script>
-    const startDate = new Date(2024, 0, 6, 0, 0, 0); // Local IST start
-    const images = ["us.jpg", "us2.jpg", "us3.jpg"]; // Add more here
-    let currentImage = 0;
-    let musicPlaying = true;
+    const heart = document.getElementById("heart");
+    const intro = document.getElementById("intro");
+    const mainContent = document.getElementById("main-content");
+    const secretMessage = document.getElementById("secret-message");
+    const timerDiv = document.getElementById("timer");
+    const music = document.getElementById("bg-music");
+    const toggleMusicBtn = document.getElementById("toggle-music");
+    const slideshow = document.getElementById("slideshow");
 
-    function startExperience() {
-      document.getElementById("popup").style.display = "none";
-      document.getElementById("mainContainer").style.display = "flex";
-      startTimer();
-      startSlideshow();
-      playMusic();
-    }
+    let slideshowInterval;
 
-    function startTimer() {
-      setInterval(() => {
-        const now = new Date();
-        let diff = now - startDate;
+    // Handle double-click on heart
+    heart.addEventListener("dblclick", () => {
+      intro.style.display = "none";  // hide intro
+      mainContent.style.display = "block"; // show rest
 
-        let years = now.getFullYear() - startDate.getFullYear();
-        let months = now.getMonth() - startDate.getMonth();
-        let days = now.getDate() - startDate.getDate();
+      setTimeout(() => {
+        secretMessage.style.opacity = 1;
+      }, 200);
 
-        if (days < 0) {
-          months--;
-          let prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-          days += prevMonth;
-        }
-        if (months < 0) {
-          years--;
-          months += 12;
-        }
-
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
-
-        document.getElementById("years").textContent = years;
-        document.getElementById("months").textContent = months;
-        document.getElementById("days").textContent = days;
-        document.getElementById("hours").textContent = hours;
-        document.getElementById("minutes").textContent = minutes;
-        document.getElementById("seconds").textContent = seconds;
-      }, 1000);
-    }
-
-    function startSlideshow() {
-      setInterval(() => {
-        currentImage = (currentImage + 1) % images.length;
-        document.getElementById("slideshowImage").src = images[currentImage];
-      }, 4000);
-    }
-
-    function playMusic() {
-      const music = document.getElementById("bgMusic");
       music.play();
-      musicPlaying = true;
+
+      // Slideshow
+      const images = ["us.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
+      let index = 0;
+      slideshowInterval = setInterval(() => {
+        slideshow.style.opacity = 0;
+        setTimeout(() => {
+          index = (index + 1) % images.length;
+          slideshow.src = images[index];
+          slideshow.style.opacity = 1;
+        }, 1000);
+      }, 5000);
+    });
+
+    // Music toggle
+    toggleMusicBtn.addEventListener("click", () => {
+      if (music.paused) {
+        music.play();
+        toggleMusicBtn.textContent = "Pause Music";
+      } else {
+        music.pause();
+        toggleMusicBtn.textContent = "Play Music";
+      }
+    });
+
+    // Timer (live counter since Jan 6, 2024)
+    function updateTimer() {
+      const startDate = new Date("2024-01-06T00:00:00+05:30"); 
+      const now = new Date();
+      let diff = Math.floor((now - startDate) / 1000);
+
+      const years = Math.floor(diff / (365*24*60*60));
+      diff %= (365*24*60*60);
+
+      const months = Math.floor(diff / (30*24*60*60));
+      diff %= (30*24*60*60);
+
+      const days = Math.floor(diff / (24*60*60));
+      diff %= (24*60*60);
+
+      const hours = Math.floor(diff / 3600);
+      diff %= 3600;
+
+      const minutes = Math.floor(diff / 60);
+      const seconds = diff % 60;
+
+      timerDiv.innerHTML = `
+        <div class="time-box">${years} Years</div>
+        <div class="time-box">${months} Months</div>
+        <div class="time-box">${days} Days</div>
+        <div class="time-box">${hours} Hours</div>
+        <div class="time-box">${minutes} Minutes</div>
+        <div class="time-box">${seconds} Seconds</div>
+      `;
     }
 
-    function toggleMusic() {
-      const music = document.getElementById("bgMusic");
-      const btn = document.querySelector(".music-btn");
-      if (musicPlaying) {
-        music.pause();
-        btn.textContent = "Play Music ▶️";
-      } else {
-        music.play();
-        btn.textContent = "Pause Music ⏸";
-      }
-      musicPlaying = !musicPlaying;
-    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
   </script>
 </body>
 </html>
