@@ -61,12 +61,39 @@
 
     h1 {
       font-size: 2rem;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
+    /* Timer as boxes */
     #timer {
-      font-size: 1.5rem;
-      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin: 30px 0;
+    }
+
+    .time-box {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      border-radius: 15px;
+      width: 100px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .time-box:hover {
+      transform: scale(1.05);
+    }
+
+    .time-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .time-label {
+      font-size: 0.9rem;
+      margin-top: 5px;
     }
 
     /* Heart */
@@ -103,6 +130,27 @@
       font-size: 1.2rem;
       display: none;
     }
+
+    /* Music Button */
+    #music-controls {
+      margin-top: 20px;
+      display: none;
+    }
+
+    #music-toggle {
+      background: #ff4d6d;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #music-toggle:hover {
+      background: #e63950;
+    }
   </style>
 </head>
 <body>
@@ -119,7 +167,14 @@
   <!-- Main content -->
   <div class="container" id="main-content">
     <h1>Our Journey Together</h1>
-    <div id="timer"></div>
+    <div id="timer">
+      <div class="time-box"><div class="time-value" id="years">0</div><div class="time-label">Years</div></div>
+      <div class="time-box"><div class="time-value" id="months">0</div><div class="time-label">Months</div></div>
+      <div class="time-box"><div class="time-value" id="days">0</div><div class="time-label">Days</div></div>
+      <div class="time-box"><div class="time-value" id="hours">0</div><div class="time-label">Hours</div></div>
+      <div class="time-box"><div class="time-value" id="minutes">0</div><div class="time-label">Minutes</div></div>
+      <div class="time-box"><div class="time-value" id="seconds">0</div><div class="time-label">Seconds</div></div>
+    </div>
 
     <div class="heart" id="heart">❤️</div>
 
@@ -131,6 +186,10 @@
       Every passing moment with you feels magical meri jaan,  
       I fall deeper in love everyday. ❤️  
       I love you so much Ishu ❤️ You are everything ❤️
+    </div>
+
+    <div id="music-controls">
+      <button id="music-toggle">Pause Music</button>
     </div>
   </div>
 
@@ -165,11 +224,15 @@
 
       const seconds = Math.floor(diff / 1000);
 
-      document.getElementById("timer").innerText =
-        `${years} years, ${months} months, ${days} days, ` +
-        `${hours} hours, ${minutes} minutes, ${seconds} seconds together ❤️`;
+      document.getElementById("years").innerText = years;
+      document.getElementById("months").innerText = months;
+      document.getElementById("days").innerText = days;
+      document.getElementById("hours").innerText = hours;
+      document.getElementById("minutes").innerText = minutes;
+      document.getElementById("seconds").innerText = seconds;
     }
     setInterval(updateTimer, 1000);
+    updateTimer();
 
     // Slideshow
     const images = ["us.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
@@ -187,10 +250,26 @@
 
     // Heart click
     const heart = document.getElementById("heart");
+    const music = document.getElementById("bg-music");
+    const musicControls = document.getElementById("music-controls");
+    const musicToggle = document.getElementById("music-toggle");
+
     heart.addEventListener("click", () => {
       heart.style.display = "none";
       document.getElementById("secret-message").style.display = "block";
-      document.getElementById("bg-music").play();
+      music.play();
+      musicControls.style.display = "block";
+    });
+
+    // Music toggle
+    musicToggle.addEventListener("click", () => {
+      if (music.paused) {
+        music.play();
+        musicToggle.innerText = "Pause Music";
+      } else {
+        music.pause();
+        musicToggle.innerText = "Play Music";
+      }
     });
   </script>
 </body>
