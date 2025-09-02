@@ -2,275 +2,249 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Journey of Jaans</title>
+  <title>Journey of Jaans ❤️</title>
   <style>
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      color: #fff;
-      text-align: center;
-      overflow-x: hidden;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .popup {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.7);
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 999;
+      z-index: 10;
     }
 
     .popup-content {
       background: white;
-      color: #333;
       padding: 30px;
-      border-radius: 20px;
+      border-radius: 15px;
       text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
       animation: fadeIn 1s ease;
     }
 
-    .popup button {
-      background: #ff4d6d;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .popup button:hover {
-      transform: scale(1.1);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    .container {
-      margin-top: 50px;
-      display: none;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    /* Timer as boxes */
-    #timer {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin: 30px 0;
-    }
-
-    .time-box {
-      background: rgba(255, 255, 255, 0.15);
-      padding: 20px;
-      border-radius: 15px;
-      width: 100px;
-      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .time-box:hover {
-      transform: scale(1.05);
-    }
-
-    .time-value {
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-
-    .time-label {
-      font-size: 0.9rem;
-      margin-top: 5px;
-    }
-
-    /* Heart */
     .heart {
-      font-size: 80px;
+      font-size: 60px;
       color: red;
       cursor: pointer;
       animation: beat 1s infinite;
-      display: inline-block;
-      margin: 20px 0;
+      margin-top: 15px;
     }
 
     @keyframes beat {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+      50% { transform: scale(1.3); }
     }
 
-    /* Slideshow */
-    .photo-frame {
-      margin-top: 20px;
+    .hidden {
+      display: none;
     }
 
-    #slideshow {
+    .container {
+      text-align: center;
+      color: white;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      animation: fadeInDown 1s ease;
+    }
+
+    .timer {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .box {
+      background: rgba(255,255,255,0.2);
+      padding: 20px;
+      border-radius: 12px;
+      min-width: 80px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+
+    .box:hover {
+      transform: scale(1.1);
+    }
+
+    .box span {
+      display: block;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .box label {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .slideshow {
       width: 300px;
-      height: auto;
+      height: 300px;
       border-radius: 20px;
-      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
-      transition: opacity 1s ease-in-out;
-    }
-
-    /* Secret Message */
-    #secret-message {
+      overflow: hidden;
       margin-top: 20px;
-      font-size: 1.2rem;
-      display: none;
+      box-shadow: 0px 4px 20px rgba(0,0,0,0.4);
+      animation: fadeIn 2s ease;
     }
 
-    /* Music Button */
-    #music-controls {
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .controls {
       margin-top: 20px;
-      display: none;
     }
 
-    #music-toggle {
-      background: #ff4d6d;
+    .music-btn {
+      background: white;
       border: none;
       padding: 10px 20px;
       border-radius: 20px;
-      color: white;
-      font-size: 16px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      font-weight: bold;
+      transition: 0.3s;
     }
 
-    #music-toggle:hover {
-      background: #e63950;
+    .music-btn:hover {
+      background: #ffe5ec;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
-
   <!-- Popup -->
   <div class="popup" id="popup">
     <div class="popup-content">
       <h2>Hi Ishu ❤️</h2>
-      <p>i hope you like the surprise baby!</p>
-      <button onclick="startExperience()">Get Started</button>
+      <p>Click the heart to begin our journey!</p>
+      <div class="heart" onclick="startExperience()">❤️</div>
     </div>
   </div>
 
-  <!-- Main content -->
-  <div class="container" id="main-content">
-    <h1>Our Journey Together</h1>
-    <div id="timer">
-      <div class="time-box"><div class="time-value" id="years">0</div><div class="time-label">Years</div></div>
-      <div class="time-box"><div class="time-value" id="months">0</div><div class="time-label">Months</div></div>
-      <div class="time-box"><div class="time-value" id="days">0</div><div class="time-label">Days</div></div>
-      <div class="time-box"><div class="time-value" id="hours">0</div><div class="time-label">Hours</div></div>
-      <div class="time-box"><div class="time-value" id="minutes">0</div><div class="time-label">Minutes</div></div>
-      <div class="time-box"><div class="time-value" id="seconds">0</div><div class="time-label">Seconds</div></div>
+  <!-- Main Container -->
+  <div class="container" id="mainContainer">
+    <h1>Every Moment With You ❤️</h1>
+    <div class="timer" id="timer">
+      <div class="box"><span id="years">0</span><label>Years</label></div>
+      <div class="box"><span id="months">0</span><label>Months</label></div>
+      <div class="box"><span id="days">0</span><label>Days</label></div>
+      <div class="box"><span id="hours">0</span><label>Hours</label></div>
+      <div class="box"><span id="minutes">0</span><label>Minutes</label></div>
+      <div class="box"><span id="seconds">0</span><label>Seconds</label></div>
     </div>
 
-    <div class="heart" id="heart">❤️</div>
-
-    <div class="photo-frame">
-      <img id="slideshow" src="us1.jpg" alt="Us Together">
+    <div class="slideshow">
+      <img id="slideshowImage" src="us.jpg" alt="Us">
     </div>
 
-    <div id="secret-message">
-      Every passing moment with you feels magical meri jaan,  
-      I fall deeper in love everyday. ❤️  
-      I love you so much Ishu ❤️ You are everything ❤️
-    </div>
-
-    <div id="music-controls">
-      <button id="music-toggle">Pause Music</button>
+    <div class="controls">
+      <button class="music-btn" onclick="toggleMusic()">Pause Music ⏸</button>
     </div>
   </div>
 
-  <audio id="bg-music" src="Sahiba(KoshalWorld.Com).mp3"></audio>
+  <!-- Music -->
+  <audio id="bgMusic" src="Sahiba(KoshalWorld.Com).mp3" loop></audio>
 
   <script>
+    const startDate = new Date(2024, 0, 6, 0, 0, 0); // Local IST start
+    const images = ["us.jpg", "us2.jpg", "us3.jpg"]; // Add more here
+    let currentImage = 0;
+    let musicPlaying = true;
+
     function startExperience() {
       document.getElementById("popup").style.display = "none";
-      document.getElementById("main-content").style.display = "block";
+      document.getElementById("mainContainer").style.display = "flex";
+      startTimer();
+      startSlideshow();
+      playMusic();
     }
 
-    // Timer
-    const startDate = new Date("2024-01-06T00:00:00");
-    function updateTimer() {
-      const now = new Date();
-      let diff = now - startDate;
+    function startTimer() {
+      setInterval(() => {
+        const now = new Date();
+        let diff = now - startDate;
 
-      const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-      diff -= years * (1000 * 60 * 60 * 24 * 365);
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
 
-      const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30.44));
-      diff -= months * (1000 * 60 * 60 * 24 * 30.44);
+        if (days < 0) {
+          months--;
+          let prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+          days += prevMonth;
+        }
+        if (months < 0) {
+          years--;
+          months += 12;
+        }
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      diff -= days * (1000 * 60 * 60 * 24);
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
 
-      const hours = Math.floor(diff / (1000 * 60 * 60));
-      diff -= hours * (1000 * 60 * 60);
-
-      const minutes = Math.floor(diff / (1000 * 60));
-      diff -= minutes * (1000 * 60);
-
-      const seconds = Math.floor(diff / 1000);
-
-      document.getElementById("years").innerText = years;
-      document.getElementById("months").innerText = months;
-      document.getElementById("days").innerText = days;
-      document.getElementById("hours").innerText = hours;
-      document.getElementById("minutes").innerText = minutes;
-      document.getElementById("seconds").innerText = seconds;
-    }
-    setInterval(updateTimer, 1000);
-    updateTimer();
-
-    // Slideshow
-    const images = ["us.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
-    let index = 0;
-    const slideshow = document.getElementById("slideshow");
-
-    setInterval(() => {
-      slideshow.style.opacity = 0;
-      setTimeout(() => {
-        index = (index + 1) % images.length;
-        slideshow.src = images[index];
-        slideshow.style.opacity = 1;
+        document.getElementById("years").textContent = years;
+        document.getElementById("months").textContent = months;
+        document.getElementById("days").textContent = days;
+        document.getElementById("hours").textContent = hours;
+        document.getElementById("minutes").textContent = minutes;
+        document.getElementById("seconds").textContent = seconds;
       }, 1000);
-    }, 5000);
+    }
 
-    // Heart click
-    const heart = document.getElementById("heart");
-    const music = document.getElementById("bg-music");
-    const musicControls = document.getElementById("music-controls");
-    const musicToggle = document.getElementById("music-toggle");
+    function startSlideshow() {
+      setInterval(() => {
+        currentImage = (currentImage + 1) % images.length;
+        document.getElementById("slideshowImage").src = images[currentImage];
+      }, 4000);
+    }
 
-    heart.addEventListener("click", () => {
-      heart.style.display = "none";
-      document.getElementById("secret-message").style.display = "block";
+    function playMusic() {
+      const music = document.getElementById("bgMusic");
       music.play();
-      musicControls.style.display = "block";
-    });
+      musicPlaying = true;
+    }
 
-    // Music toggle
-    musicToggle.addEventListener("click", () => {
-      if (music.paused) {
-        music.play();
-        musicToggle.innerText = "Pause Music";
-      } else {
+    function toggleMusic() {
+      const music = document.getElementById("bgMusic");
+      const btn = document.querySelector(".music-btn");
+      if (musicPlaying) {
         music.pause();
-        musicToggle.innerText = "Play Music";
+        btn.textContent = "Play Music ▶️";
+      } else {
+        music.play();
+        btn.textContent = "Pause Music ⏸";
       }
-    });
+      musicPlaying = !musicPlaying;
+    }
   </script>
 </body>
 </html>
