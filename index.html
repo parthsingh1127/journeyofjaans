@@ -56,8 +56,8 @@
 
     .background-slideshow img {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       opacity: 0;
       transition: opacity 1s ease-in-out;
@@ -157,7 +157,7 @@
       `;
     }
 
-    // Slideshow
+    // Background slideshow
     const images = ["us.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
     let index = 0;
     const slideshow = document.getElementById("slideshow");
@@ -176,12 +176,28 @@
       imgs[index].style.opacity = 1;
     }, 5000);
 
-    // Music
+    // Music (seamless with localStorage)
     const music = document.getElementById("bg-music");
+
+    function saveMusicState() {
+      localStorage.setItem("musicTime", music.currentTime);
+      localStorage.setItem("musicPlaying", !music.paused);
+    }
+
+    function restoreMusicState() {
+      const savedTime = localStorage.getItem("musicTime");
+      const isPlaying = localStorage.getItem("musicPlaying") === "true";
+      if (savedTime) music.currentTime = parseFloat(savedTime);
+      if (isPlaying) music.play();
+    }
+
     function toggleMusic() {
       if (music.paused) music.play();
       else music.pause();
+      saveMusicState();
     }
+
+    window.addEventListener("beforeunload", saveMusicState);
 
     // Heart double tap
     const heart = document.getElementById("heart");
@@ -193,6 +209,7 @@
         document.getElementById("main-content").style.display = "block";
         updateTimer();
         setInterval(updateTimer, 1000);
+        restoreMusicState();
         music.play();
       }
     });
