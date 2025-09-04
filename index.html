@@ -4,116 +4,22 @@
   <meta charset="UTF-8">
   <title>Our Journey ❤️</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      color: #fff;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    .popup-content {
-      background: white;
-      color: #333;
-      padding: 30px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    .popup .heart {
-      font-size: 80px;
-      color: red;
-      cursor: pointer;
-      animation: beat 1s infinite;
-      display: inline-block;
-      margin-top: 20px;
-    }
-
-    @keyframes beat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    .background-slideshow {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .background-slideshow img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      filter: brightness(60%);
-    }
-
-    .container {
-      margin-top: 50px;
-      display: none;
-      position: relative;
-      z-index: 1;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    #timer {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-    }
-
-    .time-box {
-      background: rgba(255,255,255,0.2);
-      padding: 15px 20px;
-      border-radius: 15px;
-      font-size: 1.2rem;
-      min-width: 100px;
-    }
-
-    button {
-      background: #ff4d6d;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    button:hover {
-      transform: scale(1.1);
-    }
+    body { margin: 0; font-family:'Poppins',sans-serif; color:#fff; overflow:hidden; text-align:center; }
+    .background-slideshow { position:fixed; top:0;left:0;width:100%;height:100%; z-index:-1; }
+    .background-slideshow img { position:absolute; top:0;left:0;width:100%;height:100%; object-fit:cover; opacity:0; transition:opacity 1s ease-in-out; }
+    .container { margin-top:50px; position:relative; z-index:1; }
+    .popup { position:fixed; top:0;left:0;width:100%;height:100%; background:rgba(0,0,0,0.7); display:flex; justify-content:center; align-items:center; z-index:999; }
+    .popup-content { background:#fff; color:#333; padding:30px; border-radius:20px; text-align:center; }
+    .heart { font-size:80px; color:red; cursor:pointer; animation:beat 1s infinite; }
+    @keyframes beat { 0%,100% {transform:scale(1);} 50% {transform:scale(1.2);} }
+    .time-box { background:rgba(255,255,255,0.2); padding:15px 20px; border-radius:15px; font-size:1.2rem; margin:10px; display:inline-block; }
+    button { background:#ff4d6d; border:none; padding:12px 24px; border-radius:30px; color:#fff; font-size:16px; cursor:pointer; margin:10px; transition:transform 0.3s ease; }
+    button:hover { transform:scale(1.1); }
   </style>
 </head>
 <body>
-
-  <!-- Background slideshow -->
   <div class="background-slideshow" id="slideshow"></div>
 
-  <!-- Popup -->
   <div class="popup" id="popup">
     <div class="popup-content">
       <h2>Hi baby ❤️</h2>
@@ -122,97 +28,100 @@
     </div>
   </div>
 
-  <!-- Main content -->
   <div class="container" id="main-content">
     <h1>Our Journey Together</h1>
     <div id="timer"></div>
     <button onclick="toggleMusic()">⏯ Music</button>
     <br><br>
-    <button onclick="location.href='message.html'">Click here for another surprise</button>
+    <button onclick="goToMessage()">Click here for another surprise</button>
   </div>
 
   <audio id="bg-music" src="Sahiba(KoshalWorld.Com).mp3" loop></audio>
 
   <script>
-    const startDate = new Date("2024-01-06T00:00:00");
+    const images = ["us.jpg","us3.jpg","us5.jpg","us6.jpg"];
+    let imgIndex = 0;
 
-    function updateTimer() {
-      const now = new Date();
-      let diff = now - startDate;
-
-      const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-      const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.44));
-      const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      document.getElementById("timer").innerHTML = `
-        <div class="time-box">${years} Years</div>
-        <div class="time-box">${months} Months</div>
-        <div class="time-box">${days} Days</div>
-        <div class="time-box">${hours} Hours</div>
-        <div class="time-box">${minutes} Minutes</div>
-        <div class="time-box">${seconds} Seconds</div>
-      `;
+    function initSlideshow() {
+      const container = document.getElementById("slideshow");
+      images.forEach((src,i) => {
+        const img = document.createElement("img");
+        img.src = src;
+        if (i === 0) img.style.opacity = 1;
+        container.appendChild(img);
+      });
+      setInterval(() => {
+        const imgs = container.querySelectorAll("img");
+        imgs[imgIndex].style.opacity = 0;
+        imgIndex = (imgIndex + 1) % imgs.length;
+        imgs[imgIndex].style.opacity = 1;
+      }, 4000);
     }
 
-    // Background slideshow
-    const images = ["us.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
-    let index = 0;
-    const slideshow = document.getElementById("slideshow");
+    const startDate = new Date("2024-01-06T00:00:00");
+    function startTimer() {
+      function tick() {
+        const now = new Date(), diff = now - startDate;
+        const years = Math.floor(diff / (1000*60*60*24*365));
+        const months = Math.floor((diff % (1000*60*60*24*365)) / (1000*60*60*24*30));
+        const days = Math.floor((diff % (1000*60*60*24*30)) / (1000*60*60*24));
+        const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+        const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const seconds = Math.floor((diff % (1000*60)) / 1000);
+        document.getElementById("timer").innerHTML =
+          `<div class="time-box">${years}y</div>` +
+          `<div class="time-box">${months}m</div>` +
+          `<div class="time-box">${days}d</div>` +
+          `<div class="time-box">${hours}h</div>` +
+          `<div class="time-box">${minutes}m</div>` +
+          `<div class="time-box">${seconds}s</div>`;
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
 
-    images.forEach((src, i) => {
-      const img = document.createElement("img");
-      img.src = src;
-      if (i === 0) img.style.opacity = 1;
-      slideshow.appendChild(img);
-    });
-
-    setInterval(() => {
-      const imgs = document.querySelectorAll("#slideshow img");
-      imgs[index].style.opacity = 0;
-      index = (index + 1) % imgs.length;
-      imgs[index].style.opacity = 1;
-    }, 5000);
-
-    // Music (seamless with localStorage)
     const music = document.getElementById("bg-music");
-
-    function saveMusicState() {
+    function saveMusic(){
       localStorage.setItem("musicTime", music.currentTime);
       localStorage.setItem("musicPlaying", !music.paused);
     }
-
-    function restoreMusicState() {
-      const savedTime = localStorage.getItem("musicTime");
-      const isPlaying = localStorage.getItem("musicPlaying") === "true";
-      if (savedTime) music.currentTime = parseFloat(savedTime);
-      if (isPlaying) music.play();
+    function restoreMusic(){
+      const t = parseFloat(localStorage.getItem("musicTime") || "0");
+      music.currentTime = t;
+      if (localStorage.getItem("musicPlaying") === "true") music.play();
     }
+    window.addEventListener("beforeunload", saveMusic);
 
     function toggleMusic() {
-      if (music.paused) music.play();
-      else music.pause();
-      saveMusicState();
+      music.paused ? music.play() : music.pause();
+      saveMusic();
     }
 
-    window.addEventListener("beforeunload", saveMusicState);
+    function goToMessage(){
+      saveMusic();
+      location.href = "message.html";
+    }
 
-    // Heart double tap
-    const heart = document.getElementById("heart");
-    let tapped = 0;
-    heart.addEventListener("click", () => {
-      tapped++;
-      if (tapped === 2) {
+    document.getElementById("heart").addEventListener("click", () => {
+      if (!sessionStorage.getItem("opened")) {
         document.getElementById("popup").style.display = "none";
         document.getElementById("main-content").style.display = "block";
-        updateTimer();
-        setInterval(updateTimer, 1000);
-        restoreMusicState();
-        music.play();
+        sessionStorage.setItem("opened","yes");
+        initSlideshow();
+        startTimer();
+        restoreMusic();
       }
     });
+
+    window.onload = () => {
+      if (sessionStorage.getItem("opened")) {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        initSlideshow();
+        startTimer();
+        restoreMusic();
+      }
+    };
   </script>
 </body>
 </html>
