@@ -12,14 +12,11 @@
       font-family:"Poppins",sans-serif;
       overflow:hidden;display:flex;align-items:center;justify-content:center;height:100vh;color:#fff;
     }
-
-    /* background slideshow */
     .bg-slideshow{position:fixed;inset:0;z-index:-2;overflow:hidden}
     .bg-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease;filter:grayscale(40%) brightness(60%)}
     .bg-slide.active{opacity:1;filter:grayscale(20%) brightness(55%)}
     .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.25)}
 
-    /* overlay intro */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:30}
     .popup{background:#fff;color:#333;padding:30px;border-radius:16px;text-align:center;max-width:400px;animation:fadeIn 0.6s ease}
     .popup h2{color:var(--accent);margin-bottom:8px}
@@ -30,7 +27,6 @@
     .overlay.fade-out{animation:fadeOut 0.6s forwards}
     @keyframes fadeOut{to{opacity:0;visibility:hidden}}
 
-    /* stage content */
     .stage{opacity:0;transform:translateY(10px);transition:.5s ease;pointer-events:none;text-align:center;z-index:10;width:100%;max-width:960px;padding:20px}
     .stage.active{opacity:1;transform:none;pointer-events:auto}
     .card{background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);padding:20px;border-radius:14px}
@@ -84,8 +80,9 @@
   const music=document.getElementById("bgMusic");
   const musicToggle=document.getElementById("musicToggle");
 
-  let activated=false,bgSlides=[],bgIndex=0,bgInterval,timerInterval,lastTap=0;
+  let bgSlides=[],bgIndex=0;
 
+  // Build background slides
   function buildBgSlides(){
     images.forEach((src,i)=>{
       const d=document.createElement("div");
@@ -97,7 +94,13 @@
     });
   }
   buildBgSlides();
+  setInterval(()=>{
+    const prev=bgIndex;bgIndex=(bgIndex+1)%bgSlides.length;
+    bgSlides[prev].classList.remove("active");
+    bgSlides[bgIndex].classList.add("active");
+  },4500);
 
+  // Timer
   function getDiff(s,e){
     let years=e.getFullYear()-s.getFullYear();
     let months=e.getMonth()-s.getMonth();
@@ -121,45 +124,48 @@
       <div class="time-box"><div class="time-val">${String(d.minutes).padStart(2,'0')}</div><div class="time-label">Minutes</div></div>
       <div class="time-box"><div class="time-val">${String(d.seconds).padStart(2,'0')}</div><div class="time-label">Seconds</div></div>`;
   }
-  function startTimer(){
-    function tick(){renderTimer(getDiff(startDate,new Date()));}
-    tick();timerInterval=setInterval(tick,1000);
-  }
-  function startBgSlideshow(){
-    if(bgSlides.length<=1) return;
-    bgIndex=0;
-    bgInterval=setInterval(()=>{
-      const prev=bgIndex;bgIndex=(bgIndex+1)%bgSlides.length;
-      bgSlides[prev].classList.remove("active");
-      bgSlides[bgIndex].classList.add("active");
-    },4500);
-  }
+  setInterval(()=>{renderTimer(getDiff(startDate,new Date()));},1000);
 
-  function activate(){
-    if(activated) return;activated=true;
-    overlay.classList.add("fade-out");
-    setTimeout(()=>{overlay.style.display="none";stage.classList.add("active");startTimer();startBgSlideshow();
-      music.loop=true;
-      music.play().then(()=>localStorage.setItem("musicPlaying","true"));
-    },600);
+  // Music persistence
+  function syncMusic(){
+    const savedTime=parseFloat(localStorage.getItem("musicTime")||"0");
+    const isPlaying=localStorage.getItem("musicPlaying")==="true";
+    music.currentTime=savedTime||0;
+    music.loop=true;
+    if(isPlaying){
+      music.play().catch(()=>{});
+      musicToggle.textContent="⏸ Pause Music";
+    } else {
+      musicToggle.textContent="▶ Play Music";
+    }
   }
-
-  popupHeart.addEventListener("dblclick",activate);
-  popupHeart.addEventListener("touchend",e=>{
-    const now=Date.now();
-    if(now-lastTap<400){e.preventDefault();activate();lastTap=0;}else{lastTap=now;}
-  });
-  popupHeart.addEventListener("click",()=>{
-    const now=Date.now();
-    if(now-lastTap<400){activate();lastTap=0;}else{lastTap=now;}
-  });
+  syncMusic();
+  setInterval(()=>{if(!music.paused){localStorage.setItem("musicTime",music.currentTime);}},1000);
 
   musicToggle.addEventListener("click",()=>{
     if(music.paused){music.play();musicToggle.textContent="⏸ Pause Music";localStorage.setItem("musicPlaying","true");}
     else{music.pause();musicToggle.textContent="▶ Play Music";localStorage.setItem("musicPlaying","false");}
   });
 
+  // Overlay unlock
+  function activate(){
+    overlay.classList.add("fade-out");
+    setTimeout(()=>{overlay.style.display="none";stage.classList.add("active");},600);
+    localStorage.setItem("unlocked","true");
+  }
+  popupHeart.addEventListener("dblclick",activate);
+  popupHeart.addEventListener("click",()=>{
+    const now=Date.now();
+    if(window.lastTap && now-window.lastTap<400){activate();window.lastTap=0;}else{window.lastTap=now;}
+  });
+
+  // If already unlocked, skip overlay
+  if(localStorage.getItem("unlocked")==="true"){
+    overlay.style.display="none";
+    stage.classList.add("active");
+  }
 })();
 </script>
 </body>
 </html>
+
