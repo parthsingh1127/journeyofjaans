@@ -1,218 +1,241 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Our Journey ❤️</title>
-<style>
-  :root { --accent:#ff4d6d; --fg:#fff; }
-  *{box-sizing:border-box;}
-  html, body { height:100%; margin:0; font-family:Poppins, sans-serif; background:#000; color:var(--fg); overflow:hidden; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journey of Jaan</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      color: white;
+    }
 
-  #bgSlideshow { position:fixed; inset:0; z-index:-2; overflow:hidden; }
-  .bg-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity 1s ease; filter:grayscale(20%) brightness(60%); }
-  .bg-slide.active { opacity:1; filter:grayscale(10%) brightness(70%); }
-  .bg-overlay { position:fixed; inset:0; z-index:-1; background:rgba(0,0,0,0.25); }
+    /* Slideshow background */
+    .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      filter: brightness(50%);
+      z-index: -1;
+      transition: background-image 1s ease-in-out;
+    }
 
-  .overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:20; }
-  .popup { background:#fff; color:#222; padding:24px; border-radius:14px; text-align:center; max-width:420px; width:90%; box-shadow:0 18px 60px rgba(0,0,0,0.35); }
-  .popup h2 { color:var(--accent); margin:0 0 8px; }
-  .popup p { margin:0 0 12px; }
-  .heart-btn { background:none; border:none; font-size:46px; cursor:pointer; color:var(--accent); animation:beat 1s infinite; }
-  @keyframes beat { 0%,100% {transform:scale(1);} 50% {transform:scale(1.2);} }
+    /* Popup box */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
 
-  .app { position:relative; z-index:10; width:90%; max-width:900px; margin:50px auto; padding:20px; opacity:0; transform:translateY(8px); transition:opacity .36s ease, transform .36s ease; pointer-events:none; }
-  .app.active { opacity:1; transform:translateY(0); pointer-events:auto; }
-  .card { background:rgba(0,0,0,0.45); backdrop-filter:blur(6px); color:var(--fg); padding:20px; border-radius:12px; text-align:center; }
-  .timer { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:20px 0; }
-  .time-box { background:rgba(255,255,255,0.1); padding:15px 18px; border-radius:10px; min-width:80px; }
-  .val { font-size:18px; font-weight:700; }
-  .label { font-size:12px; margin-top:4px; color:#ffe8ee; }
-  .controls { display:flex; justify-content:center; gap:10px; margin-top:16px; flex-wrap:wrap; }
-  .btn { background:var(--accent); color:#fff; border:none; padding:10px 16px; border-radius:999px; cursor:pointer; font-weight:700; }
-  .btn.muted { background:#fff; color:var(--accent); }
+    .popup {
+      background: #222;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      max-width: 350px;
+    }
 
-  .message-view { display:none; }
-  .message-view.show { display:block; }
+    .heart {
+      font-size: 40px;
+      cursor: pointer;
+      color: red;
+    }
 
-  @media(max-width:640px){ .val{font-size:16px;} }
-</style>
+    /* Timer container */
+    .container {
+      position: relative;
+      z-index: 2;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .timer {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .time-box {
+      background: rgba(0,0,0,0.6);
+      padding: 15px;
+      border-radius: 10px;
+      min-width: 80px;
+    }
+
+    .time-box span {
+      display: block;
+      font-size: 20px;
+    }
+
+    /* Buttons */
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: crimson;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: darkred;
+    }
+
+    /* Message page */
+    .message-page {
+      display: none;
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .message {
+      background: rgba(0,0,0,0.6);
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 50px;
+      display: inline-block;
+    }
+  </style>
 </head>
 <body>
+  <!-- Slideshow -->
+  <div class="slideshow"></div>
 
-<div id="bgSlideshow"></div>
-<div class="bg-overlay"></div>
-
-<div class="overlay" id="overlay">
-  <div class="popup">
-    <h2>Hi baby 💕</h2>
-    <p>I hope you liked your surprise.<br>I love you so so much</p>
-    <button class="heart-btn" id="popupHeart">❤️</button>
+  <!-- Intro Popup -->
+  <div class="overlay" id="overlay">
+    <div class="popup">
+      <p>Hi baby, I hope you liked your surprise. I love you so so much ❤️</p>
+      <span class="heart" id="startHeart">❤️</span>
+    </div>
   </div>
-</div>
 
-<main class="app" id="app">
-  <section id="timerView" class="card">
-    <h2 style="color:var(--accent)">Our Journey Together</h2>
-    <div class="timer" id="timerBoxes"></div>
-    <div class="controls">
-      <button id="goMessage" class="btn">Another surprise</button>
-      <button id="playPause" class="btn muted">⏯ Play</button>
+  <!-- Timer Page -->
+  <div class="container" id="timerPage">
+    <h1>Our Journey Together</h1>
+    <div class="timer" id="timer"></div>
+    <button onclick="toggleMusic()">⏯ Pause/Play Music</button>
+    <button onclick="goToMessage()">Click here for another surprise</button>
+  </div>
+
+  <!-- Message Page -->
+  <div class="message-page" id="messagePage">
+    <div class="message">
+      <h2>My Love 💌</h2>
+      <p>
+        Ishu, every second with you feels like magic.  
+        I love you endlessly, and I always will. ❤️
+      </p>
     </div>
-  </section>
+    <button onclick="toggleMusic()">⏯ Pause/Play Music</button>
+    <button onclick="goToTimer()">Back to Timer</button>
+  </div>
 
-  <section id="messageView" class="card message-view">
-    <h2 style="color:var(--accent)">My Dearest Ishu ❤️</h2>
-    <div style="font-size:16px;line-height:1.6;">
-      Every passing moment with you feels magical, meri jaan.<br>
-      I fall deeper in love every single day.<br><br>
-      I love you so much Ishu ❤️ You are everything ❤️
-    </div>
-    <div class="controls">
-      <button id="backTimer" class="btn muted">⬅ Timer</button>
-      <button id="playPause2" class="btn muted">⏯ Play</button>
-    </div>
-  </section>
-</main>
+  <audio id="music" loop></audio>
 
-<audio id="audioA" src="Sahiba(KoshalWorld.Com).mp3" preload="auto"></audio>
-<audio id="audioB" src="yellow.mp3" preload="auto"></audio>
+  <script>
+    // Slideshow images
+    const images = [
+      "us.jpg","us2.jpg","us3.jpg","us4.jpg","us5.jpg",
+      "us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"
+    ];
+    let currentImage = 0;
+    const slideshow = document.querySelector(".slideshow");
 
-<script>
-const images = ['us.jpg','us2.jpg','us3.jpg','us4.jpg','us5.jpg','us6.jpg','us7.jpg','us8.jpg','us9.jpg','us10.jpg'];
-const startDate = new Date(2024,0,6,0,0,0);
-const SLIDE_INTERVAL = 4500, CROSSFADE_MS = 800;
+    function startSlideshow() {
+      slideshow.style.backgroundImage = `url('${images[currentImage]}')`;
+      setInterval(() => {
+        currentImage = (currentImage + 1) % images.length;
+        slideshow.style.backgroundImage = `url('${images[currentImage]}')`;
+      }, 4000);
+    }
 
-const overlay = document.getElementById('overlay'),
-      heart = document.getElementById('popupHeart'),
-      app = document.getElementById('app'),
-      timerBoxes = document.getElementById('timerBoxes'),
-      goMessage = document.getElementById('goMessage'),
-      messageView = document.getElementById('messageView'),
-      timerView = document.getElementById('timerView'),
-      backTimer = document.getElementById('backTimer'),
-      playPause = document.getElementById('playPause'),
-      playPause2 = document.getElementById('playPause2'),
-      bgSlideshow = document.getElementById('bgSlideshow'),
-      audioA = document.getElementById('audioA'),
-      audioB = document.getElementById('audioB');
+    // Timer
+    const startDate = new Date("2024-01-06T00:00:00");
+    function updateTimer() {
+      const now = new Date();
+      const diff = now - startDate;
 
-let slides=[], slideIndex=0, slideTimer, activeTrack='A', fadeInterval;
+      let years = now.getFullYear() - startDate.getFullYear();
+      let months = now.getMonth() - startDate.getMonth();
+      if (months < 0) { years--; months += 12; }
 
-function preloadImages(arr,cb){
-  let rem=arr.length, load=[];
-  arr.forEach(u=>{
-    const img=new Image();
-    img.onload=()=>{ load.push(u); if(--rem===0) cb(load); };
-    img.onerror=()=>{ if(--rem===0) cb(load); };
-    img.src=u;
-  });
-}
+      let days = Math.floor((diff / (1000*60*60*24)) % 30.44);
+      let hours = Math.floor((diff / (1000*60*60)) % 24);
+      let minutes = Math.floor((diff / (1000*60)) % 60);
+      let seconds = Math.floor((diff / 1000) % 60);
 
-function buildSlides(list){
-  bgSlideshow.innerHTML=''; slides=[];
-  list.forEach((u,i)=>{
-    const d=document.createElement('div');
-    d.className='bg-slide'+(i===0?' active':'');
-    d.style.backgroundImage=`url("${u}")`;
-    bgSlideshow.appendChild(d); slides.push(d);
-  });
-}
+      document.getElementById("timer").innerHTML = `
+        <div class="time-box"><span>${years}</span>Years</div>
+        <div class="time-box"><span>${months}</span>Months</div>
+        <div class="time-box"><span>${days}</span>Days</div>
+        <div class="time-box"><span>${hours}</span>Hours</div>
+        <div class="time-box"><span>${minutes}</span>Minutes</div>
+        <div class="time-box"><span>${seconds}</span>Seconds</div>
+      `;
+    }
+    setInterval(updateTimer, 1000);
 
-function startSlides(){
-  if(slides.length<=1)return;
-  slideIndex=0;
-  slideTimer=setInterval(()=>{
-    slides[slideIndex].classList.remove('active');
-    slideIndex=(slideIndex+1)%slides.length;
-    slides[slideIndex].classList.add('active');
-  },SLIDE_INTERVAL);
-}
+    // Music
+    const music = document.getElementById("music");
+    let currentPage = "timer"; // track where we are
 
-function diff(s,e){
-  const start=new Date(s), end=new Date(e);
-  let y=end.getFullYear()-start.getFullYear(),
-      m=end.getMonth()-start.getMonth(),
-      d=end.getDate()-start.getDate(),
-      h=end.getHours()-start.getHours(),
-      mi=end.getMinutes()-start.getMinutes(),
-      se=end.getSeconds()-start.getSeconds();
-  if(se<0){se+=60;mi--;}
-  if(mi<0){mi+=60;h--;}
-  if(h<0){h+=24;d--;}
-  if(d<0){m--; d+=new Date(end.getFullYear(),end.getMonth(),0).getDate();}
-  if(m<0){m+=12; y--;}
-  return {y,m,d,h,mi,se};
-}
+    function toggleMusic() {
+      if (music.paused) music.play();
+      else music.pause();
+    }
 
-function startTimer(){
-  setInterval(()=>{
-    const t=diff(startDate,new Date());
-    timerBoxes.innerHTML=`
-      <div class="box"><div class="val">${t.y}</div><div class="label">Years</div></div>
-      <div class="box"><div class="val">${t.m}</div><div class="label">Months</div></div>
-      <div class="box"><div class="val">${t.d}</div><div class="label">Days</div></div>
-      <div class="box"><div class="val">${String(t.h).padStart(2,'0')}</div><div class="label">Hours</div></div>
-      <div class="box"><div class="val">${String(t.mi).padStart(2,'0')}</div><div class="label">Minutes</div></div>
-      <div class="box"><div class="val">${String(t.se).padStart(2,'0')}</div><div class="label">Seconds</div></div>`;
-  },1000);
-}
+    function goToMessage() {
+      document.getElementById("timerPage").style.display = "none";
+      document.getElementById("messagePage").style.display = "block";
+      currentPage = "message";
+      music.src = "yellow.mp3";
+      music.play();
+    }
 
-function setVol(a,b){audioA.volume=a;audioB.volume=b;}
-function crossfade(to){
-  clearInterval(fadeInterval);
-  const from=(to==='A')?audioB:audioA, dest=(to==='A')?audioA:audioB;
-  dest.play().catch(()=>{});
-  let step=0, max= CROSSFADE_MS/50;
-  fadeInterval=setInterval(()=>{
-    step++;
-    const fa=(max-step)/max, fb=step/max;
-    if(to==='A') setVol(fb,fa); else setVol(fa,fb);
-    if(step>=max){clearInterval(fadeInterval); from.pause(); activeTrack=to; updateBtns();}
-  },50);
-}
+    function goToTimer() {
+      document.getElementById("messagePage").style.display = "none";
+      document.getElementById("timerPage").style.display = "flex";
+      currentPage = "timer";
+      music.src = "Sahiba(KoshalWorld.Com).mp3";
+      music.play();
+    }
 
-function updateBtns(){
-  const playing = (activeTrack==='A')?!audioA.paused:!audioB.paused;
-  const label = playing?'⏸ Pause':'▶ Play';
-  playPause.textContent=label;
-  playPause2.textContent=label;
-}
-
-function togglePlay(){
-  const track=(activeTrack==='A')?audioA:audioB;
-  track[track.paused?'play':'pause']();
-  updateBtns();
-}
-
-function openApp(){
-  overlay.classList.add('vanish');
-  setTimeout(()=>overlay.style.display='none',700);
-  app.classList.add('active');
-  preloadImages(imageUrls,list=>{
-    buildSlides(list);
-    startSlides();
-  });
-  startTimer();
-  audioA.volume=1; audioB.volume=0; audioA.play().catch(()=>{}); activeTrack='A'; updateBtns();
-}
-
-let lastTap=0;
-heart.addEventListener('click',()=>{const now=Date.now(); if(now-lastTap<400)openApp(); else lastTap=now;});
-goMessage.addEventListener('click',()=>{
-  timerView.style.display='none';
-  messageView.classList.add('show');
-  audioB.currentTime=0; audioB.play().catch(()=>{});
-  crossfade('B');
-});
-backTimer.addEventListener('click',()=>{
-  messageView.classList.remove('show');
-  timerView.style.display='';
-  crossfade('A');
-});
-playPause.addEventListener('click',togglePlay);
-playPause2.addEventListener('click',togglePlay);
-
-</script>
+    // Start app
+    document.getElementById("startHeart").addEventListener("dblclick", () => {
+      document.getElementById("overlay").style.display = "none";
+      document.getElementById("timerPage").style.display = "flex";
+      music.src = "Sahiba(KoshalWorld.Com).mp3";
+      music.play();
+      startSlideshow();
+      updateTimer();
+    });
+  </script>
 </body>
 </html>
+
