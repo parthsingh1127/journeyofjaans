@@ -1,113 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Message ❤️</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>for my jaan 💖</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: #000;
-      color: #fff;
-      text-align: center;
-      overflow: hidden;
-    }
+    body,html{margin:0;height:100%;font-family:"Poppins",sans-serif;color:#fff;overflow:hidden}
+    .bg-slideshow{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-2;background:#000}
+    .bg-slide{position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 1s ease,filter 1s ease;filter:grayscale(40%) brightness(60%)}
+    .bg-slide.active{opacity:1;filter:grayscale(20%) brightness(55%)}
+    .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.25)}
 
-    /* Background slideshow */
-    .slideshow {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-    .slideshow img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      filter: brightness(60%) grayscale(20%);
-    }
-    .slideshow img.active {
-      opacity: 1;
-    }
-
-    .content {
-      position: relative;
-      z-index: 1;
-      margin: 60px auto;
-      max-width: 800px;
-      background: rgba(0,0,0,0.5);
-      padding: 30px;
-      border-radius: 16px;
-    }
-    h1 { color: #ff4d6d; margin-bottom: 20px; }
-    p { font-size: 18px; line-height: 1.6; }
-
-    .btn {
-      background: #ff4d6d;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    .btn:hover { background: #ff3355; }
+    .content{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;text-align:center}
+    .message{max-width:700px;background:rgba(0,0,0,0.4);padding:20px;border-radius:16px;font-size:18px;line-height:1.6}
+    .music{margin-top:20px;display:flex;justify-content:center}
+    .music button{background:rgba(255,255,255,0.9);color:#ff4d6d;border:0;padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:700}
+    .btn-back{margin-top:20px;background:#fff;color:#ff4d6d;border:0;padding:12px 18px;border-radius:10px;cursor:pointer;font-weight:700}
   </style>
 </head>
 <body>
-  <!-- Slideshow -->
-  <div class="slideshow" id="slideshow">
-    <img src="us.jpg" class="active">
-    <img src="us3.jpg">
-    <img src="us5.jpg">
-    <img src="us6.jpg">
-    <img src="us7.jpg">
-    <img src="us8.jpg">
-    <img src="us9.jpg">
-    <img src="us10.jpg">
-  </div>
+  <div class="bg-slideshow" id="bgSlideshow"></div>
+  <div class="bg-overlay"></div>
 
-  <!-- Content -->
   <div class="content">
-    <h1>My Love ❤️</h1>
-    <p>
-      Every passing moment with you feels magical, meri jaan.<br>
-      I fall deeper in love with you every single day.<br>
-      I love you so much Ishu ❤️ You are my everything ❤️
-    </p>
-    <button class="btn" id="backBtn">⬅ Back to Timer</button>
-    <button class="btn" id="musicToggle">⏸ Pause Music</button>
+    <div class="message">
+      Every passing moment with you feels magical, meri jaan 💖  
+      I fall deeper in love every single day.  
+      You are everything to me, Ishu ❤️
+    </div>
+    <div class="music" id="musicControls">
+      <button id="musicToggle">⏸ Pause Music</button>
+    </div>
+    <button class="btn-back" onclick="goBack()">⬅ Back to Timer</button>
   </div>
 
-  <audio id="bgMusic" src="yellow.mp3" preload="auto" loop></audio>
+  <audio id="bgMusic" src="yellow.mp3" preload="auto"></audio>
 
-  <script>
-    const slides = document.querySelectorAll(".slideshow img");
-    let current = 0;
-    setInterval(() => {
-      slides[current].classList.remove("active");
-      current = (current + 1) % slides.length;
-      slides[current].classList.add("active");
-    }, 4000);
+<script>
+(function(){
+  const images=["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
+  const bgSlideshow=document.getElementById('bgSlideshow');
+  const music=document.getElementById('bgMusic');
+  const musicToggle=document.getElementById('musicToggle');
+  let bgSlides=[],bgIndex=0,bgInterval;
 
-    const music = document.getElementById("bgMusic");
-    music.play().catch(e => console.log("Autoplay blocked", e));
-
-    const musicToggle = document.getElementById("musicToggle");
-    musicToggle.addEventListener("click", () => {
-      if (music.paused) { music.play(); musicToggle.textContent = "⏸ Pause Music"; }
-      else { music.pause(); musicToggle.textContent = "▶ Play Music"; }
+  function buildBgSlides(){
+    images.forEach((src,i)=>{
+      const d=document.createElement('div');
+      d.className='bg-slide';
+      d.style.backgroundImage=`url("${src}")`;
+      if(i===0) d.classList.add('active');
+      bgSlideshow.appendChild(d);
+      bgSlides.push(d);
     });
+  }
+  buildBgSlides();
 
-    document.getElementById("backBtn").addEventListener("click", () => {
-      window.location.href = "index.html#timer"; // jump straight to timer
-    });
-  </script>
+  function startBgSlideshow(){
+    if(bgSlides.length<=1)return;
+    bgIndex=0;
+    bgSlides.forEach((s,i)=>s.classList.toggle('active',i===0));
+    bgInterval=setInterval(()=>{
+      const prev=bgIndex;
+      bgIndex=(bgIndex+1)%bgSlides.length;
+      bgSlides[prev].classList.remove('active');
+      bgSlides[bgIndex].classList.add('active');
+    },4500);
+  }
+  startBgSlideshow();
+
+  // autoplay if coming from timer
+  if(sessionStorage.getItem("activated")==="true"){
+    music.loop=true;
+    music.play().catch(()=>{});
+  }
+
+  musicToggle.addEventListener('click',()=>{
+    if(music.paused){music.play();musicToggle.textContent='⏸ Pause Music'}
+    else{music.pause();musicToggle.textContent='▶ Play Music'}
+  });
+
+  window.goBack=function(){
+    sessionStorage.setItem("activated","true");
+    window.location.href="index.html";
+  }
+})();
+</script>
 </body>
 </html>
+
