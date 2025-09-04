@@ -51,21 +51,27 @@
     });
   }
   buildBgSlides();
-
   setInterval(()=>{
     const prev=bgIndex;bgIndex=(bgIndex+1)%bgSlides.length;
     bgSlides[prev].classList.remove("active");
     bgSlides[bgIndex].classList.add("active");
   },4500);
 
-  // continue music
-  if(localStorage.getItem("musicPlaying")==="true"){
+  // Continue music seamlessly
+  function syncMusic(){
+    const savedTime=parseFloat(localStorage.getItem("musicTime")||"0");
+    const isPlaying=localStorage.getItem("musicPlaying")==="true";
+    music.currentTime=savedTime||0;
     music.loop=true;
-    music.play().catch(()=>{});
-    musicToggle.textContent="⏸ Pause Music";
-  } else {
-    musicToggle.textContent="▶ Play Music";
+    if(isPlaying){
+      music.play().catch(()=>{});
+      musicToggle.textContent="⏸ Pause Music";
+    } else {
+      musicToggle.textContent="▶ Play Music";
+    }
   }
+  syncMusic();
+  setInterval(()=>{if(!music.paused){localStorage.setItem("musicTime",music.currentTime);}},1000);
 
   musicToggle.addEventListener("click",()=>{
     if(music.paused){music.play();musicToggle.textContent="⏸ Pause Music";localStorage.setItem("musicPlaying","true");}
