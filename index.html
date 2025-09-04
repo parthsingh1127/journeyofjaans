@@ -1,343 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>till eternity and beyond❤️</title>
-  <style>
-    :root {
-      --accent: #ff4d6d;
-      --bg1: #ff9a9e;
-      --bg2: #fad0c4;
-    }
-    * { box-sizing:border-box }
-    html,body { height:100%; margin:0; font-family:"Poppins",system-ui,sans-serif }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>till eternity and beyond❤️</title>
+    <style>
+        :root {
+            --accent: #ff4d6d;
+            --bg1: #ff9a9e;
+            --bg2: #fad0c4;
+        }
+        * { box-sizing:border-box }
+        html,body { height:100%; margin:0; font-family:"Poppins",system-ui,sans-serif }
 
-    body {
-      background: linear-gradient(135deg,var(--bg1),var(--bg2));
-      color:#fff;
-      overflow:hidden;
-    }
+        body {
+            background: linear-gradient(135deg,var(--bg1),var(--bg2));
+            color:#fff;
+            overflow:hidden;
+        }
 
-    /* ===== background slideshow ===== */
-    .bg-slideshow {
-      position:fixed;
-      inset:0;
-      z-index: -2;
-      overflow:hidden;
-    }
-    .bg-slide {
-      position:absolute;
-      inset:0;
-      background-size:cover;
-      background-position:center;
-      opacity:0;
-      transition:opacity 1200ms ease;
-      filter: grayscale(40%) brightness(60%);
-    }
-    .bg-slide.active {
-      opacity:1;
-      filter: grayscale(20%) brightness(70%);
-    }
-    .bg-overlay {
-      position:fixed; inset:0; z-index:-1;
-      background: rgba(0,0,0,0.25);
-    }
+        /* ===== background slideshow ===== */
+        .bg-slideshow {
+            position:fixed;
+            inset:0;
+            z-index: -2;
+            overflow:hidden;
+        }
+        .bg-slide {
+            position:absolute;
+            inset:0;
+            background-size:cover;
+            background-position:center;
+            opacity:0;
+            transition:opacity 1200ms ease;
+            filter: grayscale(40%) brightness(60%);
+        }
+        .bg-slide.active {
+            opacity:1;
+            filter: grayscale(20%) brightness(70%);
+        }
+        .bg-overlay {
+            position:fixed; inset:0; z-index:-1;
+            background: rgba(0,0,0,0.25);
+        }
 
-    /* ===== intro overlay ===== */
-    .overlay {
-      position:fixed; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(0,0,0,0.6);
-      z-index: 30;
-    }
-    .popup {
-      background:#fff;
-      padding:28px;
-      border-radius:16px;
-      max-width:420px; width:92%;
-      text-align:center;
-      box-shadow:0 18px 50px rgba(0,0,0,0.25);
-      animation: popupIn 420ms ease;
-    }
-    @keyframes popupIn { from{ transform:translateY(8px); opacity:0 } to{ transform:none; opacity:1 } }
-    .popup h2 { margin:0 0 8px; color:var(--accent) }
-    .popup p { margin:0 0 12px; color:#444 }
+        /* ===== intro overlay ===== */
+        .overlay {
+            position:fixed; inset:0;
+            display:flex; align-items:center; justify-content:center;
+            background: rgba(0,0,0,0.6);
+            z-index: 30;
+        }
+        .popup {
+            background:#fff;
+            padding:28px;
+            border-radius:16px;
+            max-width:420px; width:92%;
+            text-align:center;
+            box-shadow:0 18px 50px rgba(0,0,0,0.25);
+            animation: popupIn 420ms ease;
+        }
+        @keyframes popupIn { from{ transform:translateY(8px); opacity:0 } to{ transform:none; opacity:1 } }
+        .popup h2 { margin:0 0 8px; color:var(--accent) }
+        .popup p { margin:0 0 12px; color:#444 }
 
-    .heart-btn {
-      font-size:46px;
-      display:inline-block;
-      border:0;
-      background:none;
-      cursor:pointer;
-      color:var(--accent);
-      animation: beat 1000ms infinite;
-    }
-    @keyframes beat { 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.2) } }
+        .heart-btn {
+            font-size:46px;
+            display:inline-block;
+            border:0;
+            background:none;
+            cursor:pointer;
+            color:var(--accent);
+            animation: beat 1000ms infinite;
+        }
+        @keyframes beat { 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.2) } }
 
-    .vanish { animation: vanishAnim 600ms forwards ease }
-    @keyframes vanishAnim { from{ transform: scale(1); opacity:1 } to{ transform: scale(2); opacity:0 } }
-    .overlay.fade-out { animation: overlayFade 620ms forwards ease }
-    @keyframes overlayFade { from{ opacity:1 } to{ opacity:0; visibility:hidden } }
+        .vanish { animation: vanishAnim 600ms forwards ease }
+        @keyframes vanishAnim { from{ transform: scale(1); opacity:1 } to{ transform: scale(2); opacity:0 } }
+        .overlay.fade-out { animation: overlayFade 620ms forwards ease }
+        @keyframes overlayFade { from{ opacity:1 } to{ opacity:0; visibility:hidden } }
 
-    /* ===== stage (main content) ===== */
-    .stage {
-      position:relative;
-      width:100%;
-      max-width:980px;
-      margin:0 auto;
-      padding:20px;
-      text-align:center;
-      display:none;
-      flex-direction:column;
-      align-items:center;
-      gap:18px;
-      z-index:10;
-    }
-    .stage.active { display:flex }
+        /* ===== stage (main content) ===== */
+        .stage {
+            position:relative;
+            width:100%;
+            max-width:980px;
+            margin:0 auto;
+            padding:20px;
+            text-align:center;
+            display:none;
+            flex-direction:column;
+            align-items:center;
+            gap:18px;
+            z-index:10;
+        }
+        .stage.active { display:flex }
 
-    .card {
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(8px);
-      padding:18px;
-      border-radius:14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-      color:#fff;
-      width: min(900px, 96%);
-    }
-    .title { font-size:20px; margin: 4px 0 8px; color:#fff }
+        .card {
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(8px);
+            padding:18px;
+            border-radius:14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+            color:#fff;
+            width: min(900px, 96%);
+        }
+        .title { font-size:20px; margin: 4px 0 8px; color:#fff }
 
-    .timer {
-      display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-      margin-top: 6px;
-    }
-    .time-box {
-      background: rgba(255,255,255,0.08);
-      padding:14px 16px;
-      border-radius:12px;
-      min-width:92px;
-      text-align:center;
-    }
-    .time-val { font-size:20px; font-weight:700; color:#fff }
-    .time-label { font-size:12px; color:#ffe8ee; margin-top:6px }
+        .timer {
+            display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+            margin-top: 6px;
+        }
+        .time-box {
+            background: rgba(255,255,255,0.08);
+            padding:14px 16px;
+            border-radius:12px;
+            min-width:92px;
+            text-align:center;
+        }
+        .time-val { font-size:20px; font-weight:700; color:#fff }
+        .time-label { font-size:12px; color:#ffe8ee; margin-top:6px }
 
-    .btn {
-      margin-top:14px;
-      background: var(--accent);
-      border:0;
-      padding:12px 18px;
-      border-radius:999px;
-      cursor:pointer;
-      font-weight:600;
-      color:#fff;
-    }
+        .btn {
+            margin-top:14px;
+            background: var(--accent);
+            border:0;
+            padding:12px 18px;
+            border-radius:999px;
+            cursor:pointer;
+            font-weight:600;
+            color:#fff;
+        }
 
-    .music {
-      margin-top:12px;
-      display:flex;
-      justify-content:center;
-    }
-    .music button {
-      background: rgba(255,255,255,0.9);
-      color:var(--accent);
-      border:0;
-      padding:10px 14px;
-      border-radius:999px;
-      cursor:pointer;
-      font-weight:700;
-    }
+        .music {
+            margin-top:12px;
+            display:flex;
+            justify-content:center;
+        }
+        .music button {
+            background: rgba(255,255,255,0.9);
+            color:var(--accent);
+            border:0;
+            padding:10px 14px;
+            border-radius:999px;
+            cursor:pointer;
+            font-weight:700;
+        }
 
-    .message {
-      font-size:18px;
-      line-height:1.6;
-      background: rgba(0,0,0,0.5);
-      padding:20px;
-      border-radius:12px;
-    }
+        .message {
+            font-size:18px;
+            line-height:1.6;
+            background: rgba(0,0,0,0.5);
+            padding:20px;
+            border-radius:12px;
+        }
 
-    @media (max-width:640px){
-      .time-val{ font-size:18px }
-      .card{ padding:12px }
-    }
-  </style>
+        @media (max-width:640px){
+            .time-val{ font-size:18px }
+            .card{ padding:12px }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- background slideshow -->
-  <div class="bg-slideshow" id="bgSlideshow"></div>
-  <div class="bg-overlay"></div>
+    <!-- background slideshow -->
+    <div class="bg-slideshow" id="bgSlideshow"></div>
+    <div class="bg-overlay"></div>
 
-  <!-- intro -->
-  <div class="overlay" id="overlay">
-    <div class="popup">
-      <h2>Hi baby 💕</h2>
-      <p>I hope you liked your surprise.<br>I love you so so much</p>
-      <button class="heart-btn" id="popupHeart">❤️</button>
+    <!-- intro -->
+    <div class="overlay" id="overlay">
+        <div class="popup">
+            <h2>Hi baby 💕</h2>
+            <p>I hope you liked your surprise.<br>I love you so so much</p>
+            <button class="heart-btn" id="popupHeart">❤️</button>
+        </div>
     </div>
-  </div>
 
-  <!-- timer stage -->
-  <div class="stage" id="stage-timer">
-    <div class="card">
-      <div class="title">Our Journey Together</div>
-      <div class="timer" id="timerBoxes"></div>
-      <div class="music"><button id="musicToggle1">⏸ Pause Music</button></div>
-      <button class="btn" id="toMessage">Click here for another surprise</button>
+    <!-- timer stage -->
+    <div class="stage" id="stage-timer">
+        <div class="card">
+            <div class="title">Our Journey Together</div>
+            <div class="timer" id="timerBoxes"></div>
+            <div class="music"><button id="musicToggle1">⏸ Pause Music</button></div>
+            <button class="btn" id="toMessage">Click here for another surprise</button>
+        </div>
     </div>
-  </div>
 
-  <!-- message stage -->
-  <div class="stage" id="stage-message">
-    <div class="card">
-      <div class="title">A Little Note For You ❤️</div>
-      <div class="message">
-        Every passing moment with you feels magical meri jaan,<br>
-        I fall deeper in love every day.<br>
-        I love you so much Ishu ❤️ You are everything ❤️
-      </div>
-      <div class="music"><button id="musicToggle2">⏸ Pause Music</button></div>
-      <button class="btn" id="toTimer">⬅ Back to Timer</button>
+    <!-- message stage -->
+    <div class="stage" id="stage-message">
+        <div class="card">
+            <div class="title">A Little Note For You ❤️</div>
+            <div class="message">
+                Every passing moment with you feels magical meri jaan,<br>
+                I fall deeper in love every day.<br>
+                I love you so much Ishu ❤️ You are everything ❤️
+            </div>
+            <div class="music"><button id="musicToggle2">⏸ Pause Music</button></div>
+            <button class="btn" id="toTimer">⬅ Back to Timer</button>
+        </div>
     </div>
-  </div>
 
-  <!-- music -->
-  <audio id="music1" src="Sahiba.mp3" preload="auto" loop></audio>
-  <audio id="music2" src="yellow.mp3" preload="auto" loop></audio>
+    <!-- music -->
+    <audio id="music1" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto" loop></audio>
+    <audio id="music2" src="https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3" preload="auto" loop></audio>
 
-<script>
-(function(){
-  const images = ["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
-  const startDate = new Date(2024,0,6,0,0,0);
+    <script>
+        (function(){
+            const images = [
+                "https://placehold.co/1920x1080/ff9a9e/ffffff?text=Our+Journey",
+                "https://placehold.co/1920x1080/fad0c4/ffffff?text=You+%26+Me",
+                "https://placehold.co/1920x1080/ff4d6d/ffffff?text=Till+Eternity"
+            ];
+            const startDate = new Date(2024,0,6,0,0,0);
 
-  const overlay = document.getElementById('overlay');
-  const popupHeart = document.getElementById('popupHeart');
-  const stageTimer = document.getElementById('stage-timer');
-  const stageMessage = document.getElementById('stage-message');
-  const timerBoxes = document.getElementById('timerBoxes');
-  const toMessage = document.getElementById('toMessage');
-  const toTimer = document.getElementById('toTimer');
+            const overlay = document.getElementById('overlay');
+            const popupHeart = document.getElementById('popupHeart');
+            const stageTimer = document.getElementById('stage-timer');
+            const stageMessage = document.getElementById('stage-message');
+            const timerBoxes = document.getElementById('timerBoxes');
+            const toMessage = document.getElementById('toMessage');
+            const toTimer = document.getElementById('toTimer');
 
-  const music1 = document.getElementById('music1');
-  const music2 = document.getElementById('music2');
-  const musicToggle1 = document.getElementById('musicToggle1');
-  const musicToggle2 = document.getElementById('musicToggle2');
+            const music1 = document.getElementById('music1');
+            const music2 = document.getElementById('music2');
+            const musicToggle1 = document.getElementById('musicToggle1');
+            const musicToggle2 = document.getElementById('musicToggle2');
 
-  const bgSlideshow = document.getElementById('bgSlideshow');
-  let bgSlides = [];
-  let bgIndex = 0;
-  let bgInterval;
+            const bgSlideshow = document.getElementById('bgSlideshow');
+            let bgSlides = [];
+            let bgIndex = 0;
+            let bgInterval;
 
-  // preload images then build slides
-  function preloadImages(arr, cb){
-    let loaded = 0;
-    arr.forEach(src=>{
-      const img = new Image();
-      img.onload = ()=>{ if(++loaded === arr.length) cb(); };
-      img.src = src;
-    });
-  }
+            // preload images then build slides
+            function preloadImages(arr, cb){
+                let loaded = 0;
+                arr.forEach(src=>{
+                    const img = new Image();
+                    img.onload = ()=>{ if(++loaded === arr.length) cb(); };
+                    img.src = src;
+                });
+            }
 
-  function buildSlides(){
-    bgSlides = [];
-    bgSlideshow.innerHTML = "";
-    images.forEach((src,i)=>{
-      const d = document.createElement('div');
-      d.className = 'bg-slide';
-      d.style.backgroundImage = `url("${src}")`;
-      if(i===0) d.classList.add('active');
-      bgSlideshow.appendChild(d);
-      bgSlides.push(d);
-    });
-  }
+            function buildSlides(){
+                bgSlides = [];
+                bgSlideshow.innerHTML = "";
+                images.forEach((src,i)=>{
+                    const d = document.createElement('div');
+                    d.className = 'bg-slide';
+                    d.style.backgroundImage = `url("${src}")`;
+                    if(i===0) d.classList.add('active');
+                    bgSlideshow.appendChild(d);
+                    bgSlides.push(d);
+                });
+            }
 
-  function startSlides(){
-    if(bgSlides.length<=1) return;
-    bgIndex = 0;
-    clearInterval(bgInterval);
-    bgInterval = setInterval(()=>{
-      const prev = bgIndex;
-      bgIndex = (bgIndex+1)%bgSlides.length;
-      bgSlides[prev].classList.remove('active');
-      bgSlides[bgIndex].classList.add('active');
-    },5000);
-  }
+            function startSlides(){
+                if(bgSlides.length<=1) return;
+                bgIndex = 0;
+                clearInterval(bgInterval);
+                bgInterval = setInterval(()=>{
+                    const prev = bgIndex;
+                    bgIndex = (bgIndex+1)%bgSlides.length;
+                    bgSlides[prev].classList.remove('active');
+                    bgSlides[bgIndex].classList.add('active');
+                },5000);
+            }
 
-  // timer
-  function getDiff(s,e){
-    const start = new Date(s.getTime());
-    const end = new Date(e.getTime());
-    let y = end.getFullYear()-start.getFullYear();
-    let m = end.getMonth()-start.getMonth();
-    let d = end.getDate()-start.getDate();
-    let h = end.getHours()-start.getHours();
-    let min = end.getMinutes()-start.getMinutes();
-    let sec = end.getSeconds()-start.getSeconds();
-    if(sec<0){ sec+=60; min--; }
-    if(min<0){ min+=60; h--; }
-    if(h<0){ h+=24; d--; }
-    if(d<0){ m--; const prevMonthDays = new Date(end.getFullYear(), end.getMonth(), 0).getDate(); d+=prevMonthDays; }
-    if(m<0){ m+=12; y--; }
-    return {y,m,d,h,min,sec};
-  }
-  function renderTimer(){
-    const now = new Date();
-    const diff = getDiff(startDate,now);
-    timerBoxes.innerHTML = `
-      <div class="time-box"><div class="time-val">${diff.y}</div><div class="time-label">Years</div></div>
-      <div class="time-box"><div class="time-val">${diff.m}</div><div class="time-label">Months</div></div>
-      <div class="time-box"><div class="time-val">${diff.d}</div><div class="time-label">Days</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.h).padStart(2,'0')}</div><div class="time-label">Hours</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.min).padStart(2,'0')}</div><div class="time-label">Minutes</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.sec).padStart(2,'0')}</div><div class="time-label">Seconds</div></div>
-    `;
-  }
-  setInterval(renderTimer,1000);
+            // timer
+            function getDiff(s,e){
+                const start = new Date(s.getTime());
+                const end = new Date(e.getTime());
+                let y = end.getFullYear()-start.getFullYear();
+                let m = end.getMonth()-start.getMonth();
+                let d = end.getDate()-start.getDate();
+                let h = end.getHours()-start.getHours();
+                let min = end.getMinutes()-start.getMinutes();
+                let sec = end.getSeconds()-start.getSeconds();
+                if(sec<0){ sec+=60; min--; }
+                if(min<0){ min+=60; h--; }
+                if(h<0){ h+=24; d--; }
+                if(d<0){ m--; const prevMonthDays = new Date(end.getFullYear(), end.getMonth(), 0).getDate(); d+=prevMonthDays; }
+                if(m<0){ m+=12; y--; }
+                return {y,m,d,h,min,sec};
+            }
+            function renderTimer(){
+                const now = new Date();
+                const diff = getDiff(startDate,now);
+                timerBoxes.innerHTML = `
+                    <div class="time-box"><div class="time-val">${diff.y}</div><div class="time-label">Years</div></div>
+                    <div class="time-box"><div class="time-val">${diff.m}</div><div class="time-label">Months</div></div>
+                    <div class="time-box"><div class="time-val">${diff.d}</div><div class="time-label">Days</div></div>
+                    <div class="time-box"><div class="time-val">${String(diff.h).padStart(2,'0')}</div><div class="time-label">Hours</div></div>
+                    <div class="time-box"><div class="time-val">${String(diff.min).padStart(2,'0')}</div><div class="time-label">Minutes</div></div>
+                    <div class="time-box"><div class="time-val">${String(diff.sec).padStart(2,'0')}</div><div class="time-label">Seconds</div></div>
+                `;
+            }
+            setInterval(renderTimer,1000);
 
-  // activate
-  function activate(){
-    overlay.classList.add('fade-out');
-    setTimeout(()=>{
-      overlay.style.display="none";
-      stageTimer.classList.add('active');
-      music1.play().catch(()=>{});
-      startSlides();
-    },650);
-  }
+            // activate
+            function activate(){
+                // Start the music immediately upon user interaction
+                music1.play().catch(e => console.error("Music playback failed:", e));
+                
+                overlay.classList.add('fade-out');
+                setTimeout(()=>{
+                    overlay.style.display="none";
+                    stageTimer.classList.add('active');
+                    startSlides();
+                },650);
+            }
 
-  popupHeart.addEventListener('click', activate);
-  popupHeart.addEventListener('dblclick', activate);
+            popupHeart.addEventListener('click', activate);
+            popupHeart.addEventListener('dblclick', activate);
 
-  // navigation
-  toMessage.addEventListener('click', ()=>{
-    stageTimer.classList.remove('active');
-    stageMessage.classList.add('active');
-    music1.pause();
-    music2.play().catch(()=>{});
-  });
-  toTimer.addEventListener('click', ()=>{
-    stageMessage.classList.remove('active');
-    stageTimer.classList.add('active');
-    music2.pause();
-    music1.play().catch(()=>{});
-  });
+            // navigation
+            toMessage.addEventListener('click', ()=>{
+                stageTimer.classList.remove('active');
+                stageMessage.classList.add('active');
+                music1.pause();
+                music2.play().catch(()=>{});
+            });
+            toTimer.addEventListener('click', ()=>{
+                stageMessage.classList.remove('active');
+                stageTimer.classList.add('active');
+                music2.pause();
+                music1.play().catch(()=>{});
+            });
 
-  // music toggles
-  musicToggle1.addEventListener('click',()=>{
-    if(music1.paused){ music1.play(); musicToggle1.textContent="⏸ Pause Music"; }
-    else { music1.pause(); musicToggle1.textContent="▶ Play Music"; }
-  });
-  musicToggle2.addEventListener('click',()=>{
-    if(music2.paused){ music2.play(); musicToggle2.textContent="⏸ Pause Music"; }
-    else { music2.pause(); musicToggle2.textContent="▶ Play Music"; }
-  });
+            // music toggles
+            musicToggle1.addEventListener('click',()=>{
+                if(music1.paused){ music1.play(); musicToggle1.textContent="⏸ Pause Music"; }
+                else { music1.pause(); musicToggle1.textContent="▶ Play Music"; }
+            });
+            musicToggle2.addEventListener('click',()=>{
+                if(music2.paused){ music2.play(); musicToggle2.textContent="⏸ Pause Music"; }
+                else { music2.pause(); musicToggle2.textContent="▶ Play Music"; }
+            });
 
-  // preload then start slideshow
-  preloadImages(images, ()=>{
-    buildSlides();
-    startSlides();
-  });
-})();
-</script>
+            // preload then start slideshow
+            preloadImages(images, ()=>{
+                buildSlides();
+                startSlides();
+            });
+        })();
+    </script>
 </body>
 </html>
 
