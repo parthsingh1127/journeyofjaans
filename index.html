@@ -1,342 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>till eternity and beyond❤️</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journey of Jaans</title>
   <style>
-    :root {
-      --accent: #ff4d6d;
-      --bg1: #ff9a9e;
-      --bg2: #fad0c4;
-    }
-    * { box-sizing:border-box }
-    html,body { height:100%; margin:0; font-family:"Poppins",system-ui,sans-serif }
-
-    body {
-      background: linear-gradient(135deg,var(--bg1),var(--bg2));
-      color:#fff;
-      overflow:hidden;
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+      color: white;
     }
 
-    /* ===== background slideshow ===== */
-    .bg-slideshow {
-      position:fixed;
-      inset:0;
-      z-index: -2;
-      overflow:hidden;
-    }
-    .bg-slide {
-      position:absolute;
-      inset:0;
-      background-size:cover;
-      background-position:center;
-      opacity:0;
-      transition:opacity 1200ms ease;
-      filter: grayscale(40%) brightness(60%);
-    }
-    .bg-slide.active {
-      opacity:1;
-      filter: grayscale(20%) brightness(70%);
-    }
-    .bg-overlay {
-      position:fixed; inset:0; z-index:-1;
-      background: rgba(0,0,0,0.25);
+    /* Slideshow background */
+    .slideshow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
     }
 
-    /* ===== intro overlay ===== */
+    .slideshow img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      filter: brightness(0.6);
+    }
+
+    .slideshow img.active {
+      opacity: 1;
+    }
+
+    /* Overlay */
     .overlay {
-      position:fixed; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(0,0,0,0.6);
-      z-index: 30;
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 20px;
     }
-    .popup {
-      background:#fff;
-      padding:28px;
-      border-radius:16px;
-      max-width:420px; width:92%;
-      text-align:center;
-      box-shadow:0 18px 50px rgba(0,0,0,0.25);
-      animation: popupIn 420ms ease;
-    }
-    @keyframes popupIn { from{ transform:translateY(8px); opacity:0 } to{ transform:none; opacity:1 } }
-    .popup h2 { margin:0 0 8px; color:var(--accent) }
-    .popup p { margin:0 0 12px; color:#444 }
 
-    .heart-btn {
-      font-size:46px;
-      display:inline-block;
-      border:0;
-      background:none;
-      cursor:pointer;
-      color:var(--accent);
-      animation: beat 1000ms infinite;
+    /* Popup */
+    #popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,0,0.85);
+      z-index: 20;
     }
-    @keyframes beat { 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.2) } }
 
-    .vanish { animation: vanishAnim 600ms forwards ease }
-    @keyframes vanishAnim { from{ transform: scale(1); opacity:1 } to{ transform: scale(2); opacity:0 } }
-    .overlay.fade-out { animation: overlayFade 620ms forwards ease }
-    @keyframes overlayFade { from{ opacity:1 } to{ opacity:0; visibility:hidden } }
-
-    /* ===== stage (main content) ===== */
-    .stage {
-      position:relative;
-      width:100%;
-      max-width:980px;
-      margin:0 auto;
-      padding:20px;
-      text-align:center;
-      display:none;
-      flex-direction:column;
-      align-items:center;
-      gap:18px;
-      z-index:10;
+    #popup-content {
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      color: white;
     }
-    .stage.active { display:flex }
 
-    .card {
-      background: rgba(0,0,0,0.45);
-      backdrop-filter: blur(8px);
-      padding:18px;
-      border-radius:14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-      color:#fff;
-      width: min(900px, 96%);
+    .heart {
+      font-size: 3rem;
+      cursor: pointer;
+      animation: heartbeat 1s infinite;
+      color: red;
     }
-    .title { font-size:20px; margin: 4px 0 8px; color:#fff }
 
-    .timer {
-      display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-      margin-top: 6px;
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
     }
+
+    /* Timer */
+    #timer {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 50px;
+    }
+
     .time-box {
-      background: rgba(255,255,255,0.08);
-      padding:14px 16px;
-      border-radius:12px;
-      min-width:92px;
-      text-align:center;
-    }
-    .time-val { font-size:20px; font-weight:700; color:#fff }
-    .time-label { font-size:12px; color:#ffe8ee; margin-top:6px }
-
-    .btn {
-      margin-top:14px;
-      background: var(--accent);
-      border:0;
-      padding:12px 18px;
-      border-radius:999px;
-      cursor:pointer;
-      font-weight:600;
-      color:#fff;
+      background: rgba(255,255,255,0.1);
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      min-width: 100px;
     }
 
-    .music {
-      margin-top:12px;
-      display:flex;
-      justify-content:center;
-    }
-    .music button {
-      background: rgba(255,255,255,0.9);
-      color:var(--accent);
-      border:0;
-      padding:10px 14px;
-      border-radius:999px;
-      cursor:pointer;
-      font-weight:700;
+    /* Buttons */
+    .button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff4d6d;
+      color: white;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
 
-    .message {
-      font-size:18px;
-      line-height:1.6;
-      background: rgba(0,0,0,0.5);
-      padding:20px;
-      border-radius:12px;
+    .button:hover {
+      background: #e63b5a;
     }
 
-    @media (max-width:640px){
-      .time-val{ font-size:18px }
-      .card{ padding:12px }
+    /* Message page */
+    #message-page {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+
+    #message-page h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    #message-page p {
+      font-size: 1.2rem;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
 
-  <!-- background slideshow -->
-  <div class="bg-slideshow" id="bgSlideshow"></div>
-  <div class="bg-overlay"></div>
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <img src="img1.jpg" class="active">
+    <img src="img2.jpg">
+    <img src="img3.jpg">
+    <img src="img4.jpg">
+    <img src="img5.jpg">
+  </div>
 
-  <!-- intro -->
-  <div class="overlay" id="overlay">
-    <div class="popup">
-      <h2>Hi baby 💕</h2>
-      <p>I hope you liked your surprise.<br>I love you so so much</p>
-      <button class="heart-btn" id="popupHeart">❤️</button>
+  <!-- Popup -->
+  <div id="popup">
+    <div id="popup-content">
+      <h2>Hi baby ❤️</h2>
+      <p>I hope you liked your surprise. I love you so so much!</p>
+      <div class="heart" id="heart">❤️</div>
     </div>
   </div>
 
-  <!-- timer stage -->
-  <div class="stage" id="stage-timer">
-    <div class="card">
-      <div class="title">Our Journey Together</div>
-      <div class="timer" id="timerBoxes"></div>
-      <div class="music"><button id="musicToggle1">⏸ Pause Music</button></div>
-      <button class="btn" id="toMessage">Click here for another surprise</button>
-    </div>
+  <!-- Timer Page -->
+  <div id="timer-page" class="overlay" style="display:none;">
+    <h1>Our Journey Together 💕</h1>
+    <div id="timer"></div>
+    <button class="button" id="to-message">Click here for another surprise</button>
+    <button class="button" id="play-pause">Pause Music</button>
   </div>
 
-  <!-- message stage -->
-  <div class="stage" id="stage-message">
-    <div class="card">
-      <div class="title">A Little Note For You ❤️</div>
-      <div class="message">
-        Every passing moment with you feels magical meri jaan,<br>
-        I fall deeper in love every day.<br>
-        I love you so much Ishu ❤️ You are everything ❤️
-      </div>
-      <div class="music"><button id="musicToggle2">⏸ Pause Music</button></div>
-      <button class="btn" id="toTimer">⬅ Back to Timer</button>
-    </div>
+  <!-- Message Page -->
+  <div id="message-page" class="overlay">
+    <h2>My Love ❤️</h2>
+    <p>
+      Ishu, you are the best thing that’s ever happened to me.  
+      Every second with you feels magical, and I can’t wait to spend forever with you.  
+      Thank you for being mine. I love you endlessly. 💕
+    </p>
+    <button class="button" id="back-to-timer">Back to Timer</button>
+    <button class="button" id="play-pause-2">Pause Music</button>
   </div>
 
-  <!-- music -->
-  <audio id="music1" src="Sahiba.mp3" preload="auto" loop></audio>
-  <audio id="music2" src="yellow.mp3" preload="auto" loop></audio>
+  <!-- Music -->
+  <audio id="bg-music" loop>
+    <source src="Sahiba(KoshalWorld.Com).mp3" type="audio/mp3">
+  </audio>
 
-<script>
-(function(){
-  const images = ["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
-  const startDate = new Date(2024,0,6,0,0,0);
+  <script>
+    const popup = document.getElementById("popup");
+    const heart = document.getElementById("heart");
+    const timerPage = document.getElementById("timer-page");
+    const messagePage = document.getElementById("message-page");
+    const timerDiv = document.getElementById("timer");
 
-  const overlay = document.getElementById('overlay');
-  const popupHeart = document.getElementById('popupHeart');
-  const stageTimer = document.getElementById('stage-timer');
-  const stageMessage = document.getElementById('stage-message');
-  const timerBoxes = document.getElementById('timerBoxes');
-  const toMessage = document.getElementById('toMessage');
-  const toTimer = document.getElementById('toTimer');
+    const music = document.getElementById("bg-music");
+    const playPauseBtn = document.getElementById("play-pause");
+    const playPauseBtn2 = document.getElementById("play-pause-2");
 
-  const music1 = document.getElementById('music1');
-  const music2 = document.getElementById('music2');
-  const musicToggle1 = document.getElementById('musicToggle1');
-  const musicToggle2 = document.getElementById('musicToggle2');
+    // SAFELY PLAY MUSIC
+    function playMusic() {
+      music.play().then(() => {
+        playPauseBtn.textContent = "Pause Music";
+        playPauseBtn2.textContent = "Pause Music";
+      }).catch(err => {
+        console.log("Autoplay blocked:", err);
+        playPauseBtn.textContent = "Play Music";
+        playPauseBtn2.textContent = "Play Music";
+      });
+    }
 
-  const bgSlideshow = document.getElementById('bgSlideshow');
-  let bgSlides = [];
-  let bgIndex = 0;
-  let bgInterval;
+    function toggleMusic(button) {
+      if (music.paused) {
+        music.play();
+        button.textContent = "Pause Music";
+      } else {
+        music.pause();
+        button.textContent = "Play Music";
+      }
+    }
 
-  // preload images then build slides
-  function preloadImages(arr, cb){
-    let loaded = 0;
-    arr.forEach(src=>{
-      const img = new Image();
-      img.onload = ()=>{ if(++loaded === arr.length) cb(); };
-      img.src = src;
+    playPauseBtn.addEventListener("click", () => toggleMusic(playPauseBtn));
+    playPauseBtn2.addEventListener("click", () => toggleMusic(playPauseBtn2));
+
+    // Double click heart to start
+    heart.addEventListener("dblclick", () => {
+      popup.style.display = "none";
+      timerPage.style.display = "block";
+      playMusic();
     });
-  }
 
-  function buildSlides(){
-    bgSlides = [];
-    bgSlideshow.innerHTML = "";
-    images.forEach((src,i)=>{
-      const d = document.createElement('div');
-      d.className = 'bg-slide';
-      d.style.backgroundImage = `url("${src}")`;
-      if(i===0) d.classList.add('active');
-      bgSlideshow.appendChild(d);
-      bgSlides.push(d);
+    // Timer
+    const startDate = new Date("2024-01-06T00:00:00"); // adjust here
+
+    function updateTimer() {
+      const now = new Date();
+      let diff = now - startDate;
+
+      let years = Math.floor(diff / (1000*60*60*24*365));
+      diff -= years * (1000*60*60*24*365);
+
+      let months = Math.floor(diff / (1000*60*60*24*30.44));
+      diff -= months * (1000*60*60*24*30.44);
+
+      let days = Math.floor(diff / (1000*60*60*24));
+      diff -= days * (1000*60*60*24);
+
+      let hours = Math.floor(diff / (1000*60*60));
+      diff -= hours * (1000*60*60);
+
+      let minutes = Math.floor(diff / (1000*60));
+      diff -= minutes * (1000*60);
+
+      let seconds = Math.floor(diff / 1000);
+
+      timerDiv.innerHTML = `
+        <div class="time-box">${years} Years</div>
+        <div class="time-box">${months} Months</div>
+        <div class="time-box">${days} Days</div>
+        <div class="time-box">${hours} Hours</div>
+        <div class="time-box">${minutes} Minutes</div>
+        <div class="time-box">${seconds} Seconds</div>
+      `;
+    }
+    setInterval(updateTimer, 1000);
+
+    // Slideshow
+    const slides = document.querySelectorAll(".slideshow img");
+    let currentSlide = 0;
+    setInterval(() => {
+      slides[currentSlide].classList.remove("active");
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add("active");
+    }, 4000);
+
+    // Navigation
+    document.getElementById("to-message").addEventListener("click", () => {
+      timerPage.style.display = "none";
+      messagePage.style.display = "block";
     });
-  }
 
-  function startSlides(){
-    if(bgSlides.length<=1) return;
-    bgIndex = 0;
-    clearInterval(bgInterval);
-    bgInterval = setInterval(()=>{
-      const prev = bgIndex;
-      bgIndex = (bgIndex+1)%bgSlides.length;
-      bgSlides[prev].classList.remove('active');
-      bgSlides[bgIndex].classList.add('active');
-    },5000);
-  }
-
-  // timer
-  function getDiff(s,e){
-    const start = new Date(s.getTime());
-    const end = new Date(e.getTime());
-    let y = end.getFullYear()-start.getFullYear();
-    let m = end.getMonth()-start.getMonth();
-    let d = end.getDate()-start.getDate();
-    let h = end.getHours()-start.getHours();
-    let min = end.getMinutes()-start.getMinutes();
-    let sec = end.getSeconds()-start.getSeconds();
-    if(sec<0){ sec+=60; min--; }
-    if(min<0){ min+=60; h--; }
-    if(h<0){ h+=24; d--; }
-    if(d<0){ m--; const prevMonthDays = new Date(end.getFullYear(), end.getMonth(), 0).getDate(); d+=prevMonthDays; }
-    if(m<0){ m+=12; y--; }
-    return {y,m,d,h,min,sec};
-  }
-  function renderTimer(){
-    const now = new Date();
-    const diff = getDiff(startDate,now);
-    timerBoxes.innerHTML = `
-      <div class="time-box"><div class="time-val">${diff.y}</div><div class="time-label">Years</div></div>
-      <div class="time-box"><div class="time-val">${diff.m}</div><div class="time-label">Months</div></div>
-      <div class="time-box"><div class="time-val">${diff.d}</div><div class="time-label">Days</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.h).padStart(2,'0')}</div><div class="time-label">Hours</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.min).padStart(2,'0')}</div><div class="time-label">Minutes</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.sec).padStart(2,'0')}</div><div class="time-label">Seconds</div></div>
-    `;
-  }
-  setInterval(renderTimer,1000);
-
-  // activate
-  function activate(){
-    overlay.classList.add('fade-out');
-    setTimeout(()=>{
-      overlay.style.display="none";
-      stageTimer.classList.add('active');
-      music1.play().catch(()=>{});
-      startSlides();
-    },650);
-  }
-
-  popupHeart.addEventListener('click', activate);
-  popupHeart.addEventListener('dblclick', activate);
-
-  // navigation
-  toMessage.addEventListener('click', ()=>{
-    stageTimer.classList.remove('active');
-    stageMessage.classList.add('active');
-    music1.pause();
-    music2.play().catch(()=>{});
-  });
-  toTimer.addEventListener('click', ()=>{
-    stageMessage.classList.remove('active');
-    stageTimer.classList.add('active');
-    music2.pause();
-    music1.play().catch(()=>{});
-  });
-
-  // music toggles
-  musicToggle1.addEventListener('click',()=>{
-    if(music1.paused){ music1.play(); musicToggle1.textContent="⏸ Pause Music"; }
-    else { music1.pause(); musicToggle1.textContent="▶ Play Music"; }
-  });
-  musicToggle2.addEventListener('click',()=>{
-    if(music2.paused){ music2.play(); musicToggle2.textContent="⏸ Pause Music"; }
-    else { music2.pause(); musicToggle2.textContent="▶ Play Music"; }
-  });
-
-  // preload then start slideshow
-  preloadImages(images, ()=>{
-    buildSlides();
-    startSlides();
-  });
-})();
-</script>
+    document.getElementById("back-to-timer").addEventListener("click", () => {
+      messagePage.style.display = "none";
+      timerPage.style.display = "block";
+    });
+  </script>
 </body>
 </html>
