@@ -3,30 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Surprise ❤️</title>
+  <title> Surprise ❤️</title>
   <style>
-    body {
+    body, html {
       margin: 0;
+      height: 100%;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ee9ca7, #ffdde1);
       color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-      padding: 20px;
+      overflow: hidden;
     }
+
+    /* Background slideshow */
+    .slideshow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .slideshow img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      filter: brightness(60%);
+    }
+    .slideshow img.active { opacity: 1; }
+
     .message {
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.5);
       padding: 20px;
       border-radius: 15px;
       max-width: 600px;
+      margin: 60px auto;
       font-size: 18px;
       line-height: 1.6;
+      text-align: center;
+      z-index: 5;
+      position: relative;
     }
-    .back-btn, #musicToggle {
+    .btn {
       margin-top: 20px;
       background: #fff;
       color: #ff4d6d;
@@ -36,36 +54,34 @@
       cursor: pointer;
       font-weight: bold;
       text-decoration: none;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
-
-  <div class="message">
-    Every passing moment with you feels magical meri jaan, I fall deeper in love every day.  
-    I love you so much Ishu ❤️ You are everything ❤️
-    djdbwuwbeiefow
-    ewniwbfuwbfiwfnwi9ww
-    eijeifhifj
-
-    efiwbwin9wnwi
-    wijbwunfe9wfn9i
-    wfuwfh8wriufn9mfw
-    wfbwnrif9nw9miwn0iwwomwni
-    wfwonf9wiefruuuuuuuuuuuuuwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwf
+  <!-- Background slideshow -->
+  <div class="slideshow" id="slideshow">
+    <img src="images/img1.jpg" class="active">
+    <img src="images/img2.jpg">
+    <img src="images/img3.jpg">
+    <img src="images/img4.jpg">
   </div>
 
-  <a href="index.html" class="back-btn">⬅ Back to Timer</a>
-  <button id="musicToggle">⏸ Pause Music</button>
+  <div class="message">
+    Every passing moment with you feels magical meri jaan,<br>
+    I fall deeper in love every day.<br><br>
+    I love you so much Ishu ❤️ You are everything ❤️
+    <br><br>
+    <a href="index.html" class="btn">⬅ Back to Timer</a>
+    <button class="btn" id="musicToggle">⏸ Pause Music</button>
+  </div>
 
-  <audio id="bg-music" preload="auto" loop></audio>
+  <audio id="bg-music" src="yellow.mp3" preload="auto" loop></audio>
 
   <script>
     const music = document.getElementById("bg-music");
     const musicToggle = document.getElementById("musicToggle");
 
-    // Play Yellow on this page
-    music.src = "yellow.mp3";
     music.play().catch(err => console.log("Autoplay blocked"));
 
     musicToggle.addEventListener("click", () => {
@@ -78,8 +94,17 @@
       }
     });
 
-    // Keep skipIntro true so going back skips popup
+    // Keep skipIntro true
     localStorage.setItem("skipIntro", "true");
+
+    // Slideshow
+    const slides = document.querySelectorAll(".slideshow img");
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove("active");
+      current = (current + 1) % slides.length;
+      slides[current].classList.add("active");
+    }, 4000);
   </script>
 </body>
 </html>
