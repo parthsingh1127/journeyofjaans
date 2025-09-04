@@ -122,14 +122,14 @@
         .title { font-size:26px; margin: 4px 0 8px; color:#fff; font-family: 'Playfair Display', serif; }
 
         .timer {
-            display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+            display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
             margin-top: 6px;
         }
         .time-box {
             background: rgba(255,255,255,0.1);
             padding:14px 16px;
             border-radius:12px;
-            min-width:90px;
+            min-width:88px;
             text-align:center;
         }
         .time-val { font-size:24px; font-weight:700; color:#fff }
@@ -211,8 +211,8 @@
         }
 
         .scrapbook-section img {
-            width: 85%;
-            max-width: 400px;
+            width: 75%; /* CHANGED */
+            max-width: 350px; /* CHANGED */
             border-radius: 12px;
             margin-bottom: 15px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
@@ -397,32 +397,48 @@
                 sec = Math.floor(diff/1000);
                 min = Math.floor(sec/60);
                 h = Math.floor(min/60);
-                d = Math.floor(h/24);
                 
                 sec %= 60;
                 min %= 60;
-                h %= 24;
 
                 let tempDate = new Date(s);
                 y = e.getFullYear() - tempDate.getFullYear();
                 m = e.getMonth() - tempDate.getMonth();
-                
+                d = e.getDate() - tempDate.getDate();
+
+                if (d < 0) {
+                    m--;
+                    const prevMonthDays = new Date(e.getFullYear(), e.getMonth(), 0).getDate();
+                    d += prevMonthDays;
+                }
+
                 if (m < 0) {
                     y--;
                     m += 12;
                 }
                 
-                d = e.getDate() - tempDate.getDate();
-                if(d < 0){
-                    m--;
-                    const prevMonthDays = new Date(e.getFullYear(), e.getMonth(), 0).getDate();
-                    d += prevMonthDays;
-                     if (m < 0) {
-                        y--;
-                        m += 12;
-                    }
+                const currentH = e.getHours();
+                const currentMin = e.getMinutes();
+                const currentSec = e.getSeconds();
+
+                h = currentH - s.getHours();
+                min = currentMin - s.getMinutes();
+                sec = currentSec - s.getSeconds();
+
+                if (sec < 0) {
+                    min--;
+                    sec += 60;
                 }
-                
+                if (min < 0) {
+                    h--;
+                    min += 60;
+                }
+                if (h < 0) {
+                    // This case is handled by the date difference, so h is fine
+                    h += 24;
+                }
+
+
                 return {y,m,d,h,min,sec};
             }
             function renderTimer(){
