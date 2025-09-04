@@ -1,91 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>for my jaan 💖</title>
+  <meta charset="UTF-8">
+  <title>Special Message ❤️</title>
   <style>
-    body,html{margin:0;height:100%;font-family:"Poppins",sans-serif;color:#fff;overflow:hidden}
-    .bg-slideshow{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-2;background:#000}
-    .bg-slide{position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 1s ease,filter 1s ease;filter:grayscale(40%) brightness(60%)}
-    .bg-slide.active{opacity:1;filter:grayscale(20%) brightness(55%)}
-    .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.25)}
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
 
-    .content{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:20px;text-align:center}
-    .message{max-width:700px;background:rgba(0,0,0,0.4);padding:20px;border-radius:16px;font-size:18px;line-height:1.6}
-    .music{margin-top:20px;display:flex;justify-content:center}
-    .music button{background:rgba(255,255,255,0.9);color:#ff4d6d;border:0;padding:10px 14px;border-radius:999px;cursor:pointer;font-weight:700}
-    .btn-back{margin-top:20px;background:#fff;color:#ff4d6d;border:0;padding:12px 18px;border-radius:10px;cursor:pointer;font-weight:700}
+    .background-slideshow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .background-slideshow img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      filter: brightness(60%);
+    }
+
+    .message-box {
+      margin-top: 100px;
+      background: rgba(0,0,0,0.6);
+      padding: 30px;
+      border-radius: 20px;
+      display: inline-block;
+      max-width: 80%;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.3rem;
+      line-height: 1.6;
+    }
+
+    button {
+      background: #ff4d6d;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
-  <div class="bg-slideshow" id="bgSlideshow"></div>
-  <div class="bg-overlay"></div>
 
-  <div class="content">
-    <div class="message">
-      Every passing moment with you feels magical, meri jaan 💖  
-      I fall deeper in love every single day.  
-      You are everything to me, Ishu ❤️
-    </div>
-    <div class="music" id="musicControls">
-      <button id="musicToggle">⏸ Pause Music</button>
-    </div>
-    <button class="btn-back" onclick="goBack()">⬅ Back to Timer</button>
+  <!-- Background slideshow -->
+  <div class="background-slideshow" id="slideshow"></div>
+
+  <!-- Message -->
+  <div class="message-box">
+    <h1>My Love ❤️</h1>
+    <p>
+      Every passing moment with you feels magical meri jaan.  
+      I fall deeper in love everyday. ❤️  
+      I love you so much Ishu ❤️ You are everything ❤️
+    </p>
+    <button onclick="toggleMusic()">⏯ Music</button>
+    <br><br>
+    <button onclick="location.href='index.html#timer'">⬅ Back to Timer</button>
   </div>
 
-  <audio id="bgMusic" src="yellow.mp3" preload="auto"></audio>
+  <audio id="bg-music" src="yellow.mp3" loop></audio>
 
-<script>
-(function(){
-  const images=["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
-  const bgSlideshow=document.getElementById('bgSlideshow');
-  const music=document.getElementById('bgMusic');
-  const musicToggle=document.getElementById('musicToggle');
-  let bgSlides=[],bgIndex=0,bgInterval;
+  <script>
+    // Slideshow
+    const images = ["us.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
+    let index = 0;
+    const slideshow = document.getElementById("slideshow");
 
-  function buildBgSlides(){
-    images.forEach((src,i)=>{
-      const d=document.createElement('div');
-      d.className='bg-slide';
-      d.style.backgroundImage=`url("${src}")`;
-      if(i===0) d.classList.add('active');
-      bgSlideshow.appendChild(d);
-      bgSlides.push(d);
+    images.forEach((src, i) => {
+      const img = document.createElement("img");
+      img.src = src;
+      if (i === 0) img.style.opacity = 1;
+      slideshow.appendChild(img);
     });
-  }
-  buildBgSlides();
 
-  function startBgSlideshow(){
-    if(bgSlides.length<=1)return;
-    bgIndex=0;
-    bgSlides.forEach((s,i)=>s.classList.toggle('active',i===0));
-    bgInterval=setInterval(()=>{
-      const prev=bgIndex;
-      bgIndex=(bgIndex+1)%bgSlides.length;
-      bgSlides[prev].classList.remove('active');
-      bgSlides[bgIndex].classList.add('active');
-    },4500);
-  }
-  startBgSlideshow();
+    setInterval(() => {
+      const imgs = document.querySelectorAll("#slideshow img");
+      imgs[index].style.opacity = 0;
+      index = (index + 1) % imgs.length;
+      imgs[index].style.opacity = 1;
+    }, 5000);
 
-  // autoplay if coming from timer
-  if(sessionStorage.getItem("activated")==="true"){
-    music.loop=true;
-    music.play().catch(()=>{});
-  }
+    // Music
+    const music = document.getElementById("bg-music");
+    function toggleMusic() {
+      if (music.paused) music.play();
+      else music.pause();
+    }
 
-  musicToggle.addEventListener('click',()=>{
-    if(music.paused){music.play();musicToggle.textContent='⏸ Pause Music'}
-    else{music.pause();musicToggle.textContent='▶ Play Music'}
-  });
-
-  window.goBack=function(){
-    sessionStorage.setItem("activated","true");
-    window.location.href="index.html";
-  }
-})();
-</script>
+    // Auto play music when page loads
+    window.onload = () => {
+      music.play();
+    }
+  </script>
 </body>
 </html>
 
