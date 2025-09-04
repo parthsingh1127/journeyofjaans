@@ -5,26 +5,43 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>till eternity and beyond❤️</title>
   <style>
-    body {
+    body, html {
       margin: 0;
+      height: 100%;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       color: #fff;
-      text-align: center;
-      overflow-x: hidden;
+      overflow: hidden;
     }
+
+    /* Background slideshow */
+    .slideshow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .slideshow img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      filter: brightness(60%); /* fade effect */
+    }
+    .slideshow img.active { opacity: 1; }
 
     .popup {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.6);
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 999;
+      z-index: 10;
     }
-
     .popup-content {
       background: white;
       color: #333;
@@ -32,9 +49,7 @@
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      animation: fadeIn 1s ease;
     }
-
     .popup button {
       background: #ff4d6d;
       border: none;
@@ -43,29 +58,16 @@
       color: white;
       font-size: 16px;
       cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .popup button:hover {
-      transform: scale(1.1);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
     }
 
     .container {
-      margin-top: 50px;
+      margin-top: 60px;
       display: none;
+      text-align: center;
+      z-index: 5;
+      position: relative;
     }
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    /* Timer Boxes */
     #timer {
       display: flex;
       justify-content: center;
@@ -73,21 +75,18 @@
       gap: 10px;
       margin: 20px 0;
     }
-
     .time-box {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.15);
       padding: 15px;
       border-radius: 12px;
       min-width: 90px;
       text-align: center;
-      box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
     }
-
     .time-val { font-size: 20px; font-weight: bold; }
-    .time-label { font-size: 12px; margin-top: 6px; }
+    .time-label { font-size: 12px; }
 
-    /* Button to go to message */
-    .surprise-btn {
+    .btn {
       margin-top: 20px;
       background: #fff;
       color: #ff4d6d;
@@ -98,27 +97,17 @@
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
-      transition: transform 0.3s ease;
-    }
-
-    .surprise-btn:hover {
-      transform: scale(1.05);
-    }
-
-    /* Music button */
-    #musicToggle {
-      margin-top: 20px;
-      background: #fff;
-      color: #ff4d6d;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: bold;
     }
   </style>
 </head>
 <body>
+  <!-- Slideshow background -->
+  <div class="slideshow" id="slideshow">
+    <img src="images/img1.jpg" class="active">
+    <img src="images/img2.jpg">
+    <img src="images/img3.jpg">
+    <img src="images/img4.jpg">
+  </div>
 
   <!-- Popup -->
   <div class="popup" id="popup">
@@ -133,9 +122,9 @@
   <div class="container" id="main-content">
     <h1>Our Journey Together</h1>
     <div id="timer"></div>
-    <a href="message.html" id="toMessage" class="surprise-btn">Click here for another surprise</a>
+    <a href="message.html" class="btn" id="toMessage">Click here for another surprise</a>
     <br>
-    <button id="musicToggle">⏸ Pause Music</button>
+    <button class="btn" id="musicToggle">⏸ Pause Music</button>
   </div>
 
   <audio id="bg-music" src="Sahiba(KoshalWorld.Com).mp3" preload="auto" loop></audio>
@@ -153,7 +142,7 @@
     }
 
     // Timer
-    const startDate = new Date(2024, 0, 6, 0, 0, 0); 
+    const startDate = new Date(2024, 0, 6, 0, 0, 0);
     function updateTimer() {
       const now = new Date();
       let years = now.getFullYear() - startDate.getFullYear();
@@ -166,8 +155,8 @@
       if (seconds < 0) { seconds += 60; minutes--; }
       if (minutes < 0) { minutes += 60; hours--; }
       if (hours < 0) { hours += 24; days--; }
-      if (days < 0) { 
-        months--; 
+      if (days < 0) {
+        months--;
         const prevMonthDays = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
         days += prevMonthDays;
       }
@@ -184,15 +173,14 @@
     }
     setInterval(updateTimer, 1000);
 
-    // Save flag to skip popup when returning
-    document.getElementById("toMessage").addEventListener("click", () => {
-      localStorage.setItem("skipIntro", "true");
-    });
-
+    // Skip intro
     if (localStorage.getItem("skipIntro") === "true") {
       popup.style.display = "none";
       mainContent.style.display = "block";
     }
+    document.getElementById("toMessage").addEventListener("click", () => {
+      localStorage.setItem("skipIntro", "true");
+    });
 
     // Music controls
     musicToggle.addEventListener("click", () => {
@@ -204,7 +192,15 @@
         musicToggle.textContent = "▶ Play Music";
       }
     });
+
+    // Slideshow
+    const slides = document.querySelectorAll(".slideshow img");
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove("active");
+      current = (current + 1) % slides.length;
+      slides[current].classList.add("active");
+    }, 4000);
   </script>
 </body>
 </html>
-
