@@ -5,206 +5,146 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Our Journey ❤️</title>
 <style>
-  :root {
-    --accent: #ff4d6d;
-    --fg: #fff;
-  }
-  * { box-sizing: border-box; }
-  html, body {
-    height:100%; margin:0;
-    font-family: Inter, Poppins, system-ui, sans-serif;
-    background:#000; color:var(--fg); overflow:hidden;
-  }
+  :root { --accent:#ff4d6d; --fg:#fff; }
+  *{box-sizing:border-box;}
+  html, body { height:100%; margin:0; font-family:Poppins, sans-serif; background:#000; color:var(--fg); overflow:hidden; }
 
-  /* ---------- Background slideshow ---------- */
-  #bgSlideshow {
-    position:fixed; inset:0; z-index:-2;
-    overflow:hidden;
-  }
-  .bg-slide {
-    position:absolute; inset:0;
-    background-size:cover;
-    background-position:center;
-    opacity:0;
-    transition:opacity 1s ease;
-    filter: grayscale(20%) brightness(60%);
-  }
-  .bg-slide.active {
-    opacity:1;
-    filter: grayscale(10%) brightness(55%);
-  }
-  .bg-overlay {
-    position:fixed; inset:0; z-index:-1;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.4) 65%);
-    pointer-events:none;
-  }
+  #bgSlideshow { position:fixed; inset:0; z-index:-2; overflow:hidden; }
+  .bg-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity 1s ease; filter:grayscale(20%) brightness(60%); }
+  .bg-slide.active { opacity:1; filter:grayscale(10%) brightness(70%); }
+  .bg-overlay { position:fixed; inset:0; z-index:-1; background:rgba(0,0,0,0.25); }
 
-  /* ---------- Popup ---------- */
-  .overlay {
-    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-    background:rgba(0,0,0,0.6); z-index:20;
-  }
-  .popup {
-    background:#fff; color:#222; padding:24px; border-radius:14px; text-align:center;
-    box-shadow:0 18px 60px rgba(0,0,0,0.35); max-width:420px; width:92%;
-  }
+  .overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:20; }
+  .popup { background:#fff; color:#222; padding:24px; border-radius:14px; text-align:center; max-width:420px; width:90%; box-shadow:0 18px 60px rgba(0,0,0,0.35); }
   .popup h2 { color:var(--accent); margin:0 0 8px; }
   .popup p { margin:0 0 12px; }
-  .heart-btn {
-    font-size:46px; background:none; border:0; color:var(--accent); cursor:pointer;
-    animation: beat 1s infinite;
-  }
-  @keyframes beat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
-  .vanish { animation: vanishAnim 650ms forwards ease; }
-  @keyframes vanishAnim { to{opacity:0;transform:scale(2)} }
+  .heart-btn { background:none; border:none; font-size:46px; cursor:pointer; color:var(--accent); animation:beat 1s infinite; }
+  @keyframes beat { 0%,100% {transform:scale(1);} 50% {transform:scale(1.2);} }
 
-  /* ---------- App ---------- */
-  .app {
-    position:relative; z-index:10; width:100%; max-width:980px; margin:40px auto; padding:20px;
-    opacity:0; transform:translateY(8px);
-    transition:opacity .36s ease, transform .36s ease;
-    pointer-events:none;
-  }
-  .app.active { opacity:1; transform:none; pointer-events:auto; }
-  .card {
-    background:rgba(0,0,0,0.36); backdrop-filter:blur(6px);
-    padding:18px; border-radius:12px; color:var(--fg);
-  }
-
-  /* Timer boxes */
-  .timer { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin:14px 0; }
-  .box { min-width:86px; padding:12px 14px; border-radius:10px;
-    background:rgba(255,255,255,0.08); text-align:center; }
+  .app { position:relative; z-index:10; width:90%; max-width:900px; margin:50px auto; padding:20px; opacity:0; transform:translateY(8px); transition:opacity .36s ease, transform .36s ease; pointer-events:none; }
+  .app.active { opacity:1; transform:translateY(0); pointer-events:auto; }
+  .card { background:rgba(0,0,0,0.45); backdrop-filter:blur(6px); color:var(--fg); padding:20px; border-radius:12px; text-align:center; }
+  .timer { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin:20px 0; }
+  .time-box { background:rgba(255,255,255,0.1); padding:15px 18px; border-radius:10px; min-width:80px; }
   .val { font-size:18px; font-weight:700; }
-  .label { font-size:11px; color:#ffe8ee; margin-top:6px; }
+  .label { font-size:12px; margin-top:4px; color:#ffe8ee; }
+  .controls { display:flex; justify-content:center; gap:10px; margin-top:16px; flex-wrap:wrap; }
+  .btn { background:var(--accent); color:#fff; border:none; padding:10px 16px; border-radius:999px; cursor:pointer; font-weight:700; }
+  .btn.muted { background:#fff; color:var(--accent); }
 
-  /* Controls */
-  .controls { display:flex; gap:10px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
-  .btn {
-    background:var(--accent); color:#fff; border:0; padding:10px 16px; border-radius:999px;
-    cursor:pointer; font-weight:700;
-  }
-  .muted { background:#fff; color:var(--accent); }
-
-  /* Message view */
   .message-view { display:none; }
   .message-view.show { display:block; }
+
+  @media(max-width:640px){ .val{font-size:16px;} }
 </style>
 </head>
 <body>
 
-<!-- Background slideshow -->
 <div id="bgSlideshow"></div>
 <div class="bg-overlay"></div>
 
-<!-- Popup intro -->
 <div class="overlay" id="overlay">
   <div class="popup">
     <h2>Hi baby 💕</h2>
     <p>I hope you liked your surprise.<br>I love you so so much</p>
-    <button class="heart-btn" id="heart">❤️</button>
+    <button class="heart-btn" id="popupHeart">❤️</button>
   </div>
 </div>
 
-<!-- App -->
 <main class="app" id="app">
-  <!-- TIMER VIEW -->
-  <section id="timerView" class="card view">
+  <section id="timerView" class="card">
     <h2 style="color:var(--accent)">Our Journey Together</h2>
     <div class="timer" id="timerBoxes"></div>
     <div class="controls">
-      <button id="goMessage" class="btn">Click here for another surprise</button>
+      <button id="goMessage" class="btn">Another surprise</button>
       <button id="playPause" class="btn muted">⏯ Play</button>
     </div>
   </section>
 
-  <!-- MESSAGE VIEW -->
-  <section id="messageView" class="card view message-view">
+  <section id="messageView" class="card message-view">
     <h2 style="color:var(--accent)">My Dearest Ishu ❤️</h2>
-    <div style="font-size:16px;line-height:1.6; max-width:760px; margin:0 auto;">
+    <div style="font-size:16px;line-height:1.6;">
       Every passing moment with you feels magical, meri jaan.<br>
       I fall deeper in love every single day.<br><br>
       I love you so much Ishu ❤️ You are everything ❤️
     </div>
-    <div class="controls" style="margin-top:18px;">
-      <button id="backTimer" class="btn muted">⬅ Back to Timer</button>
+    <div class="controls">
+      <button id="backTimer" class="btn muted">⬅ Timer</button>
       <button id="playPause2" class="btn muted">⏯ Play</button>
     </div>
   </section>
 </main>
 
-<!-- Music -->
 <audio id="audioA" src="Sahiba(KoshalWorld.Com).mp3" preload="auto"></audio>
 <audio id="audioB" src="yellow.mp3" preload="auto"></audio>
 
 <script>
-/* ========= CONFIG ========= */
-const imageUrls = ['us.jpg','us2.jpg','us3.jpg','us4.jpg','us5.jpg'];
+const images = ['us.jpg','us2.jpg','us3.jpg','us4.jpg','us5.jpg','us6.jpg','us7.jpg','us8.jpg','us9.jpg','us10.jpg'];
 const startDate = new Date(2024,0,6,0,0,0);
-const SLIDE_INTERVAL = 4500;
-const CROSSFADE_MS = 800;
+const SLIDE_INTERVAL = 4500, CROSSFADE_MS = 800;
 
-/* Elements */
-const overlay = document.getElementById('overlay');
-const heart = document.getElementById('heart');
-const app = document.getElementById('app');
-const timerBoxes = document.getElementById('timerBoxes');
-const goMessage = document.getElementById('goMessage');
-const messageView = document.getElementById('messageView');
-const timerView = document.getElementById('timerView');
-const backTimer = document.getElementById('backTimer');
-const playPause = document.getElementById('playPause');
-const playPause2 = document.getElementById('playPause2');
-const bgContainer = document.getElementById('bgSlideshow');
-const audioA = document.getElementById('audioA');
-const audioB = document.getElementById('audioB');
+const overlay = document.getElementById('overlay'),
+      heart = document.getElementById('popupHeart'),
+      app = document.getElementById('app'),
+      timerBoxes = document.getElementById('timerBoxes'),
+      goMessage = document.getElementById('goMessage'),
+      messageView = document.getElementById('messageView'),
+      timerView = document.getElementById('timerView'),
+      backTimer = document.getElementById('backTimer'),
+      playPause = document.getElementById('playPause'),
+      playPause2 = document.getElementById('playPause2'),
+      bgSlideshow = document.getElementById('bgSlideshow'),
+      audioA = document.getElementById('audioA'),
+      audioB = document.getElementById('audioB');
 
-let slides=[], slideIndex=0, slideTimer;
-let activeTrack='A', fadeInterval;
+let slides=[], slideIndex=0, slideTimer, activeTrack='A', fadeInterval;
 
-/* ========== Slideshow ========== */
-function preloadImages(urls,cb){
-  const loaded=[]; let remaining=urls.length;
-  urls.forEach(url=>{
+function preloadImages(arr,cb){
+  let rem=arr.length, load=[];
+  arr.forEach(u=>{
     const img=new Image();
-    img.onload=()=>{loaded.push(url);if(--remaining===0)cb(loaded);};
-    img.onerror=()=>{console.warn('skip',url);if(--remaining===0)cb(loaded);};
-    img.src=url;
+    img.onload=()=>{ load.push(u); if(--rem===0) cb(load); };
+    img.onerror=()=>{ if(--rem===0) cb(load); };
+    img.src=u;
   });
 }
-function buildSlides(urls){
-  bgContainer.innerHTML=''; slides=[];
-  urls.forEach((url,i)=>{
-    const s=document.createElement('div');
-    s.className='bg-slide'+(i===0?' active':'');
-    s.style.backgroundImage=`url("${url}")`;
-    bgContainer.appendChild(s); slides.push(s);
+
+function buildSlides(list){
+  bgSlideshow.innerHTML=''; slides=[];
+  list.forEach((u,i)=>{
+    const d=document.createElement('div');
+    d.className='bg-slide'+(i===0?' active':'');
+    d.style.backgroundImage=`url("${u}")`;
+    bgSlideshow.appendChild(d); slides.push(d);
   });
 }
+
 function startSlides(){
   if(slides.length<=1)return;
   slideIndex=0;
-  setInterval(()=>{
+  slideTimer=setInterval(()=>{
     slides[slideIndex].classList.remove('active');
     slideIndex=(slideIndex+1)%slides.length;
     slides[slideIndex].classList.add('active');
   },SLIDE_INTERVAL);
 }
 
-/* ========== Timer ========== */
 function diff(s,e){
   const start=new Date(s), end=new Date(e);
-  let y=end.getFullYear()-start.getFullYear();
-  let m=end.getMonth()-start.getMonth();
-  let d=end.getDate()-start.getDate();
-  let h=end.getHours()-start.getHours();
-  let mi=end.getMinutes()-start.getMinutes();
-  let se=end.getSeconds()-start.getSeconds();
-  if(se<0){se+=60;mi--;} if(mi<0){mi+=60;h--;} if(h<0){h+=24;d--;}
+  let y=end.getFullYear()-start.getFullYear(),
+      m=end.getMonth()-start.getMonth(),
+      d=end.getDate()-start.getDate(),
+      h=end.getHours()-start.getHours(),
+      mi=end.getMinutes()-start.getMinutes(),
+      se=end.getSeconds()-start.getSeconds();
+  if(se<0){se+=60;mi--;}
+  if(mi<0){mi+=60;h--;}
+  if(h<0){h+=24;d--;}
   if(d<0){m--; d+=new Date(end.getFullYear(),end.getMonth(),0).getDate();}
-  if(m<0){m+=12;y--;}
-  return{y,m,d,h,mi,se};
+  if(m<0){m+=12; y--;}
+  return {y,m,d,h,mi,se};
 }
+
 function startTimer(){
   setInterval(()=>{
     const t=diff(startDate,new Date());
@@ -218,47 +158,61 @@ function startTimer(){
   },1000);
 }
 
-/* ========== Music ========== */
-function setVolumes(a,b){audioA.volume=a;audioB.volume=b;}
-function crossfadeTo(target){
-  if(fadeInterval)clearInterval(fadeInterval);
-  const from=(target==='A')?audioB:audioA;
-  const to=(target==='A')?audioA:audioB;
-  to.play().catch(()=>{});
-  let steps=CROSSFADE_MS/50,step=0;
+function setVol(a,b){audioA.volume=a;audioB.volume=b;}
+function crossfade(to){
+  clearInterval(fadeInterval);
+  const from=(to==='A')?audioB:audioA, dest=(to==='A')?audioA:audioB;
+  dest.play().catch(()=>{});
+  let step=0, max= CROSSFADE_MS/50;
   fadeInterval=setInterval(()=>{
     step++;
-    let f=Math.max(0,1-step/steps),t=Math.min(1,step/steps);
-    if(target==='A')setVolumes(t,f);else setVolumes(f,t);
-    if(step>=steps){clearInterval(fadeInterval);fadeInterval=null;from.pause();activeTrack=target;updateButtons();}
+    const fa=(max-step)/max, fb=step/max;
+    if(to==='A') setVol(fb,fa); else setVol(fa,fb);
+    if(step>=max){clearInterval(fadeInterval); from.pause(); activeTrack=to; updateBtns();}
   },50);
 }
-function updateButtons(){
-  const playing=(activeTrack==='A')?!audioA.paused:!audioB.paused;
-  const label=playing?'⏸ Pause':'▶ Play';
-  playPause.textContent=label; playPause2.textContent=label;
-}
-function togglePlayPause(){
-  const track=(activeTrack==='A')?audioA:audioB;
-  if(track.paused)track.play();else track.pause();
-  updateButtons();
+
+function updateBtns(){
+  const playing = (activeTrack==='A')?!audioA.paused:!audioB.paused;
+  const label = playing?'⏸ Pause':'▶ Play';
+  playPause.textContent=label;
+  playPause2.textContent=label;
 }
 
-/* ========== UI ========== */
+function togglePlay(){
+  const track=(activeTrack==='A')?audioA:audioB;
+  track[track.paused?'play':'pause']();
+  updateBtns();
+}
+
 function openApp(){
   overlay.classList.add('vanish');
-  setTimeout(()=>overlay.style.display='none',650);
+  setTimeout(()=>overlay.style.display='none',700);
   app.classList.add('active');
-  preloadImages(imageUrls,(loaded)=>{buildSlides(loaded);startSlides();});
+  preloadImages(imageUrls,list=>{
+    buildSlides(list);
+    startSlides();
+  });
   startTimer();
-  audioA.volume=1;audioB.volume=0;audioA.play().catch(()=>{});activeTrack='A';updateButtons();
+  audioA.volume=1; audioB.volume=0; audioA.play().catch(()=>{}); activeTrack='A'; updateBtns();
 }
+
 let lastTap=0;
-heart.addEventListener('click',()=>{const now=Date.now();if(now-lastTap<400){openApp();lastTap=0;}else lastTap=now;});
-goMessage.addEventListener('click',()=>{timerView.style.display='none';messageView.classList.add('show');audioB.currentTime=0;audioB.play().catch(()=>{});crossfadeTo('B');});
-backTimer.addEventListener('click',()=>{messageView.classList.remove('show');timerView.style.display='';crossfadeTo('A');});
-playPause.addEventListener('click',togglePlayPause);
-playPause2.addEventListener('click',togglePlayPause);
+heart.addEventListener('click',()=>{const now=Date.now(); if(now-lastTap<400)openApp(); else lastTap=now;});
+goMessage.addEventListener('click',()=>{
+  timerView.style.display='none';
+  messageView.classList.add('show');
+  audioB.currentTime=0; audioB.play().catch(()=>{});
+  crossfade('B');
+});
+backTimer.addEventListener('click',()=>{
+  messageView.classList.remove('show');
+  timerView.style.display='';
+  crossfade('A');
+});
+playPause.addEventListener('click',togglePlay);
+playPause2.addEventListener('click',togglePlay);
+
 </script>
 </body>
 </html>
