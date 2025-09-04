@@ -4,133 +4,79 @@
   <meta charset="UTF-8">
   <title>Special Message ❤️</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      color: #fff;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .background-slideshow {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    .background-slideshow img {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-      filter: brightness(60%);
-    }
-
-    .message-box {
-      margin-top: 100px;
-      background: rgba(0,0,0,0.6);
-      padding: 30px;
-      border-radius: 20px;
-      display: inline-block;
-      max-width: 80%;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 1.3rem;
-      line-height: 1.6;
-    }
-
-    button {
-      background: #ff4d6d;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      margin-top: 20px;
-    }
-
-    button:hover {
-      transform: scale(1.1);
-    }
+    body { margin: 0; font-family:'Poppins',sans-serif; color:#fff; text-align:center; overflow:hidden; }
+    .background-slideshow { position:fixed; top:0;left:0;width:100%;height:100%; z-index:-1; overflow:hidden; }
+    .background-slideshow img { position:absolute; top:0;left:0; width:100%;height:100%; object-fit:cover; opacity:0; transition:opacity 1s ease-in-out; filter: brightness(60%); }
+    .message-box { margin-top:100px; background:rgba(0,0,0,0.6); padding:30px; border-radius:20px; display:inline-block; max-width:80%; }
+    button { background:#ff4d6d; border:none; padding:12px 24px; border-radius:30px; color:#fff; font-size:16px; cursor:pointer; margin:10px; transition:transform 0.3s ease; }
+    button:hover { transform:scale(1.1); }
   </style>
 </head>
 <body>
 
-  <!-- Background slideshow -->
   <div class="background-slideshow" id="slideshow"></div>
 
-  <!-- Message -->
   <div class="message-box">
     <h1>My Love ❤️</h1>
     <p>
-      Every passing moment with you feels magical meri jaan.  
+      Every passing moment with you feels magical, meri jaan.  
       I fall deeper in love everyday. ❤️  
       I love you so much Ishu ❤️ You are everything ❤️
     </p>
     <button onclick="toggleMusic()">⏯ Music</button>
     <br><br>
-    <button onclick="location.href='index.html#timer'">⬅ Back to Timer</button>
+    <button onclick="goBack()">⬅ Back to Timer</button>
   </div>
 
   <audio id="bg-music" src="yellow.mp3" loop></audio>
 
   <script>
-    // Background slideshow
-    const images = ["us.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
+    const images = ["us.jpg","us3.jpg","us5.jpg","us6.jpg"];
     let index = 0;
-    const slideshow = document.getElementById("slideshow");
+    function initSlideshow(){
+      const container = document.getElementById("slideshow");
+      images.forEach((src,i) => {
+        const img = document.createElement("img");
+        img.src = src;
+        if(i===0) img.style.opacity = 1;
+        container.appendChild(img);
+      });
+      setInterval(() => {
+        const imgs = container.querySelectorAll("img");
+        imgs[index].style.opacity = 0;
+        index = (index+1) % imgs.length;
+        imgs[index].style.opacity = 1;
+      }, 4000);
+    }
 
-    images.forEach((src, i) => {
-      const img = document.createElement("img");
-      img.src = src;
-      if (i === 0) img.style.opacity = 1;
-      slideshow.appendChild(img);
-    });
-
-    setInterval(() => {
-      const imgs = document.querySelectorAll("#slideshow img");
-      imgs[index].style.opacity = 0;
-      index = (index + 1) % imgs.length;
-      imgs[index].style.opacity = 1;
-    }, 5000);
-
-    // Music (seamless with localStorage)
     const music = document.getElementById("bg-music");
-
-    function saveMusicState() {
+    function saveMusic(){
       localStorage.setItem("musicTime", music.currentTime);
       localStorage.setItem("musicPlaying", !music.paused);
     }
-
-    function restoreMusicState() {
-      const savedTime = localStorage.getItem("musicTime");
-      const isPlaying = localStorage.getItem("musicPlaying") === "true";
-      if (savedTime) music.currentTime = parseFloat(savedTime);
-      if (isPlaying) music.play();
+    function restoreMusic(){
+      const t = parseFloat(localStorage.getItem("musicTime") || "0");
+      music.currentTime = t;
+      if(localStorage.getItem("musicPlaying")==="true") music.play();
+    }
+    function toggleMusic(){
+      music.paused ? music.play() : music.pause();
+      saveMusic();
+    }
+    function goBack(){
+      saveMusic();
+      location.href="index.html";
     }
 
-    function toggleMusic() {
-      if (music.paused) music.play();
-      else music.pause();
-      saveMusicState();
-    }
-
-    window.onload = restoreMusicState;
-    window.addEventListener("beforeunload", saveMusicState);
+    window.onload = () => {
+      initSlideshow();
+      restoreMusic();
+    };
+    window.addEventListener("beforeunload", saveMusic);
   </script>
+
 </body>
 </html>
+
 
 
