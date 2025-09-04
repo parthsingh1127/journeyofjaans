@@ -1,83 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>A special message ❤️</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Surprise ❤️</title>
   <style>
-    body{margin:0;font-family:"Poppins",sans-serif;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:20px;overflow:hidden}
-    .bg-slideshow{position:fixed;inset:0;z-index:-2}
-    .bg-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease;filter:grayscale(40%) brightness(60%)}
-    .bg-slide.active{opacity:1;filter:grayscale(20%) brightness(55%)}
-    .bg-overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,0.25)}
-    .card{background:rgba(0,0,0,0.5);padding:20px;border-radius:14px;max-width:800px}
-    .btn{background:#fff;color:#ff4d6d;padding:10px 16px;border-radius:999px;border:none;font-weight:600;cursor:pointer;margin:10px}
-    .music{margin-top:12px}
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ee9ca7, #ffdde1);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+    .message {
+      background: rgba(0,0,0,0.4);
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 600px;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+    .back-btn, #musicToggle {
+      margin-top: 20px;
+      background: #fff;
+      color: #ff4d6d;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
-  <div class="bg-slideshow" id="bgSlideshow"></div>
-  <div class="bg-overlay"></div>
 
-  <div class="card">
-    <h2>My Sweetest Ishu ❤️</h2>
-    <p>
-      Every passing moment with you feels magical meri jaan.<br>
-      I fall deeper in love every day.<br>
-      You are my everything ❤️
-    </p>
-    <button class="btn" onclick="location.href='index.html#timer'">⬅ Back to Timer</button>
-    <div class="music"><button class="btn" id="musicToggle">⏸ Pause Music</button></div>
+  <div class="message">
+    Every passing moment with you feels magical meri jaan, I fall deeper in love every day.  
+    I love you so much Ishu ❤️ You are everything ❤️
   </div>
 
-  <audio id="bgMusic" src="Sahiba(KoshalWorld.Com).mp3" preload="auto"></audio>
+  <a href="index.html" class="back-btn">⬅ Back to Timer</a>
+  <button id="musicToggle">⏸ Pause Music</button>
 
-<script>
-(function(){
-  const images=["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
-  const bgSlideshow=document.getElementById("bgSlideshow");
-  const music=document.getElementById("bgMusic");
-  const musicToggle=document.getElementById("musicToggle");
-  let bgSlides=[],bgIndex=0;
+  <audio id="bg-music" preload="auto" loop></audio>
 
-  function buildBgSlides(){
-    images.forEach((src,i)=>{
-      const d=document.createElement("div");
-      d.className="bg-slide";
-      d.style.backgroundImage=`url(${src})`;
-      if(i===0) d.classList.add("active");
-      bgSlideshow.appendChild(d);
-      bgSlides.push(d);
+  <script>
+    const music = document.getElementById("bg-music");
+    const musicToggle = document.getElementById("musicToggle");
+
+    // Play Yellow on this page
+    music.src = "yellow.mp3";
+    music.play().catch(err => console.log("Autoplay blocked"));
+
+    musicToggle.addEventListener("click", () => {
+      if (music.paused) {
+        music.play();
+        musicToggle.textContent = "⏸ Pause Music";
+      } else {
+        music.pause();
+        musicToggle.textContent = "▶ Play Music";
+      }
     });
-  }
-  buildBgSlides();
-  setInterval(()=>{
-    const prev=bgIndex;bgIndex=(bgIndex+1)%bgSlides.length;
-    bgSlides[prev].classList.remove("active");
-    bgSlides[bgIndex].classList.add("active");
-  },4500);
 
-  // Continue music seamlessly
-  function syncMusic(){
-    const savedTime=parseFloat(localStorage.getItem("musicTime")||"0");
-    const isPlaying=localStorage.getItem("musicPlaying")==="true";
-    music.currentTime=savedTime||0;
-    music.loop=true;
-    if(isPlaying){
-      music.play().catch(()=>{});
-      musicToggle.textContent="⏸ Pause Music";
-    } else {
-      musicToggle.textContent="▶ Play Music";
-    }
-  }
-  syncMusic();
-  setInterval(()=>{if(!music.paused){localStorage.setItem("musicTime",music.currentTime);}},1000);
-
-  musicToggle.addEventListener("click",()=>{
-    if(music.paused){music.play();musicToggle.textContent="⏸ Pause Music";localStorage.setItem("musicPlaying","true");}
-    else{music.pause();musicToggle.textContent="▶ Play Music";localStorage.setItem("musicPlaying","false");}
-  });
-})();
-</script>
+    // Keep skipIntro true so going back skips popup
+    localStorage.setItem("skipIntro", "true");
+  </script>
 </body>
 </html>
+
