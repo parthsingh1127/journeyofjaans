@@ -96,12 +96,16 @@
             display:none;
             flex-direction:column;
             align-items:center;
-            height: 100%; /* Fix: Set height to 100% to fill the screen */
-            justify-content: flex-end; /* Pushes content to the bottom */
+            height: 100%;
+            justify-content: flex-end;
             padding-bottom: 5vh;
             z-index:10;
         }
-        .stage.active { display:flex }
+        .stage.active {
+            display:flex;
+            animation: fadeIn 600ms ease-in-out;
+        }
+        @keyframes fadeIn { from{ opacity:0 } to{ opacity:1 } }
 
         .card {
             background: rgba(255,255,255,0.1);
@@ -110,7 +114,7 @@
             border-radius:18px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.18);
             color:#fff;
-            width: min(600px, 96%); /* Made card slightly smaller */
+            width: min(600px, 96%);
             border: 1px solid rgba(255,255,255,0.3);
         }
         .title { font-size:26px; margin: 4px 0 8px; color:#fff; font-family: 'Playfair Display', serif; }
@@ -144,6 +148,14 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
+        
+        /* New buttons for nav */
+        .nav-btns {
+            display:flex;
+            justify-content:center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
 
         .music {
             margin-top:12px;
@@ -168,12 +180,123 @@
             border-radius:12px;
         }
         .message p { font-family: 'Playfair Display', serif; margin:0; }
+        
+        /* ===== Story Stage ===== */
+        #stage-story {
+            justify-content: flex-start;
+            overflow-y: auto;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        #stage-story::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+        }
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding-top: 20px;
+        }
+        .timeline-event {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px) brightness(1.1);
+            padding: 20px;
+            border-radius: 12px;
+            width: min(500px, 96%);
+            margin-bottom: 24px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: slideIn 500ms ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .timeline-event:nth-child(even) { animation-delay: 200ms; }
+        .timeline-event:nth-child(3n) { animation-delay: 400ms; }
+
+        @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
+
+        .event-date {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        .event-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 12px 0;
+            display: block;
+        }
+        .event-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin: 0 0 8px;
+        }
+        .event-desc {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #eee;
+        }
+
+        /* ===== Scrapbook Stage ===== */
+        #stage-scrapbook {
+            justify-content: flex-start;
+            overflow-y: auto;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+        #stage-scrapbook::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+        }
+        .scrapbook-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding-top: 20px;
+        }
+        .scrapbook-entry {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px) brightness(1.1);
+            padding: 20px;
+            border-radius: 12px;
+            width: min(500px, 96%);
+            margin-bottom: 24px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+            animation: slideIn 500ms ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .scrapbook-entry:nth-child(even) { animation-delay: 200ms; }
+        .scrapbook-entry:nth-child(3n) { animation-delay: 400ms; }
+
+        .entry-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin: 0 0 8px;
+        }
+        .entry-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 12px 0;
+            display: block;
+        }
+        .entry-desc {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #eee;
+        }
+        
 
         @media (max-width:640px){
             .time-val{ font-size:18px }
             .card{ padding:12px }
             .stage {
-              justify-content: center; /* Center on small screens */
+                justify-content: center;
             }
         }
     </style>
@@ -199,7 +322,10 @@
             <div class="title">Our Journey Together</div>
             <div class="timer" id="timerBoxes"></div>
             <div class="music"><button id="musicToggle1">⏸ Pause Music</button></div>
-            <button class="btn" id="toMessage">Click here for another surprise</button>
+            <div class="nav-btns">
+                <button class="btn" id="toMessage">Another Surprise</button>
+                <button class="btn" id="toStory">Our Story</button>
+            </div>
         </div>
     </div>
 
@@ -213,8 +339,21 @@
                 I love you so much Ishu ❤️ You are everything ❤️</p>
             </div>
             <div class="music"><button id="musicToggle2">⏸ Pause Music</button></div>
-            <button class="btn" id="toTimer">⬅ Back to Timer</button>
+            <div class="nav-btns">
+                <button class="btn" id="toTimer">⬅ Back</button>
+                <button class="btn" id="toStoryFromMessage">Our Story</button>
+            </div>
         </div>
+    </div>
+    
+    <!-- scrapbook stage -->
+    <div class="stage" id="stage-scrapbook">
+        <div class="card" style="width: min(800px, 96%); margin-bottom: 24px;">
+            <div class="title">Our Scrapbook</div>
+            <p>A few cherished memories we've made together.</p>
+        </div>
+        <div class="scrapbook-container" id="scrapbookContainer"></div>
+        <button class="btn" id="toTimerFromScrapbook">⬅ Back</button>
     </div>
 
     <!-- music -->
@@ -223,7 +362,6 @@
 
     <script>
         (function(){
-            // Note: To use your own images, replace these URLs with your own publicly hosted links.
             const images = [
                 "us.jpg",
                 "us3.jpg",
@@ -236,13 +374,62 @@
             ];
             const startDate = new Date(2024,0,6,0,0,0);
 
+            const timelineEvents = [
+                {
+                    date: "January 6, 2024",
+                    title: "The day it all began ❤️",
+                    description: "Our beautiful journey together officially started on this day. The beginning of a love story I cherish every single day.",
+                    image: "https://placehold.co/500x300/a8c0ff/ffffff.png?text=Your+First+Day+Together" 
+                },
+                {
+                    date: "March 15, 2024",
+                    title: "First Big Adventure",
+                    description: "Remember that trip we took? It was an unforgettable weekend filled with laughter and amazing memories.",
+                    image: "https://placehold.co/500x300/fec89a/ffffff.png?text=Your+Adventure" 
+                },
+                {
+                    date: "July 22, 2024",
+                    title: "Our Favorite Restaurant",
+                    description: "The night we found our favorite spot to eat. The food was great, but the company was even better.",
+                    image: "https://placehold.co/500x300/e9d8a6/ffffff.png?text=Your+Date+Night" 
+                }
+            ];
+            
+            // Your Scrapbook Data - REPLACE THIS WITH YOUR OWN MEMORIES
+            const scrapbookEntries = [
+                {
+                    title: "That one time we went out...",
+                    image: "https://placehold.co/500x300/f08080/ffffff.png?text=Memory+1",
+                    description: "A little note about this special day."
+                },
+                {
+                    title: "The surprise dinner",
+                    image: "https://placehold.co/500x300/c1c1f0/ffffff.png?text=Memory+2",
+                    description: "I'll never forget the look on your face. You're the best."
+                },
+                {
+                    title: "Our song",
+                    image: "https://placehold.co/500x300/8080f0/ffffff.png?text=Memory+3",
+                    description: "Just wanted to remind you of this amazing moment we shared."
+                }
+            ];
+
             const overlay = document.getElementById('overlay');
             const popupHeart = document.getElementById('popupHeart');
             const stageTimer = document.getElementById('stage-timer');
             const stageMessage = document.getElementById('stage-message');
+            const stageStory = document.getElementById('stage-story');
+            const stageScrapbook = document.getElementById('stage-scrapbook');
             const timerBoxes = document.getElementById('timerBoxes');
+            
             const toMessage = document.getElementById('toMessage');
+            const toStory = document.getElementById('toStory');
             const toTimer = document.getElementById('toTimer');
+            const toStoryFromMessage = document.getElementById('toStoryFromMessage');
+            const toTimerFromStory = document.getElementById('toTimerFromStory');
+            const toScrapbook = document.getElementById('toScrapbook');
+            const toScrapbookFromMessage = document.getElementById('toScrapbookFromMessage');
+            const toTimerFromScrapbook = document.getElementById('toTimerFromScrapbook');
 
             const music1 = document.getElementById('music1');
             const music2 = document.getElementById('music2');
@@ -254,7 +441,9 @@
             let bgIndex = 0;
             let bgInterval;
 
-            // preload images then build slides
+            const timelineContainer = document.getElementById('timelineContainer');
+            const scrapbookContainer = document.getElementById('scrapbookContainer');
+
             function preloadImages(arr, cb){
                 let loaded = 0;
                 arr.forEach(src=>{
@@ -319,10 +508,41 @@
                 `;
             }
             setInterval(renderTimer,1000);
+            
+            // story timeline
+            function renderTimeline() {
+                timelineContainer.innerHTML = '';
+                timelineEvents.forEach(event => {
+                    const eventDiv = document.createElement('div');
+                    eventDiv.className = 'timeline-event';
+                    eventDiv.innerHTML = `
+                        <div class="event-date">${event.date}</div>
+                        <img src="${event.image}" alt="${event.title}" class="event-image">
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-desc">${event.description}</div>
+                    `;
+                    timelineContainer.appendChild(eventDiv);
+                });
+            }
+            
+            // scrapbook
+            function renderScrapbook() {
+                scrapbookContainer.innerHTML = '';
+                scrapbookEntries.forEach(entry => {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.className = 'scrapbook-entry';
+                    entryDiv.innerHTML = `
+                        <div class="entry-title">${entry.title}</div>
+                        <img src="${entry.image}" alt="${entry.title}" class="entry-image">
+                        <div class="entry-desc">${entry.description}</div>
+                    `;
+                    scrapbookContainer.appendChild(entryDiv);
+                });
+            }
+
 
             // activate
             function activate(){
-                // Start the music immediately upon user interaction
                 music1.play().catch(e => console.error("Music playback failed:", e));
                 
                 overlay.classList.add('fade-out');
@@ -337,19 +557,57 @@
             popupHeart.addEventListener('dblclick', activate);
 
             // navigation
-            toMessage.addEventListener('click', ()=>{
+            function hideAllStages() {
                 stageTimer.classList.remove('active');
+                stageMessage.classList.remove('active');
+                stageStory.classList.remove('active');
+                stageScrapbook.classList.remove('active');
+            }
+
+            toMessage.addEventListener('click', ()=>{
+                hideAllStages();
                 stageMessage.classList.add('active');
                 music1.pause();
                 music2.play().catch(()=>{});
             });
+
+            toStory.addEventListener('click', ()=>{
+                hideAllStages();
+                stageStory.classList.add('active');
+            });
+            
+            toStoryFromMessage.addEventListener('click', ()=>{
+                hideAllStages();
+                stageStory.classList.add('active');
+            });
+            
+            toScrapbook.addEventListener('click', ()=>{
+                hideAllStages();
+                stageScrapbook.classList.add('active');
+            });
+            
+            toScrapbookFromMessage.addEventListener('click', ()=>{
+                hideAllStages();
+                stageScrapbook.classList.add('active');
+            });
+
             toTimer.addEventListener('click', ()=>{
-                stageMessage.classList.remove('active');
+                hideAllStages();
                 stageTimer.classList.add('active');
                 music2.pause();
                 music1.play().catch(()=>{});
             });
+            
+            toTimerFromStory.addEventListener('click', ()=>{
+                hideAllStages();
+                stageTimer.classList.add('active');
+            });
 
+            toTimerFromScrapbook.addEventListener('click', ()=>{
+                hideAllStages();
+                stageTimer.classList.add('active');
+            });
+            
             // music toggles
             musicToggle1.addEventListener('click',()=>{
                 if(music1.paused){ music1.play(); musicToggle1.textContent="⏸ Pause Music"; }
@@ -360,10 +618,12 @@
                 else { music2.pause(); musicToggle2.textContent="▶ Play Music"; }
             });
 
-            // preload then start slideshow
+            // preload then start slideshow and render content
             preloadImages(images, ()=>{
                 buildSlides();
                 startSlides();
+                renderTimeline();
+                renderScrapbook();
             });
         })();
     </script>
