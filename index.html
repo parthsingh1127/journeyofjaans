@@ -3,399 +3,212 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title> till eternity and beyond❤️</title>
+  <title>till eternity and beyond❤️</title>
   <style>
-    :root{
+    :root {
       --accent: #ff4d6d;
       --bg1: #ff9a9e;
       --bg2: #fad0c4;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    * { box-sizing:border-box; }
+    html,body { height:100%; margin:0; font-family:"Poppins", sans-serif; }
 
-    body{
+    body {
       background: linear-gradient(135deg,var(--bg1),var(--bg2));
-      color:#222;
       overflow:hidden;
       display:flex;
       align-items:center;
       justify-content:center;
       padding:24px;
+      color:#fff;
     }
 
-    /* ===== background slideshow (behind everything) ===== */
-    .bg-slideshow{
-      position:fixed;
-      inset:0;
-      z-index: -2;
-      overflow:hidden;
+    /* Background slideshow */
+    .bg-slideshow {
+      position:fixed; inset:0; z-index:-2; overflow:hidden;
     }
-    .bg-slide{
-      position:absolute;
-      inset:0;
-      background-size:cover;
-      background-position:center;
+    .bg-slide {
+      position:absolute; inset:0;
+      background-size:cover; background-position:center;
       opacity:0;
-      transition:opacity 1000ms ease, filter 1000ms ease;
+      transition:opacity 1s ease, filter 1s ease;
       filter: grayscale(40%) brightness(60%);
       transform: scale(1.03);
     }
-    .bg-slide.active{ opacity:1; filter: grayscale(20%) brightness(55%); }
-
-    /* subtle overlay to dim background a bit */
-    .bg-overlay{
+    .bg-slide.active { opacity:1; filter: grayscale(20%) brightness(55%); }
+    .bg-overlay {
       position:fixed; inset:0; z-index:-1;
       background: rgba(0,0,0,0.25);
-      pointer-events:none;
     }
 
-    /* ===== popup (center box with heart) ===== */
-    .overlay{
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    /* Overlay popup */
+    .overlay {
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
       background: rgba(0,0,0,0.6);
-      z-index: 30;
+      z-index:30;
     }
-    .popup{
-      background:#fff;
-      padding:28px;
-      border-radius:16px;
-      max-width:420px;
-      width:92%;
-      text-align:center;
-      box-shadow:0 18px 50px rgba(0,0,0,0.25);
-      animation: popupIn 420ms ease;
+    .popup {
+      background:#fff; padding:28px; border-radius:16px;
+      max-width:420px; width:92%; text-align:center;
+      color:#444;
     }
-    @keyframes popupIn{ from{ transform:translateY(8px); opacity:0 } to{ transform:none; opacity:1 } }
-    .popup h2{ margin:0 0 8px; color:var(--accent) }
-    .popup p{ margin:0 0 12px; color:#444 }
-
-    .heart-btn{
-      font-size:46px;
-      display:inline-block;
-      border:0;
-      background:none;
-      cursor:pointer;
-      color:var(--accent);
-      animation: beat 1000ms infinite;
-      user-select:none;
+    .popup h2 { margin:0 0 8px; color:var(--accent); }
+    .heart-btn {
+      font-size:46px; border:0; background:none; cursor:pointer;
+      animation: beat 1s infinite; color:var(--accent);
     }
-    @keyframes beat{ 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.2) } }
-
-    /* vanish animation for heart */
-    .vanish {
-      animation: vanishAnim 600ms forwards ease;
-    }
+    @keyframes beat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+    .vanish { animation: vanishAnim 600ms forwards ease; }
     @keyframes vanishAnim {
-      from{ transform: scale(1); opacity:1 }
-      to{ transform: scale(2); opacity:0 }
+      from{transform:scale(1);opacity:1} to{transform:scale(2);opacity:0}
     }
-    /* fade out overlay */
-    .overlay.fade-out{ animation: overlayFade 620ms forwards ease }
-    @keyframes overlayFade{ from{ opacity:1 } to{ opacity:0; visibility:hidden } }
+    .overlay.fade-out { animation: overlayFade 620ms forwards ease; }
+    @keyframes overlayFade { from{opacity:1} to{opacity:0;visibility:hidden} }
 
-    /* ===== main content area (front) ===== */
-    .stage{
-      width:100%;
-      max-width:980px;
-      margin:0 auto;
-      text-align:center;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:18px;
-      z-index:10;
-      pointer-events:none; /* blocked until active */
-      opacity:0;
-      transform: translateY(10px);
+    /* Main stage */
+    .stage {
+      max-width:960px; text-align:center; opacity:0;
+      transform:translateY(10px);
       transition: opacity 420ms ease, transform 420ms ease;
     }
-    .stage.active{ pointer-events:auto; opacity:1; transform: translateY(0) }
+    .stage.active { opacity:1; transform:none; }
 
-    /* content card (semi transparent) */
     .card {
       background: rgba(255,255,255,0.12);
       backdrop-filter: blur(8px);
-      padding:18px;
-      border-radius:14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-      color: #fff;
-      width: min(900px, 96%);
+      padding:18px; border-radius:14px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.18);
     }
+    .title { font-size:20px; margin-bottom:8px; }
 
-    .title { font-size:20px; margin: 4px 0 8px; color:#fff; text-align:center; }
-    /* timer boxes */
-    .timer{
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top: 6px;
+    .timer { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+    .time-box {
+      background: rgba(255,255,255,0.08);
+      padding:14px 16px; border-radius:12px;
+      min-width:90px; text-align:center;
     }
-    .time-box{
-      background: rgba(255,255,255,0.06);
-      padding:14px 16px;
-      border-radius:12px;
-      min-width:92px;
-      text-align:center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.12) inset;
-    }
-    .time-val{ font-size:20px; font-weight:700; color:#fff }
-    .time-label{ font-size:12px; color:#ffe8ee; margin-top:6px }
+    .time-val { font-size:20px; font-weight:700; }
+    .time-label { font-size:12px; color:#ffe8ee; }
 
-    /* secret message in front of background */
-    .secret{
-      margin-top:14px;
-      font-size:16px;
-      color:#fff;
-      max-width:820px;
-      margin-left:auto; margin-right:auto;
-      display:none;
-      opacity:0; transform:translateY(8px);
-      transition: opacity 600ms ease, transform 600ms ease;
-      background: rgba(0,0,0,0.20);
-      padding:12px 14px;
-      border-radius:10px;
-    }
-    .secret.show{ display:block; opacity:1; transform:none }
-
-    /* music control button */
-    .music {
-      margin-top:12px;
-      display:none;
-      gap:10px;
-      justify-content:center;
-    }
-    .music button{
-      background: rgba(255,255,255,0.9);
-      color:var(--accent);
-      border:0;
-      padding:10px 14px;
-      border-radius:999px;
+    /* Button to message page */
+    .message-btn {
+      margin-top:16px;
+      padding:12px 20px;
+      background: var(--accent);
+      border:none; border-radius:999px;
+      color:#fff; font-weight:600;
       cursor:pointer;
-      font-weight:700;
-    }
-
-    /* small devices */
-    @media (max-width:640px){
-      .time-val{ font-size:18px }
-      .card{ padding:12px }
+      box-shadow:0 4px 10px rgba(0,0,0,0.2);
     }
   </style>
 </head>
 <body>
-
-  <!-- background slideshow container (will be filled by JS when activated) -->
   <div class="bg-slideshow" id="bgSlideshow"></div>
   <div class="bg-overlay"></div>
 
-  <!-- popup overlay (intro) -->
+  <!-- popup -->
   <div class="overlay" id="overlay">
-    <div class="popup" role="dialog" aria-modal="true">
+    <div class="popup">
       <h2>Hi baby 💕</h2>
       <p>I hope you liked your surprise.<br>I love you so so much</p>
-      <button class="heart-btn" id="popupHeart" aria-label="heart">❤️</button>
+      <button class="heart-btn" id="popupHeart">❤️</button>
     </div>
   </div>
 
-  <!-- main stage (hidden until activated) -->
+  <!-- main stage -->
   <div class="stage" id="stage">
     <div class="card">
       <div class="title">Our Journey Together</div>
-
-      <!-- timer boxes -->
-      <div class="timer" id="timerBoxes">
-        <!-- boxes injected by JS -->
-      </div>
-
-      <!-- secret message (under slideshow/background but above visually) -->
-      <div class="secret" id="secret">
-        Every passing moment with you feels magical meri jaan, I fall deeper in love every day.  
-        I love you so much Ishu ❤️ You are everything ❤️
-      </div>
-
-      <!-- music controls -->
-      <div class="music" id="musicControls">
-        <button id="musicToggle">⏸ Pause Music</button>
-      </div>
+      <div class="timer" id="timerBoxes"></div>
+      <button class="message-btn" onclick="window.location.href='message.html'">Read My Message ❤️</button>
     </div>
   </div>
 
-  <!-- audio (must be uploaded to repo) -->
-  <audio id="bgMusic" src="Sahiba(KoshalWorld.Com).mp3" preload="auto"></audio>
-
 <script>
 (function(){
-  // ===== config =====
-  const images = ["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"]; // upload these
-  const startDate = new Date(2024, 0, 6, 0, 0, 0); // use local-device midnight (local timezone)
+  const images = ["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
+  const startDate = new Date(2024, 0, 6, 0, 0, 0);
 
-  // elements
   const overlay = document.getElementById('overlay');
   const popupHeart = document.getElementById('popupHeart');
-  const bgSlideshow = document.getElementById('bgSlideshow');
   const stage = document.getElementById('stage');
-  const secretEl = document.getElementById('secret');
-  const music = document.getElementById('bgMusic');
-  const musicControls = document.getElementById('musicControls');
-  const musicToggle = document.getElementById('musicToggle');
   const timerBoxes = document.getElementById('timerBoxes');
+  const bgSlideshow = document.getElementById('bgSlideshow');
 
-  let bgSlides = [];
-  let bgIndex = 0;
-  let bgInterval;
-  let timerInterval;
-  let lastTap = 0;
-  let activated = false;
+  let bgSlides=[], bgIndex=0, bgInterval, timerInterval, lastTap=0, activated=false;
 
-  // create background slides (hidden until activated)
-  function buildBgSlides(){
-    images.forEach((src,i)=>{
-      const d = document.createElement('div');
-      d.className = 'bg-slide';
-      d.style.backgroundImage = `url("${src}")`;
-      d.style.zIndex = i; // layering order not critical
-      if(i===0) d.classList.add('active');
-      bgSlideshow.appendChild(d);
-      bgSlides.push(d);
-    });
-  }
+  // build slides
+  images.forEach((src,i)=>{
+    const d=document.createElement('div');
+    d.className='bg-slide';
+    d.style.backgroundImage=`url("${src}")`;
+    if(i===0) d.classList.add('active');
+    bgSlideshow.appendChild(d); bgSlides.push(d);
+  });
 
-  buildBgSlides();
-
-  // accurate date diff borrowing function
-  function getDateDiffComponents(s,e){
-    // copy
-    const start = new Date(s.getTime());
-    const end = new Date(e.getTime());
-
-    let years = end.getFullYear() - start.getFullYear();
-    let months = end.getMonth() - start.getMonth();
-    let days = end.getDate() - start.getDate();
-    let hours = end.getHours() - start.getHours();
-    let minutes = end.getMinutes() - start.getMinutes();
-    let seconds = end.getSeconds() - start.getSeconds();
-
-    if (seconds < 0){ seconds += 60; minutes -= 1; }
-    if (minutes < 0){ minutes += 60; hours -= 1; }
-    if (hours < 0){ hours += 24; days -= 1; }
-    if (days < 0){
-      // days in previous month of 'end'
-      const prevMonthDays = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
-      days += prevMonthDays;
-      months -= 1;
-    }
-    if (months < 0){ months += 12; years -= 1; }
-
-    return { years, months, days, hours, minutes, seconds };
-  }
-
-  // render timer boxes
-  function renderTimerBoxes(diff){
-    timerBoxes.innerHTML = `
-      <div class="time-box"><div class="time-val">${diff.years}</div><div class="time-label">Years</div></div>
-      <div class="time-box"><div class="time-val">${diff.months}</div><div class="time-label">Months</div></div>
-      <div class="time-box"><div class="time-val">${diff.days}</div><div class="time-label">Days</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.hours).padStart(2,'0')}</div><div class="time-label">Hours</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.minutes).padStart(2,'0')}</div><div class="time-label">Minutes</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.seconds).padStart(2,'0')}</div><div class="time-label">Seconds</div></div>
-    `;
-  }
-
-  function startTimer(){
-    // start immediately and every second
-    function tick(){
-      const now = new Date();
-      const diff = getDateDiffComponents(startDate, now);
-      renderTimerBoxes(diff);
-    }
-    tick();
-    timerInterval = setInterval(tick,1000);
-  }
-
-  // start background crossfade slideshow
+  // slideshow
   function startBgSlideshow(){
-    if(bgSlides.length <= 1) return;
-    bgIndex = 0;
-    // ensure first slide active
-    bgSlides.forEach((s,i)=> s.classList.toggle('active', i===0));
-    bgInterval = setInterval(()=>{
-      const prev = bgIndex;
-      bgIndex = (bgIndex + 1) % bgSlides.length;
+    if(bgSlides.length<=1) return;
+    bgIndex=0;
+    bgInterval=setInterval(()=>{
+      const prev=bgIndex;
+      bgIndex=(bgIndex+1)%bgSlides.length;
       bgSlides[prev].classList.remove('active');
       bgSlides[bgIndex].classList.add('active');
     }, 4500);
   }
 
-  // activation sequence (double-tap)
-  async function activate(){
-    if(activated) return;
-    activated = true;
-
-    // animate heart vanish
-    popupHeart.classList.add('vanish');
-    // fade overlay
-    overlay.classList.add('fade-out');
-
-    // after animation ends, hide overlay, reveal stage
-    setTimeout(()=>{
-      overlay.style.display = 'none';
-      stage.classList.add('active'); // show content
-      // reveal secret message after a beat (still front of bg)
-      setTimeout(()=> secretEl.classList.add('show'), 350);
-      // show music controls
-      musicControls.style.display = 'flex';
-      // start background slideshow, start timer, play music
-      startBgSlideshow();
-      startTimer();
-      // try to play music (user gesture from dbl/tap allows)
-      music.loop = true;
-      music.play().catch((e)=>{ console.warn('autoplay prevented', e) });
-    }, 650);
+  // timer
+  function getDateDiff(s,e){
+    let years=e.getFullYear()-s.getFullYear();
+    let months=e.getMonth()-s.getMonth();
+    let days=e.getDate()-s.getDate();
+    let hours=e.getHours()-s.getHours();
+    let minutes=e.getMinutes()-s.getMinutes();
+    let seconds=e.getSeconds()-s.getSeconds();
+    if(seconds<0){seconds+=60;minutes--;}
+    if(minutes<0){minutes+=60;hours--;}
+    if(hours<0){hours+=24;days--;}
+    if(days<0){const pm=new Date(e.getFullYear(),e.getMonth(),0).getDate();days+=pm;months--;}
+    if(months<0){months+=12;years--;}
+    return {years,months,days,hours,minutes,seconds};
+  }
+  function renderTimer(diff){
+    timerBoxes.innerHTML=`
+      <div class="time-box"><div class="time-val">${diff.years}</div><div class="time-label">Years</div></div>
+      <div class="time-box"><div class="time-val">${diff.months}</div><div class="time-label">Months</div></div>
+      <div class="time-box"><div class="time-val">${diff.days}</div><div class="time-label">Days</div></div>
+      <div class="time-box"><div class="time-val">${String(diff.hours).padStart(2,'0')}</div><div class="time-label">Hours</div></div>
+      <div class="time-box"><div class="time-val">${String(diff.minutes).padStart(2,'0')}</div><div class="time-label">Minutes</div></div>
+      <div class="time-box"><div class="time-val">${String(diff.seconds).padStart(2,'0')}</div><div class="time-label">Seconds</div></div>`;
+  }
+  function startTimer(){
+    function tick(){
+      const now=new Date();
+      const diff=getDateDiff(startDate,now);
+      renderTimer(diff);
+    }
+    tick(); timerInterval=setInterval(tick,1000);
   }
 
-  // listen for dblclick (desktop) and double-tap (mobile)
-  popupHeart.addEventListener('dblclick', (e)=> { e.preventDefault(); activate(); });
+  function activate(){
+    if(activated) return; activated=true;
+    popupHeart.classList.add('vanish');
+    overlay.classList.add('fade-out');
+    setTimeout(()=>{
+      overlay.style.display='none';
+      stage.classList.add('active');
+      startBgSlideshow();
+      startTimer();
+    },650);
+  }
 
-  // helpful double-tap for touch devices:
-  popupHeart.addEventListener('touchend', (e)=>{
-    const now = Date.now();
-    if (now - lastTap < 400){
-      e.preventDefault();
-      activate();
-      lastTap = 0;
-    } else {
-      lastTap = now;
-    }
-  }, {passive:false});
-
-  // also allow fast double click via mouse click events fallback:
-  popupHeart.addEventListener('click', (e)=>{
-    // fallback: use timing to detect a quick double click on platforms that don't fire dblclick reliably
-    const now = Date.now();
-    if (now - lastTap < 400){
-      activate();
-      lastTap = 0;
-    } else {
-      lastTap = now;
-    }
-  });
-
-  // music toggle
-  musicToggle.addEventListener('click', ()=>{
-    if (music.paused){ music.play(); musicToggle.textContent = '⏸ Pause Music'; }
-    else { music.pause(); musicToggle.textContent = '▶ Play Music'; }
-  });
-
-  // ensure everything stops on unload (cleanup)
-  window.addEventListener('beforeunload', ()=>{
-    clearInterval(bgInterval);
-    clearInterval(timerInterval);
-  });
-
+  popupHeart.addEventListener('dblclick',e=>{e.preventDefault();activate();});
+  popupHeart.addEventListener('touchend',e=>{
+    const now=Date.now();
+    if(now-lastTap<400){e.preventDefault();activate();lastTap=0;} else lastTap=now;
+  },{passive:false});
 })();
 </script>
 </body>
