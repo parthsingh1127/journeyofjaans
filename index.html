@@ -3,20 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journey of Jaans</title>
+    <title>Journey of Jaan</title>
     <!-- Use Tailwind CSS for a modern and responsive design -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        /* Import romantic and elegant fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+        
+        /* Apply fonts to the body and headings */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Lato', sans-serif;
         }
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- Custom Animations --- */
+        /* Heartbeat animation for the intro screen heart */
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        
+        #startHeart {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        /* Fade effect for the slideshow */
+        .slideshow-fade {
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
     </style>
 </head>
 <body class="bg-gray-900 text-white flex items-center justify-center min-h-screen relative overflow-hidden">
 
-    <!-- Slideshow background -->
-    <div id="slideshow" class="absolute inset-0 z-0 bg-cover bg-center brightness-50 transition-all duration-1000 ease-in-out"></div>
+    <!-- Slideshow background with fade effect -->
+    <div id="slideshow" class="absolute inset-0 z-0 bg-cover bg-center brightness-50 opacity-0 transition-opacity duration-1000 ease-in-out"></div>
 
     <!-- Intro Popup -->
     <div id="overlay" class="absolute inset-0 z-10 bg-gray-900/90 flex items-center justify-center">
@@ -62,10 +98,19 @@
         const slideshow = document.getElementById("slideshow");
 
         function startSlideshow() {
+            // Set the first image and start the fade-in animation
             slideshow.style.backgroundImage = images[currentImage];
+            slideshow.classList.add('slideshow-fade');
+
             setInterval(() => {
-                currentImage = (currentImage + 1) % images.length;
-                slideshow.style.backgroundImage = images[currentImage];
+                // Remove the fade class to prepare for the next transition
+                slideshow.classList.remove('slideshow-fade');
+                // Use a short delay before changing the image and re-adding the class
+                setTimeout(() => {
+                    currentImage = (currentImage + 1) % images.length;
+                    slideshow.style.backgroundImage = images[currentImage];
+                    slideshow.classList.add('slideshow-fade');
+                }, 100);
             }, 4000);
         }
 
