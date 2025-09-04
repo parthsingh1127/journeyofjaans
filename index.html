@@ -96,7 +96,8 @@
             display:none;
             flex-direction:column;
             align-items:center;
-            gap:18px;
+            justify-content: flex-end; /* Pushes content to the bottom */
+            padding-bottom: 5vh;
             z-index:10;
         }
         .stage.active { display:flex }
@@ -108,7 +109,7 @@
             border-radius:18px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.18);
             color:#fff;
-            width: min(900px, 96%);
+            width: min(600px, 96%); /* Made card slightly smaller */
             border: 1px solid rgba(255,255,255,0.3);
         }
         .title { font-size:26px; margin: 4px 0 8px; color:#fff; font-family: 'Playfair Display', serif; }
@@ -170,6 +171,9 @@
         @media (max-width:640px){
             .time-val{ font-size:18px }
             .card{ padding:12px }
+            .stage {
+              justify-content: center; /* Center on small screens */
+            }
         }
     </style>
 </head>
@@ -218,12 +222,16 @@
 
     <script>
         (function(){
-            // Note: These are placeholder images for demonstration. To use your own images,
-            // replace these URLs with your own publicly hosted links, or use Base64 encoding.
+            // Note: To use your own images, replace these URLs with your own publicly hosted links.
             const images = [
-                "https://placehold.co/1920x1080/ff9a9e/ffffff?text=Our+Journey",
-                "https://placehold.co/1920x1080/fad0c4/ffffff?text=You+%26+Me",
-                "https://placehold.co/1920x1080/ff4d6d/ffffff?text=Till+Eternity"
+                "us.jpg",
+                "us3.jpg",
+                "us5.jpg",
+                "us6.jpg",
+                "us7.jpg",
+                "us8.jpg",
+                "us9.jpg",
+                "us10.jpg"
             ];
             const startDate = new Date(2024,0,6,0,0,0);
 
@@ -360,4 +368,3 @@
     </script>
 </body>
 </html>
-
