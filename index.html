@@ -4,17 +4,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>till eternity and beyond❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
+            --primary: #f8c1c4;
+            --secondary: #fee7e8;
             --accent: #ff4d6d;
-            --bg1: #ff9a9e;
-            --bg2: #fad0c4;
         }
         * { box-sizing:border-box }
-        html,body { height:100%; margin:0; font-family:"Poppins",system-ui,sans-serif }
+        html,body { height:100%; margin:0; font-family:"Lato",sans-serif; }
 
         body {
-            background: linear-gradient(135deg,var(--bg1),var(--bg2));
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             color:#fff;
             overflow:hidden;
         }
@@ -32,7 +35,7 @@
             background-size:cover;
             background-position:center;
             opacity:0;
-            transition:opacity 1200ms ease;
+            transition:opacity 1200ms ease-in-out;
             filter: grayscale(40%) brightness(60%);
         }
         .bg-slide.active {
@@ -52,17 +55,19 @@
             z-index: 30;
         }
         .popup {
-            background:#fff;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px) brightness(1.2);
             padding:28px;
             border-radius:16px;
             max-width:420px; width:92%;
             text-align:center;
             box-shadow:0 18px 50px rgba(0,0,0,0.25);
             animation: popupIn 420ms ease;
+            border: 1px solid rgba(255,255,255,0.3);
         }
         @keyframes popupIn { from{ transform:translateY(8px); opacity:0 } to{ transform:none; opacity:1 } }
-        .popup h2 { margin:0 0 8px; color:var(--accent) }
-        .popup p { margin:0 0 12px; color:#444 }
+        .popup h2 { margin:0 0 8px; color:var(--accent); font-family: 'Playfair Display', serif; }
+        .popup p { margin:0 0 12px; color:#fff; }
 
         .heart-btn {
             font-size:46px;
@@ -97,28 +102,29 @@
         .stage.active { display:flex }
 
         .card {
-            background: rgba(0,0,0,0.45);
-            backdrop-filter: blur(8px);
-            padding:18px;
-            border-radius:14px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px) brightness(1.1);
+            padding:24px;
+            border-radius:18px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.18);
             color:#fff;
             width: min(900px, 96%);
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        .title { font-size:20px; margin: 4px 0 8px; color:#fff }
+        .title { font-size:26px; margin: 4px 0 8px; color:#fff; font-family: 'Playfair Display', serif; }
 
         .timer {
             display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
             margin-top: 6px;
         }
         .time-box {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.1);
             padding:14px 16px;
             border-radius:12px;
             min-width:92px;
             text-align:center;
         }
-        .time-val { font-size:20px; font-weight:700; color:#fff }
+        .time-val { font-size:24px; font-weight:700; color:#fff }
         .time-label { font-size:12px; color:#ffe8ee; margin-top:6px }
 
         .btn {
@@ -130,6 +136,11 @@
             cursor:pointer;
             font-weight:600;
             color:#fff;
+            transition: transform 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         .music {
@@ -154,6 +165,7 @@
             padding:20px;
             border-radius:12px;
         }
+        .message p { font-family: 'Playfair Display', serif; margin:0; }
 
         @media (max-width:640px){
             .time-val{ font-size:18px }
@@ -191,9 +203,9 @@
         <div class="card">
             <div class="title">A Little Note For You ❤️</div>
             <div class="message">
-                Every passing moment with you feels magical meri jaan,<br>
+                <p>Every passing moment with you feels magical meri jaan,<br>
                 I fall deeper in love every day.<br>
-                I love you so much Ishu ❤️ You are everything ❤️
+                I love you so much Ishu ❤️ You are everything ❤️</p>
             </div>
             <div class="music"><button id="musicToggle2">⏸ Pause Music</button></div>
             <button class="btn" id="toTimer">⬅ Back to Timer</button>
@@ -206,7 +218,13 @@
 
     <script>
         (function(){
-            const images = ["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
+            // Note: These are placeholder images for demonstration. To use your own images,
+            // replace these URLs with your own publicly hosted links, or use Base64 encoding.
+            const images = [
+                "https://placehold.co/1920x1080/ff9a9e/ffffff?text=Our+Journey",
+                "https://placehold.co/1920x1080/fad0c4/ffffff?text=You+%26+Me",
+                "https://placehold.co/1920x1080/ff4d6d/ffffff?text=Till+Eternity"
+            ];
             const startDate = new Date(2024,0,6,0,0,0);
 
             const overlay = document.getElementById('overlay');
@@ -342,3 +360,4 @@
     </script>
 </body>
 </html>
+
