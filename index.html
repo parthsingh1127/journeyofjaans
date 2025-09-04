@@ -1,241 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Journey of Jaan</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-      color: white;
-    }
-
-    /* Slideshow background */
-    .slideshow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center;
-      filter: brightness(50%);
-      z-index: -1;
-      transition: background-image 1s ease-in-out;
-    }
-
-    /* Popup box */
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .popup {
-      background: #222;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      max-width: 350px;
-    }
-
-    .heart {
-      font-size: 40px;
-      cursor: pointer;
-      color: red;
-    }
-
-    /* Timer container */
-    .container {
-      position: relative;
-      z-index: 2;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      text-align: center;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-    }
-
-    .timer {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .time-box {
-      background: rgba(0,0,0,0.6);
-      padding: 15px;
-      border-radius: 10px;
-      min-width: 80px;
-    }
-
-    .time-box span {
-      display: block;
-      font-size: 20px;
-    }
-
-    /* Buttons */
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: crimson;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: darkred;
-    }
-
-    /* Message page */
-    .message-page {
-      display: none;
-      position: relative;
-      z-index: 2;
-      height: 100%;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .message {
-      background: rgba(0,0,0,0.6);
-      padding: 20px;
-      border-radius: 15px;
-      margin-top: 50px;
-      display: inline-block;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey of Jaans</title>
+    <!-- Use Tailwind CSS for a modern and responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
-<body>
-  <!-- Slideshow -->
-  <div class="slideshow"></div>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen relative overflow-hidden">
 
-  <!-- Intro Popup -->
-  <div class="overlay" id="overlay">
-    <div class="popup">
-      <p>Hi baby, I hope you liked your surprise. I love you so so much ❤️</p>
-      <span class="heart" id="startHeart">❤️</span>
+    <!-- Slideshow background -->
+    <div id="slideshow" class="absolute inset-0 z-0 bg-cover bg-center brightness-50 transition-all duration-1000 ease-in-out"></div>
+
+    <!-- Intro Popup -->
+    <div id="overlay" class="absolute inset-0 z-10 bg-gray-900/90 flex items-center justify-center">
+        <div class="bg-gray-800 p-8 rounded-2xl shadow-lg text-center max-w-sm w-full mx-4 transform transition-all duration-500 ease-out scale-100 opacity-100">
+            <p class="text-xl font-semibold mb-4 text-rose-300">Hi baby, I hope you liked your surprise. I love you so so much ❤️</p>
+            <span id="startHeart" class="text-5xl cursor-pointer hover:scale-110 transform transition-transform duration-300">❤️</span>
+        </div>
     </div>
-  </div>
 
-  <!-- Timer Page -->
-  <div class="container" id="timerPage">
-    <h1>Our Journey Together</h1>
-    <div class="timer" id="timer"></div>
-    <button onclick="toggleMusic()">⏯ Pause/Play Music</button>
-    <button onclick="goToMessage()">Click here for another surprise</button>
-  </div>
-
-  <!-- Message Page -->
-  <div class="message-page" id="messagePage">
-    <div class="message">
-      <h2>My Love 💌</h2>
-      <p>
-        Ishu, every second with you feels like magic.  
-        I love you endlessly, and I always will. ❤️
-      </p>
+    <!-- Timer Page -->
+    <div id="timerPage" class="container hidden flex-col items-center justify-center text-center p-6 z-20">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-6 text-rose-400 drop-shadow-md">Our Journey Together</h1>
+        <div id="timer" class="flex flex-wrap gap-4 justify-center">
+            <!-- Timer boxes will be inserted here by JavaScript -->
+        </div>
+        <button id="nextBtn" class="mt-8 px-8 py-3 bg-rose-600 rounded-full text-lg font-bold shadow-md hover:bg-rose-700 transition-colors duration-300 transform hover:scale-105 active:scale-95">
+            Click here for another surprise
+        </button>
     </div>
-    <button onclick="toggleMusic()">⏯ Pause/Play Music</button>
-    <button onclick="goToTimer()">Back to Timer</button>
-  </div>
 
-  <audio id="music" loop></audio>
+    <!-- Message Page -->
+    <div id="messagePage" class="hidden flex-col items-center justify-center text-center p-6 z-20">
+        <div class="bg-gray-800 p-8 rounded-2xl shadow-lg mt-10 max-w-md mx-4 transform transition-all duration-500 ease-in-out">
+            <h2 class="text-3xl font-bold mb-4 text-rose-400">My Love 💌</h2>
+            <p class="text-lg leading-relaxed">
+                Ishu, every second with you feels like magic.
+                I love you endlessly, and I always will. ❤️
+            </p>
+        </div>
+        <button id="backBtn" class="mt-8 px-8 py-3 bg-rose-600 rounded-full text-lg font-bold shadow-md hover:bg-rose-700 transition-colors duration-300 transform hover:scale-105 active:scale-95">
+            Back to Timer
+        </button>
+    </div>
 
-  <script>
-    // Slideshow images
-    const images = [
-      "us.jpg","us2.jpg","us3.jpg","us4.jpg","us5.jpg",
-      "us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"
-    ];
-    let currentImage = 0;
-    const slideshow = document.querySelector(".slideshow");
+    <script>
+        // Use a data URI for the images so the slideshow works without external files.
+        const images = [
+            `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232d3748"/><text x="50" y="55" font-family="sans-serif" font-size="10" fill="%23e9d8d6" text-anchor="middle">You & Ishita</text></svg>')`,
+            `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%234a5568"/><text x="50" y="55" font-family="sans-serif" font-size="10" fill="%23f9e9e6" text-anchor="middle">Our Journey</text></svg>')`,
+            `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23718096"/><text x="50" y="55" font-family="sans-serif" font-size="10" fill="%23f4f7f9" text-anchor="middle">Forever</text></svg>')`
+        ];
+        let currentImage = 0;
+        const slideshow = document.getElementById("slideshow");
 
-    function startSlideshow() {
-      slideshow.style.backgroundImage = `url('${images[currentImage]}')`;
-      setInterval(() => {
-        currentImage = (currentImage + 1) % images.length;
-        slideshow.style.backgroundImage = `url('${images[currentImage]}')`;
-      }, 4000);
-    }
+        function startSlideshow() {
+            slideshow.style.backgroundImage = images[currentImage];
+            setInterval(() => {
+                currentImage = (currentImage + 1) % images.length;
+                slideshow.style.backgroundImage = images[currentImage];
+            }, 4000);
+        }
 
-    // Timer
-    const startDate = new Date("2024-01-06T00:00:00");
-    function updateTimer() {
-      const now = new Date();
-      const diff = now - startDate;
+        // Timer functionality
+        const startDate = new Date("2024-01-06T00:00:00");
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
 
-      let years = now.getFullYear() - startDate.getFullYear();
-      let months = now.getMonth() - startDate.getMonth();
-      if (months < 0) { years--; months += 12; }
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+            if (days < 0) {
+                months--;
+                days += 30; // Approximation for a month
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
 
-      let days = Math.floor((diff / (1000*60*60*24)) % 30.44);
-      let hours = Math.floor((diff / (1000*60*60)) % 24);
-      let minutes = Math.floor((diff / (1000*60)) % 60);
-      let seconds = Math.floor((diff / 1000) % 60);
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
 
-      document.getElementById("timer").innerHTML = `
-        <div class="time-box"><span>${years}</span>Years</div>
-        <div class="time-box"><span>${months}</span>Months</div>
-        <div class="time-box"><span>${days}</span>Days</div>
-        <div class="time-box"><span>${hours}</span>Hours</div>
-        <div class="time-box"><span>${minutes}</span>Minutes</div>
-        <div class="time-box"><span>${seconds}</span>Seconds</div>
-      `;
-    }
-    setInterval(updateTimer, 1000);
+            document.getElementById("timer").innerHTML = `
+                <div class="bg-white/10 p-4 rounded-xl min-w-[80px] shadow-sm">
+                    <span class="block text-2xl font-bold">${years}</span>
+                    <span class="block text-sm">Years</span>
+                </div>
+                <div class="bg-white/10 p-4 rounded-xl min-w-[80px] shadow-sm">
+                    <span class="block text-2xl font-bold">${months}</span>
+                    <span class="block text-sm">Months</span>
+                </div>
+                <div class="bg-white/10 p-4 rounded-xl min-w-[80px] shadow-sm">
+                    <span class="block text-2xl font-bold">${days}</span>
+                    <span class="block text-sm">Days</span>
+                </div>
+                <div class="bg-white/10 p-4 rounded-xl min-w-[80px] shadow-sm">
+                    <span class="block text-2xl font-bold">${hours}</span>
+                    <span class="block text-sm">Hours</span>
+                </div>
+                <div class="bg-white/10 p-4 rounded-xl min-w-[80px] shadow-sm">
+                    <span class="block text-2xl font-bold">${minutes}</span>
+                    <span class="block text-sm">Minutes</span>
+                </div>
+                <div class="bg-white/10 p-4 rounded-xl min-w-[80px] shadow-sm">
+                    <span class="block text-2xl font-bold">${seconds}</span>
+                    <span class="block text-sm">Seconds</span>
+                </div>
+            `;
+        }
+        setInterval(updateTimer, 1000);
 
-    // Music
-    const music = document.getElementById("music");
-    let currentPage = "timer"; // track where we are
+        function goToMessage() {
+            document.getElementById("timerPage").classList.add('hidden');
+            document.getElementById("messagePage").classList.remove('hidden');
+        }
 
-    function toggleMusic() {
-      if (music.paused) music.play();
-      else music.pause();
-    }
+        function goToTimer() {
+            document.getElementById("messagePage").classList.add('hidden');
+            document.getElementById("timerPage").classList.remove('hidden');
+        }
 
-    function goToMessage() {
-      document.getElementById("timerPage").style.display = "none";
-      document.getElementById("messagePage").style.display = "block";
-      currentPage = "message";
-      music.src = "yellow.mp3";
-      music.play();
-    }
+        // Event Listeners
+        document.getElementById("startHeart").addEventListener("dblclick", () => {
+            document.getElementById("overlay").classList.add('hidden');
+            document.getElementById("timerPage").classList.remove('hidden');
+            startSlideshow();
+            updateTimer();
+        });
 
-    function goToTimer() {
-      document.getElementById("messagePage").style.display = "none";
-      document.getElementById("timerPage").style.display = "flex";
-      currentPage = "timer";
-      music.src = "Sahiba(KoshalWorld.Com).mp3";
-      music.play();
-    }
-
-    // Start app
-    document.getElementById("startHeart").addEventListener("dblclick", () => {
-      document.getElementById("overlay").style.display = "none";
-      document.getElementById("timerPage").style.display = "flex";
-      music.src = "Sahiba(KoshalWorld.Com).mp3";
-      music.play();
-      startSlideshow();
-      updateTimer();
-    });
-  </script>
+        document.getElementById("nextBtn").addEventListener("click", goToMessage);
+        document.getElementById("backBtn").addEventListener("click", goToTimer);
+    </script>
 </body>
 </html>
-
