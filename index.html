@@ -1,511 +1,342 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Our Journey ❤️</title>
-<style>
-  :root{
-    --accent:#ff4d6d;
-    --fg:#fff;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;font-family:Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;background:#000;color:var(--fg);overflow:hidden}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>till eternity and beyond❤️</title>
+  <style>
+    :root {
+      --accent: #ff4d6d;
+      --bg1: #ff9a9e;
+      --bg2: #fad0c4;
+    }
+    * { box-sizing:border-box }
+    html,body { height:100%; margin:0; font-family:"Poppins",system-ui,sans-serif }
 
-  /* ---------- Background slideshow (covers whole viewport) ---------- */
-  .bg {
-    position:fixed; inset:0; z-index:-2; background:#000;
-    overflow:hidden;
-  }
-  .bg .slide {
-    position:absolute; inset:0;
-    width:100%; height:100%;
-    object-fit:cover;
-    opacity:0;
-    transition:opacity 1000ms ease;
-    will-change: opacity, transform;
-    filter: grayscale(20%) brightness(60%);
-    transform: scale(1.02);
-    background-size:cover;
-  }
-  .bg .slide.active { opacity:1; filter: grayscale(10%) brightness(55%); transform: none; }
+    body {
+      background: linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:#fff;
+      overflow:hidden;
+    }
 
-  /* subtle center-light vignette via overlay so faces stay visible */
-  .bg-overlay {
-    position:fixed; inset:0; z-index:-1;
-    pointer-events:none;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.35) 65%);
-  }
+    /* ===== background slideshow ===== */
+    .bg-slideshow {
+      position:fixed;
+      inset:0;
+      z-index: -2;
+      overflow:hidden;
+    }
+    .bg-slide {
+      position:absolute;
+      inset:0;
+      background-size:cover;
+      background-position:center;
+      opacity:0;
+      transition:opacity 1200ms ease;
+      filter: grayscale(40%) brightness(60%);
+    }
+    .bg-slide.active {
+      opacity:1;
+      filter: grayscale(20%) brightness(70%);
+    }
+    .bg-overlay {
+      position:fixed; inset:0; z-index:-1;
+      background: rgba(0,0,0,0.25);
+    }
 
-  /* ---------- Popup intro ---------- */
-  .overlay {
-    position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
-    background: rgba(0,0,0,0.6); z-index:20;
-  }
-  .popup {
-    background:#fff; color:#222; padding:26px; border-radius:14px; text-align:center;
-    box-shadow: 0 18px 60px rgba(0,0,0,0.35);
-    max-width:420px; width:92%;
-  }
-  .popup h2{ color:var(--accent); margin:0 0 8px; font-size:20px; }
-  .popup p{ margin:0 0 12px; }
-  .heart-btn{
-    font-size:46px; background:none; border:0; color:var(--accent); cursor:pointer;
-    animation: beat 1000ms infinite; user-select:none;
-  }
-  @keyframes beat{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
-  .vanish { animation: vanishAnim 620ms forwards ease; }
-  @keyframes vanishAnim { from{opacity:1;transform:scale(1)} to{opacity:0;transform:scale(2)} }
+    /* ===== intro overlay ===== */
+    .overlay {
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,0,0,0.6);
+      z-index: 30;
+    }
+    .popup {
+      background:#fff;
+      padding:28px;
+      border-radius:16px;
+      max-width:420px; width:92%;
+      text-align:center;
+      box-shadow:0 18px 50px rgba(0,0,0,0.25);
+      animation: popupIn 420ms ease;
+    }
+    @keyframes popupIn { from{ transform:translateY(8px); opacity:0 } to{ transform:none; opacity:1 } }
+    .popup h2 { margin:0 0 8px; color:var(--accent) }
+    .popup p { margin:0 0 12px; color:#444 }
 
-  /* ---------- App container / views ---------- */
-  .app {
-    position:relative; z-index:10; width:100%; max-width:980px; margin:40px auto; padding:20px;
-    pointer-events:none; opacity:0; transform:translateY(8px); transition:opacity .36s ease, transform .36s ease;
-  }
-  .app.active { pointer-events:auto; opacity:1; transform:none; }
+    .heart-btn {
+      font-size:46px;
+      display:inline-block;
+      border:0;
+      background:none;
+      cursor:pointer;
+      color:var(--accent);
+      animation: beat 1000ms infinite;
+    }
+    @keyframes beat { 0%,100%{ transform:scale(1) } 50%{ transform:scale(1.2) } }
 
-  .card {
-    background: rgba(0,0,0,0.36); backdrop-filter: blur(6px);
-    padding:18px; border-radius:12px; color:var(--fg);
-  }
+    .vanish { animation: vanishAnim 600ms forwards ease }
+    @keyframes vanishAnim { from{ transform: scale(1); opacity:1 } to{ transform: scale(2); opacity:0 } }
+    .overlay.fade-out { animation: overlayFade 620ms forwards ease }
+    @keyframes overlayFade { from{ opacity:1 } to{ opacity:0; visibility:hidden } }
 
-  /* Timer boxes */
-  .timer {
-    display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin:14px 0;
-  }
-  .box {
-    min-width:86px; padding:12px 14px; border-radius:10px;
-    background: rgba(255,255,255,0.08); text-align:center;
-  }
-  .val { font-size:18px; font-weight:700; }
-  .label { font-size:11px; color: #ffe8ee; margin-top:6px; }
+    /* ===== stage (main content) ===== */
+    .stage {
+      position:relative;
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
+      padding:20px;
+      text-align:center;
+      display:none;
+      flex-direction:column;
+      align-items:center;
+      gap:18px;
+      z-index:10;
+    }
+    .stage.active { display:flex }
 
-  /* Controls / links */
-  .controls { display:flex; gap:10px; justify-content:center; margin-top:12px; flex-wrap:wrap; }
-  .btn {
-    pointer-events: auto;
-    background:var(--accent); color:#fff; border:0; padding:10px 16px; border-radius:999px; cursor:pointer;
-    font-weight:700;
-  }
-  .muted { background:#fff; color:var(--accent); }
+    .card {
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+      padding:18px;
+      border-radius:14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      color:#fff;
+      width: min(900px, 96%);
+    }
+    .title { font-size:20px; margin: 4px 0 8px; color:#fff }
 
-  /* Message view */
-  .message-view { display:none; }
-  .message-view.show { display:block; }
+    .timer {
+      display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+      margin-top: 6px;
+    }
+    .time-box {
+      background: rgba(255,255,255,0.08);
+      padding:14px 16px;
+      border-radius:12px;
+      min-width:92px;
+      text-align:center;
+    }
+    .time-val { font-size:20px; font-weight:700; color:#fff }
+    .time-label { font-size:12px; color:#ffe8ee; margin-top:6px }
 
-  /* small screens */
-  @media (max-width:640px){
-    .val{ font-size:16px }
-    .popup h2{ font-size:18px }
-    .card{ padding:14px }
-  }
-</style>
+    .btn {
+      margin-top:14px;
+      background: var(--accent);
+      border:0;
+      padding:12px 18px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:600;
+      color:#fff;
+    }
+
+    .music {
+      margin-top:12px;
+      display:flex;
+      justify-content:center;
+    }
+    .music button {
+      background: rgba(255,255,255,0.9);
+      color:var(--accent);
+      border:0;
+      padding:10px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .message {
+      font-size:18px;
+      line-height:1.6;
+      background: rgba(0,0,0,0.5);
+      padding:20px;
+      border-radius:12px;
+    }
+
+    @media (max-width:640px){
+      .time-val{ font-size:18px }
+      .card{ padding:12px }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- background container - slides are added by JS after preload -->
-  <div class="bg" id="bg"></div>
+  <!-- background slideshow -->
+  <div class="bg-slideshow" id="bgSlideshow"></div>
   <div class="bg-overlay"></div>
 
-  <!-- intro popup -->
+  <!-- intro -->
   <div class="overlay" id="overlay">
     <div class="popup">
       <h2>Hi baby 💕</h2>
       <p>I hope you liked your surprise.<br>I love you so so much</p>
-      <button class="heart-btn" id="heart">❤️</button>
+      <button class="heart-btn" id="popupHeart">❤️</button>
     </div>
   </div>
 
-  <!-- single-page app: timerView + messageView -->
-  <main class="app" id="app">
-    <!-- TIMER VIEW -->
-    <section id="timerView" class="card view">
-      <h2 style="color:var(--accent);margin:6px 0 10px">Our Journey Together</h2>
+  <!-- timer stage -->
+  <div class="stage" id="stage-timer">
+    <div class="card">
+      <div class="title">Our Journey Together</div>
+      <div class="timer" id="timerBoxes"></div>
+      <div class="music"><button id="musicToggle1">⏸ Pause Music</button></div>
+      <button class="btn" id="toMessage">Click here for another surprise</button>
+    </div>
+  </div>
 
-      <div class="timer" id="timerBoxes" aria-live="polite"></div>
-
-      <div class="controls">
-        <button id="goMessage" class="btn">Click here for another surprise</button>
-        <button id="playPause" class="btn muted">⏯ Play</button>
-      </div>
-    </section>
-
-    <!-- MESSAGE VIEW (hidden until shown) -->
-    <section id="messageView" class="card view message-view" aria-hidden="true" style="margin-top:16px;">
-      <h2 style="color:var(--accent);margin:6px 0 10px">My Dearest Ishu ❤️</h2>
-      <div style="font-size:16px;line-height:1.6; max-width:760px; margin:0 auto;">
-        Every passing moment with you feels magical, meri jaan.<br>
-        I fall deeper in love every single day.<br><br>
+  <!-- message stage -->
+  <div class="stage" id="stage-message">
+    <div class="card">
+      <div class="title">A Little Note For You ❤️</div>
+      <div class="message">
+        Every passing moment with you feels magical meri jaan,<br>
+        I fall deeper in love every day.<br>
         I love you so much Ishu ❤️ You are everything ❤️
       </div>
+      <div class="music"><button id="musicToggle2">⏸ Pause Music</button></div>
+      <button class="btn" id="toTimer">⬅ Back to Timer</button>
+    </div>
+  </div>
 
-      <div class="controls" style="margin-top:18px;">
-        <button id="backTimer" class="btn muted">⬅ Back to Timer</button>
-        <button id="playPause2" class="btn muted">⏯ Play</button>
-      </div>
-    </section>
-  </main>
-
-  <!-- two audio elements for seamless crossfade when switching songs -->
-  <audio id="audioA" src="Sahiba(KoshalWorld.Com).mp3" preload="auto" crossorigin="anonymous"></audio>
-  <audio id="audioB" src="yellow.mp3" preload="auto" crossorigin="anonymous"></audio>
+  <!-- music -->
+  <audio id="music1" src="Sahiba.mp3" preload="auto" loop></audio>
+  <audio id="music2" src="yellow.mp3" preload="auto" loop></audio>
 
 <script>
-/* ========= CONFIG ========= */
-const imageUrls = [
-  'us.jpg','us3.jpg','us5.jpg','us6.jpg','us7.jpg','us8.jpg','us9.jpg','us10.jpg'
-];
-const startDate = new Date(2024,0,6,0,0,0); // local device timezone
-const SLIDE_INTERVAL = 4500;
-const CROSSFADE_MS = 800;
+(function(){
+  const images = ["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
+  const startDate = new Date(2024,0,6,0,0,0);
 
-/* ========= ELEMENTS ========= */
-const overlay = document.getElementById('overlay');
-const heart = document.getElementById('heart');
-const app = document.getElementById('app');
-const timerBoxes = document.getElementById('timerBoxes');
-const goMessage = document.getElementById('goMessage');
-const messageView = document.getElementById('messageView');
-const timerView = document.getElementById('timerView');
-const backTimer = document.getElementById('backTimer');
-const playPause = document.getElementById('playPause');
-const playPause2 = document.getElementById('playPause2');
+  const overlay = document.getElementById('overlay');
+  const popupHeart = document.getElementById('popupHeart');
+  const stageTimer = document.getElementById('stage-timer');
+  const stageMessage = document.getElementById('stage-message');
+  const timerBoxes = document.getElementById('timerBoxes');
+  const toMessage = document.getElementById('toMessage');
+  const toTimer = document.getElementById('toTimer');
 
-const bgContainer = document.getElementById('bg');
-let slides = [];     // DOM nodes for slides (only for successfully loaded images)
-let slideIndex = 0;
-let slideTimer;
+  const music1 = document.getElementById('music1');
+  const music2 = document.getElementById('music2');
+  const musicToggle1 = document.getElementById('musicToggle1');
+  const musicToggle2 = document.getElementById('musicToggle2');
 
-/* audio */
-const audioA = document.getElementById('audioA'); // Sahiba (timer)
-const audioB = document.getElementById('audioB'); // yellow (message)
-let activeTrack = 'A'; // 'A' or 'B'
-let fadeInterval = null;
+  const bgSlideshow = document.getElementById('bgSlideshow');
+  let bgSlides = [];
+  let bgIndex = 0;
+  let bgInterval;
 
-/* state persistence */
-const STORAGE = {
-  musicPlaying: 'journey_musicPlaying',
-  musicATime: 'journey_musicA_time',
-  musicBTime: 'journey_musicB_time',
-  unlocked: 'journey_unlocked'
-};
-
-/* ========= PRELOAD IMAGES, SKIP MISSING ========= */
-function preloadImages(urls, cb) {
-  const loaded = [];
-  let remaining = urls.length;
-  urls.forEach((url) => {
-    const img = new Image();
-    img.onload = () => {
-      loaded.push(url);
-      remaining--;
-      checkDone();
-    };
-    img.onerror = () => {
-      console.warn('Image failed to load, skipping:', url);
-      remaining--;
-      checkDone();
-    };
-    // start loading
-    img.src = url;
-  });
-  function checkDone() {
-    if (remaining <= 0) cb(loaded);
-  }
-}
-
-/* ========= BUILD SLIDES (only from successfully loaded images) ========= */
-function buildSlides(loadedUrls) {
-  // clear existing
-  bgContainer.innerHTML = '';
-  slides = [];
-
-  if(loadedUrls.length === 0){
-    // fallback: plain gradient background
-    bgContainer.style.background = 'linear-gradient(135deg,#ff9a9e,#fad0c4)';
-    return;
+  // preload images then build slides
+  function preloadImages(arr, cb){
+    let loaded = 0;
+    arr.forEach(src=>{
+      const img = new Image();
+      img.onload = ()=>{ if(++loaded === arr.length) cb(); };
+      img.src = src;
+    });
   }
 
-  loadedUrls.forEach((url, i) => {
-    const img = document.createElement('img');
-    img.className = 'slide';
-    img.src = url;
-    if(i === 0) img.classList.add('active');
-    bgContainer.appendChild(img);
-    slides.push(img);
-  });
-}
-
-/* ========= START SLIDESHOW ========= */
-function startSlides() {
-  if(slideTimer) clearInterval(slideTimer);
-  if(slides.length <= 1) return;
-  slideIndex = 0;
-  slideTimer = setInterval(() => {
-    slides[slideIndex].classList.remove('active');
-    slideIndex = (slideIndex + 1) % slides.length;
-    slides[slideIndex].classList.add('active');
-  }, SLIDE_INTERVAL);
-}
-
-/* ========= TIMER (accurate y/m/d/h/m/s) ========= */
-function getDateDiffComponents(s,e){
-  const start = new Date(s.getTime()), end = new Date(e.getTime());
-  let years = end.getFullYear() - start.getFullYear();
-  let months = end.getMonth() - start.getMonth();
-  let days = end.getDate() - start.getDate();
-  let hours = end.getHours() - start.getHours();
-  let minutes = end.getMinutes() - start.getMinutes();
-  let seconds = end.getSeconds() - start.getSeconds();
-
-  if (seconds < 0) { seconds += 60; minutes -= 1; }
-  if (minutes < 0) { minutes += 60; hours -= 1; }
-  if (hours < 0) { hours += 24; days -= 1; }
-  if (days < 0) {
-    const prevMonthDays = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
-    days += prevMonthDays;
-    months -= 1;
+  function buildSlides(){
+    bgSlides = [];
+    bgSlideshow.innerHTML = "";
+    images.forEach((src,i)=>{
+      const d = document.createElement('div');
+      d.className = 'bg-slide';
+      d.style.backgroundImage = `url("${src}")`;
+      if(i===0) d.classList.add('active');
+      bgSlideshow.appendChild(d);
+      bgSlides.push(d);
+    });
   }
-  if (months < 0) { months += 12; years -= 1; }
-  return { years, months, days, hours, minutes, seconds };
-}
-let timerInterval = null;
-function startTimer() {
-  if(timerInterval) clearInterval(timerInterval);
-  function tick(){
-    const diff = getDateDiffComponents(startDate, new Date());
+
+  function startSlides(){
+    if(bgSlides.length<=1) return;
+    bgIndex = 0;
+    clearInterval(bgInterval);
+    bgInterval = setInterval(()=>{
+      const prev = bgIndex;
+      bgIndex = (bgIndex+1)%bgSlides.length;
+      bgSlides[prev].classList.remove('active');
+      bgSlides[bgIndex].classList.add('active');
+    },5000);
+  }
+
+  // timer
+  function getDiff(s,e){
+    const start = new Date(s.getTime());
+    const end = new Date(e.getTime());
+    let y = end.getFullYear()-start.getFullYear();
+    let m = end.getMonth()-start.getMonth();
+    let d = end.getDate()-start.getDate();
+    let h = end.getHours()-start.getHours();
+    let min = end.getMinutes()-start.getMinutes();
+    let sec = end.getSeconds()-start.getSeconds();
+    if(sec<0){ sec+=60; min--; }
+    if(min<0){ min+=60; h--; }
+    if(h<0){ h+=24; d--; }
+    if(d<0){ m--; const prevMonthDays = new Date(end.getFullYear(), end.getMonth(), 0).getDate(); d+=prevMonthDays; }
+    if(m<0){ m+=12; y--; }
+    return {y,m,d,h,min,sec};
+  }
+  function renderTimer(){
+    const now = new Date();
+    const diff = getDiff(startDate,now);
     timerBoxes.innerHTML = `
-      <div class="box"><div class="val">${diff.years}</div><div class="label">Years</div></div>
-      <div class="box"><div class="val">${diff.months}</div><div class="label">Months</div></div>
-      <div class="box"><div class="val">${diff.days}</div><div class="label">Days</div></div>
-      <div class="box"><div class="val">${String(diff.hours).padStart(2,'0')}</div><div class="label">Hours</div></div>
-      <div class="box"><div class="val">${String(diff.minutes).padStart(2,'0')}</div><div class="label">Minutes</div></div>
-      <div class="box"><div class="val">${String(diff.seconds).padStart(2,'0')}</div><div class="label">Seconds</div></div>
+      <div class="time-box"><div class="time-val">${diff.y}</div><div class="time-label">Years</div></div>
+      <div class="time-box"><div class="time-val">${diff.m}</div><div class="time-label">Months</div></div>
+      <div class="time-box"><div class="time-val">${diff.d}</div><div class="time-label">Days</div></div>
+      <div class="time-box"><div class="time-val">${String(diff.h).padStart(2,'0')}</div><div class="time-label">Hours</div></div>
+      <div class="time-box"><div class="time-val">${String(diff.min).padStart(2,'0')}</div><div class="time-label">Minutes</div></div>
+      <div class="time-box"><div class="time-val">${String(diff.sec).padStart(2,'0')}</div><div class="time-label">Seconds</div></div>
     `;
   }
-  tick();
-  timerInterval = setInterval(tick,1000);
-}
+  setInterval(renderTimer,1000);
 
-/* ========= AUDIO HELPERS (crossfade) ========= */
-function setVolumes(aVol, bVol){
-  audioA.volume = Math.max(0, Math.min(1, aVol));
-  audioB.volume = Math.max(0, Math.min(1, bVol));
-}
-function crossfadeTo(target) {
-  // target = 'A' or 'B'
-  if(fadeInterval) { clearInterval(fadeInterval); fadeInterval = null; }
-  const from = (target === 'A') ? audioB : audioA;
-  const to = (target === 'A') ? audioA : audioB;
-  // make sure to is ready
-  try { to.play().catch(()=>{}); } catch(e){}
-  const steps = Math.round(CROSSFADE_MS / 40);
-  let step = 0;
-  const fromStart = from.volume || 1;
-  const toStart = to.volume || 0;
-  const fromDelta = fromStart / steps;
-  const toDelta = (1 - toStart) / steps;
-  fadeInterval = setInterval(() => {
-    step++;
-    const newFrom = Math.max(0, fromStart - fromDelta * step);
-    const newTo = Math.min(1, toStart + toDelta * step);
-    if(target === 'A') setVolumes(newTo, newFrom);
-    else setVolumes(newFrom, newTo);
-    if(step >= steps){
-      clearInterval(fadeInterval); fadeInterval = null;
-      // pause the non-active to free cpu
-      if(target === 'A'){ audioB.pause(); audioB.currentTime = localStorage.getItem(STORAGE.musicBTime) ? parseFloat(localStorage.getItem(STORAGE.musicBTime)) : 0; }
-      else { audioA.pause(); audioA.currentTime = localStorage.getItem(STORAGE.musicATime) ? parseFloat(localStorage.getItem(STORAGE.musicATime)) : 0; }
-      activeTrack = target;
-      saveMusicState();
-      updatePlayButtons();
-    }
-  }, 40);
-}
-
-/* ========= save/restore music state so reloads keep time (may be blocked on autoplay) ========= */
-function saveMusicState(){
-  try{
-    localStorage.setItem(STORAGE.musicATime, audioA.currentTime || 0);
-    localStorage.setItem(STORAGE.musicBTime, audioB.currentTime || 0);
-    localStorage.setItem(STORAGE.musicPlaying, (activeTrack === 'A' ? !audioA.paused : !audioB.paused) ? 'true' : 'false');
-    localStorage.setItem(STORAGE.unlocked, 'true');
-  }catch(e){ console.warn('saveMusicState failed', e); }
-}
-function restoreMusicState(){
-  try{
-    const aTime = parseFloat(localStorage.getItem(STORAGE.musicATime) || '0');
-    const bTime = parseFloat(localStorage.getItem(STORAGE.musicBTime) || '0');
-    audioA.currentTime = aTime || 0;
-    audioB.currentTime = bTime || 0;
-    const playing = localStorage.getItem(STORAGE.musicPlaying) === 'true';
-    // default volumes
-    audioA.volume = 1; audioB.volume = 0;
-    if(playing){
-      // we can't guarantee autoplay will succeed without a user gesture; invocation after heart click is the reliable path.
-      audioA.play().catch(()=>{});
-      activeTrack = 'A';
-    }
-  }catch(e){ console.warn('restore fail', e); }
-}
-
-/* update play/pause button labels */
-function updatePlayButtons(){
-  const playing = (activeTrack === 'A') ? !audioA.paused : !audioB.paused;
-  const label = playing ? '⏸ Pause' : '▶ Play';
-  playPause.textContent = label;
-  playPause2.textContent = label;
-}
-
-/* unified play/pause toggle */
-function togglePlayPause(){
-  const playing = (activeTrack === 'A') ? !audioA.paused : !audioB.paused;
-  if(playing){
-    audioA.pause(); audioB.pause();
-  } else {
-    if(activeTrack === 'A'){ audioA.play().catch(()=>{}); } else { audioB.play().catch(()=>{}); }
+  // activate
+  function activate(){
+    overlay.classList.add('fade-out');
+    setTimeout(()=>{
+      overlay.style.display="none";
+      stageTimer.classList.add('active');
+      music1.play().catch(()=>{});
+      startSlides();
+    },650);
   }
-  updatePlayButtons();
-  saveMusicState();
-}
 
-/* ========= UI: open/close views and song switching ========= */
-function openAppFromPopup(){
-  // hide overlay and show app
-  overlay.classList.add('vanish');
-  setTimeout(()=> overlay.style.display = 'none', 650);
-  app.classList.add('active');
-  // start slideshow & timer
-  startSlides();
-  startTimer();
-  // try to restore saved position
-  restoreMusicState();
-  // attempt to play audioA (Sahiba). Because this is a direct user gesture, browsers should allow it.
-  audioA.volume = 1; audioB.volume = 0;
-  audioA.play().catch(()=>{});
-  activeTrack = 'A';
-  updatePlayButtons();
-  // save unlocked
-  localStorage.setItem(STORAGE.unlocked, 'true');
-}
+  popupHeart.addEventListener('click', activate);
+  popupHeart.addEventListener('dblclick', activate);
 
-/* click handlers that switch views and crossfade songs */
-goMessage.addEventListener('click', () => {
-  // show message, crossfade audio to B
-  timerView.style.display = 'none';
-  messageView.classList.add('show');
-  messageView.setAttribute('aria-hidden','false');
-  // start audioB from stored time
-  const savedB = parseFloat(localStorage.getItem(STORAGE.musicBTime) || '0');
-  audioB.currentTime = savedB || 0;
-  audioB.play().catch(()=>{});
-  crossfadeTo('B');
-});
-
-backTimer.addEventListener('click', () => {
-  // show timer, crossfade to A
-  messageView.classList.remove('show');
-  timerView.style.display = '';
-  crossfadeTo('A');
-});
-
-/* play/pause UI */
-playPause.addEventListener('click', togglePlayPause);
-playPause2.addEventListener('click', togglePlayPause);
-
-/* double-tap heart activation (mobile + desktop tolerant) */
-let lastTap = 0;
-function heartTapHandler(e){
-  const now = Date.now();
-  if(now - lastTap < 400){
-    openAppFromPopup();
-    lastTap = 0;
-  } else lastTap = now;
-}
-heart.addEventListener('click', heartTapHandler);
-heart.addEventListener('touchend', function(e){ heartTapHandler(e); }, {passive:false});
-
-/* if user already unlocked earlier, auto-open (but don't auto-play music without gesture) */
-if(localStorage.getItem(STORAGE.unlocked) === 'true'){
-  // hide popup, show app immediately, but do NOT try to autoplay audio
-  overlay.style.display = 'none';
-  app.classList.add('active');
-  buildSlides(imageUrls); // still build so visuals show
-  startSlides();
-  startTimer();
-  // restore last known positions but do not force play
-  const aTime = parseFloat(localStorage.getItem(STORAGE.musicATime) || '0');
-  const bTime = parseFloat(localStorage.getItem(STORAGE.musicBTime) || '0');
-  audioA.currentTime = aTime || 0;
-  audioB.currentTime = bTime || 0;
-  audioA.volume = 1; audioB.volume = 0;
-  activeTrack = 'A';
-  updatePlayButtons();
-} else {
-  // preload images, only after images loaded build DOM (avoids blank slides)
-  preloadImages(imageUrls, (loaded) => {
-    buildSlides(loaded);
+  // navigation
+  toMessage.addEventListener('click', ()=>{
+    stageTimer.classList.remove('active');
+    stageMessage.classList.add('active');
+    music1.pause();
+    music2.play().catch(()=>{});
   });
-}
-
-/* but also ensure slides are built once for the normal path (if unlocked path used above it already built) */
-function buildSlides(loadedUrls){
-  // if called twice guard
-  if(bgContainerHasSlides()) return;
-  // if no loadedUrls passed (called earlier), use imageUrls as fallback and attempt to create <img> anyway
-  const use = (Array.isArray(loadedUrls) && loadedUrls.length>0) ? loadedUrls : imageUrls;
-  buildSlidesDOM(use);
-}
-function bgContainerHasSlides(){ return bgContainer && bgContainer.children.length > 0; }
-function buildSlidesDOM(urls){
-  bgContainer.innerHTML = '';
-  slides = [];
-  urls.forEach((u,i) => {
-    const el = document.createElement('img');
-    el.className = 'slide';
-    el.alt = 'background';
-    el.src = u;
-    if(i===0) el.classList.add('active');
-    // if image fails to load, hide element to prevent black flash
-    el.onerror = () => { el.style.display = 'none'; };
-    bgContainer.appendChild(el);
-    slides.push(el);
+  toTimer.addEventListener('click', ()=>{
+    stageMessage.classList.remove('active');
+    stageTimer.classList.add('active');
+    music2.pause();
+    music1.play().catch(()=>{});
   });
-}
 
-/* startSlides only after slides exist; if buildSlides called later, startSlides will pick them up */
-function startSlides(){
-  if(slideTimer) clearInterval(slideTimer);
-  if(!slides || slides.length === 0) return;
-  slideIndex = 0;
-  slides.forEach((s,i)=> s.classList.toggle('active', i===0));
-  slideTimer = setInterval(() => {
-    if(!slides || slides.length === 0) return;
-    slides[slideIndex].classList.remove('active');
-    slideIndex = (slideIndex + 1) % slides.length;
-    slides[slideIndex].classList.add('active');
-  }, SLIDE_INTERVAL);
-}
+  // music toggles
+  musicToggle1.addEventListener('click',()=>{
+    if(music1.paused){ music1.play(); musicToggle1.textContent="⏸ Pause Music"; }
+    else { music1.pause(); musicToggle1.textContent="▶ Play Music"; }
+  });
+  musicToggle2.addEventListener('click',()=>{
+    if(music2.paused){ music2.play(); musicToggle2.textContent="⏸ Pause Music"; }
+    else { music2.pause(); musicToggle2.textContent="▶ Play Music"; }
+  });
 
-/* ensure periodic saving of music times */
-setInterval(() => {
-  try{
-    if(!audioA.paused) localStorage.setItem(STORAGE.musicATime, audioA.currentTime);
-    if(!audioB.paused) localStorage.setItem(STORAGE.musicBTime, audioB.currentTime);
-  }catch(e){}
-}, 1000);
-
-/* on page unload, save music state */
-window.addEventListener('beforeunload', () => { saveMusicState(); });
-
-/* Utility: if user taps heart (unlock) but images weren't preloaded previously, build then start */
-heart.addEventListener('click', ()=> {
-  if(!bgContainerHasSlides()){
-    // try to build from imageUrls immediately (best-effort)
-    buildSlidesDOM(imageUrls);
-  }
-});
-
+  // preload then start slideshow
+  preloadImages(images, ()=>{
+    buildSlides();
+    startSlides();
+  });
+})();
 </script>
 </body>
 </html>
