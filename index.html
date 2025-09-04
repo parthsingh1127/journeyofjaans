@@ -1,289 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>till eternity and beyond❤️</title>
+  <meta charset="UTF-8">
+  <title>Our Journey ❤️</title>
   <style>
-    :root{
-      --accent:#ff4d6d;
-      --bg1:#ff9a9e;
-      --bg2:#fad0c4;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:"Poppins",sans-serif}
-
-    body{
-      background: linear-gradient(135deg,var(--bg1),var(--bg2));
-      color:#fff;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
     }
 
-    /* ===== background slideshow ===== */
-    .bg-slideshow{
-      position:fixed;
-      top:0; left:0; right:0; bottom:0;
-      width:100%; height:100%;
-      z-index:-2;
-      overflow:hidden;
-      background:#000; /* fallback */
-    }
-    .bg-slide{
-      position:absolute;
-      top:0; left:0;
-      width:100%; height:100%;
-      background-size:cover;
-      background-position:center;
-      background-repeat:no-repeat;
-      opacity:0;
-      transition:opacity 1000ms ease, filter 1000ms ease;
-      filter:grayscale(40%) brightness(60%);
-    }
-    .bg-slide.active{ opacity:1; filter:grayscale(20%) brightness(55%); }
-
-    .bg-overlay{
-      position:fixed; inset:0; z-index:-1;
-      background:rgba(0,0,0,0.25);
-      pointer-events:none;
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
     }
 
-    /* ===== intro overlay ===== */
-    .overlay{
-      position:fixed; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      background:rgba(0,0,0,0.6);
-      z-index:30;
-    }
-    .popup{
-      background:#fff;
-      padding:28px;
-      border-radius:16px;
-      max-width:420px;
-      width:92%;
-      text-align:center;
-      box-shadow:0 18px 50px rgba(0,0,0,0.25);
-    }
-    .popup h2{margin:0 0 8px; color:var(--accent)}
-    .popup p{margin:0 0 12px; color:#444}
-    .heart-btn{
-      font-size:46px; border:0; background:none;
-      cursor:pointer; color:var(--accent);
-      animation:beat 1s infinite;
-    }
-    @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-
-    .vanish{animation:vanishAnim 600ms forwards ease}
-    @keyframes vanishAnim{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(2)}}
-    .overlay.fade-out{animation:overlayFade 620ms forwards ease}
-    @keyframes overlayFade{from{opacity:1}to{opacity:0;visibility:hidden}}
-
-    /* ===== stage ===== */
-    .stage{
-      width:100%;
-      max-width:980px;
-      margin:0 auto;
-      text-align:center;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:18px;
-      z-index:10;
-      pointer-events:none;
-      opacity:0;
-      transform:translateY(10px);
-      transition:opacity 420ms ease, transform 420ms ease;
-    }
-    .stage.active{pointer-events:auto;opacity:1;transform:translateY(0)}
-
-    .card{
-      background:rgba(255,255,255,0.12);
-      backdrop-filter:blur(8px);
-      padding:18px;
-      border-radius:14px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.18);
-      color:#fff;
-      width:min(900px,96%);
-    }
-    .title{font-size:20px;margin:4px 0 8px}
-    .timer{
-      display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-      margin-top:6px;
-    }
-    .time-box{
-      background:rgba(255,255,255,0.06);
-      padding:14px 16px;
-      border-radius:12px;
-      min-width:92px;
-      text-align:center;
-      box-shadow:0 8px 20px rgba(0,0,0,0.12) inset;
-    }
-    .time-val{font-size:20px;font-weight:700}
-    .time-label{font-size:12px;color:#ffe8ee;margin-top:6px}
-
-    .music{margin-top:12px;display:none;justify-content:center}
-    .music button{
-      background:rgba(255,255,255,0.9);
-      color:var(--accent);
-      border:0; padding:10px 14px;
-      border-radius:999px;
-      cursor:pointer; font-weight:700;
+    .popup-content {
+      background: white;
+      color: #333;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
 
-    .btn-next{
-      margin-top:18px;
-      background:#fff; color:var(--accent);
-      border:0; padding:12px 18px;
-      border-radius:10px;
-      cursor:pointer; font-weight:700;
+    .popup .heart {
+      font-size: 80px;
+      color: red;
+      cursor: pointer;
+      animation: beat 1s infinite;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .background-slideshow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .background-slideshow img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      filter: brightness(60%);
+    }
+
+    .container {
+      margin-top: 50px;
+      display: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    #timer {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .time-box {
+      background: rgba(255,255,255,0.2);
+      padding: 15px 20px;
+      border-radius: 15px;
+      font-size: 1.2rem;
+      min-width: 100px;
+    }
+
+    button {
+      background: #ff4d6d;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
     }
   </style>
 </head>
 <body>
-  <div class="bg-slideshow" id="bgSlideshow"></div>
-  <div class="bg-overlay"></div>
 
-  <!-- intro -->
-  <div class="overlay" id="overlay">
-    <div class="popup">
-      <h2>Hi baby 💕</h2>
-      <p>I hope you liked your surprise.<br>I love you so so much</p>
-      <button class="heart-btn" id="popupHeart">❤️</button>
+  <!-- Background slideshow -->
+  <div class="background-slideshow" id="slideshow"></div>
+
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2>Hi baby ❤️</h2>
+      <p>I hope you liked your surprise. I love you so so much!</p>
+      <div class="heart" id="heart">❤️</div>
     </div>
   </div>
 
-  <!-- stage -->
-  <div class="stage" id="stage">
-    <div class="card">
-      <div class="title">Our Journey Together</div>
-      <div class="timer" id="timerBoxes"></div>
-      <div class="music" id="musicControls">
-        <button id="musicToggle">⏸ Pause Music</button>
-      </div>
-      <button class="btn-next" onclick="goToMessage()">Click here for another surprise 💌</button>
-    </div>
+  <!-- Main content -->
+  <div class="container" id="main-content">
+    <h1>Our Journey Together</h1>
+    <div id="timer"></div>
+    <button onclick="toggleMusic()">⏯ Music</button>
+    <br><br>
+    <button onclick="location.href='message.html'">Click here for another surprise</button>
   </div>
 
-  <audio id="bgMusic" src="Sahiba(KoshalWorld.Com).mp3" preload="auto"></audio>
+  <audio id="bg-music" src="Sahiba(KoshalWorld.Com).mp3" loop></audio>
 
-<script>
-(function(){
-  const images=["us.jpg","us3.jpg","us5.jpg","us6.jpg","us7.jpg","us8.jpg","us9.jpg","us10.jpg"];
-  const startDate=new Date(2024,0,6,0,0,0);
+  <script>
+    const startDate = new Date("2024-01-06T00:00:00");
 
-  const overlay=document.getElementById('overlay');
-  const popupHeart=document.getElementById('popupHeart');
-  const bgSlideshow=document.getElementById('bgSlideshow');
-  const stage=document.getElementById('stage');
-  const music=document.getElementById('bgMusic');
-  const musicControls=document.getElementById('musicControls');
-  const musicToggle=document.getElementById('musicToggle');
-  const timerBoxes=document.getElementById('timerBoxes');
+    function updateTimer() {
+      const now = new Date();
+      let diff = now - startDate;
 
-  let bgSlides=[],bgIndex=0,bgInterval,timerInterval,lastTap=0,activated=false;
+      const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+      const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30.44));
+      const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-  function buildBgSlides(){
-    images.forEach((src,i)=>{
-      const d=document.createElement('div');
-      d.className='bg-slide';
-      d.style.backgroundImage=`url("${src}")`;
-      if(i===0) d.classList.add('active');
-      bgSlideshow.appendChild(d);
-      bgSlides.push(d);
+      document.getElementById("timer").innerHTML = `
+        <div class="time-box">${years} Years</div>
+        <div class="time-box">${months} Months</div>
+        <div class="time-box">${days} Days</div>
+        <div class="time-box">${hours} Hours</div>
+        <div class="time-box">${minutes} Minutes</div>
+        <div class="time-box">${seconds} Seconds</div>
+      `;
+    }
+
+    // Slideshow
+    const images = ["us.jpg", "us2.jpg", "us3.jpg", "us4.jpg", "us5.jpg"];
+    let index = 0;
+    const slideshow = document.getElementById("slideshow");
+
+    images.forEach((src, i) => {
+      const img = document.createElement("img");
+      img.src = src;
+      if (i === 0) img.style.opacity = 1;
+      slideshow.appendChild(img);
     });
-  }
-  buildBgSlides();
 
-  function getDateDiffComponents(s,e){
-    const start=new Date(s.getTime()),end=new Date(e.getTime());
-    let years=end.getFullYear()-start.getFullYear();
-    let months=end.getMonth()-start.getMonth();
-    let days=end.getDate()-start.getDate();
-    let hours=end.getHours()-start.getHours();
-    let minutes=end.getMinutes()-start.getMinutes();
-    let seconds=end.getSeconds()-start.getSeconds();
-    if(seconds<0){seconds+=60;minutes--}
-    if(minutes<0){minutes+=60;hours--}
-    if(hours<0){hours+=24;days--}
-    if(days<0){
-      const prevMonthDays=new Date(end.getFullYear(),end.getMonth(),0).getDate();
-      days+=prevMonthDays;months--;
+    setInterval(() => {
+      const imgs = document.querySelectorAll("#slideshow img");
+      imgs[index].style.opacity = 0;
+      index = (index + 1) % imgs.length;
+      imgs[index].style.opacity = 1;
+    }, 5000);
+
+    // Music
+    const music = document.getElementById("bg-music");
+    function toggleMusic() {
+      if (music.paused) music.play();
+      else music.pause();
     }
-    if(months<0){months+=12;years--}
-    return {years,months,days,hours,minutes,seconds};
-  }
-  function renderTimerBoxes(diff){
-    timerBoxes.innerHTML=`
-      <div class="time-box"><div class="time-val">${diff.years}</div><div class="time-label">Years</div></div>
-      <div class="time-box"><div class="time-val">${diff.months}</div><div class="time-label">Months</div></div>
-      <div class="time-box"><div class="time-val">${diff.days}</div><div class="time-label">Days</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.hours).padStart(2,'0')}</div><div class="time-label">Hours</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.minutes).padStart(2,'0')}</div><div class="time-label">Minutes</div></div>
-      <div class="time-box"><div class="time-val">${String(diff.seconds).padStart(2,'0')}</div><div class="time-label">Seconds</div></div>
-    `;
-  }
-  function startTimer(){
-    function tick(){
-      const now=new Date();
-      const diff=getDateDiffComponents(startDate,now);
-      renderTimerBoxes(diff);
-    }
-    tick();
-    timerInterval=setInterval(tick,1000);
-  }
-  function startBgSlideshow(){
-    if(bgSlides.length<=1)return;
-    bgIndex=0;
-    bgSlides.forEach((s,i)=>s.classList.toggle('active',i===0));
-    bgInterval=setInterval(()=>{
-      const prev=bgIndex;
-      bgIndex=(bgIndex+1)%bgSlides.length;
-      bgSlides[prev].classList.remove('active');
-      bgSlides[bgIndex].classList.add('active');
-    },4500);
-  }
 
-  function activate(){
-    if(activated)return;
-    activated=true;
-    popupHeart.classList.add('vanish');
-    overlay.classList.add('fade-out');
-    setTimeout(()=>{
-      overlay.style.display='none';
-      stage.classList.add('active');
-      musicControls.style.display='flex';
-      startBgSlideshow();
-      startTimer();
-      music.loop=true;
-      music.play().catch(()=>{});
-    },650);
-  }
-
-  popupHeart.addEventListener('dblclick',e=>{e.preventDefault();activate()});
-  popupHeart.addEventListener('touchend',e=>{
-    const now=Date.now();
-    if(now-lastTap<400){e.preventDefault();activate();lastTap=0;}
-    else lastTap=now;
-  },{passive:false});
-  popupHeart.addEventListener('click',e=>{
-    const now=Date.now();
-    if(now-lastTap<400){activate();lastTap=0;}
-    else lastTap=now;
-  });
-
-  musicToggle.addEventListener('click',()=>{
-    if(music.paused){music.play();musicToggle.textContent='⏸ Pause Music'}
-    else{music.pause();musicToggle.textContent='▶ Play Music'}
-  });
-
-  window.goToMessage=function(){
-    sessionStorage.setItem("activated","true");
-    window.location.href="message.html";
-  }
-})();
-</script>
+    // Heart double tap
+    const heart = document.getElementById("heart");
+    let tapped = 0;
+    heart.addEventListener("click", () => {
+      tapped++;
+      if (tapped === 2) {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        updateTimer();
+        setInterval(updateTimer, 1000);
+        music.play();
+      }
+    });
+  </script>
 </body>
 </html>
